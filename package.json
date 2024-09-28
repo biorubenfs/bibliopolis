@@ -1,0 +1,43 @@
+{
+  "name": "bibliopolis",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "build": "pnpm tsc",
+    "start": "node ./dist/main.js",
+    "start:dev": "nodemon --watch src --ext ts --exec \"echo -- compiling -- && pnpm run --silent build && echo -- starting -- && pnpm run --silent start\"",
+    "lint": "ts-standard",
+    "lint:fix": "ts-standard --fix",
+    "test:dev": "pnpm run --silent build && node --test ./dist/tests/*.test.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.1",
+    "nodemon": "^3.1.7",
+    "ts-standard": "^12.0.2",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "mongodb": "^6.9.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/ts-standard/eslintrc.json"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    }
+  },
+  "ts-standard": {
+    "ignore": [
+      "dist"
+    ]
+  }
+}
