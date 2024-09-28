@@ -4,7 +4,8 @@ import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import assert from 'node:assert'
 
-describe.skip('init app', async () => {
+/* Uncomment when mongo memory server is ready
+describe('init app', async () => {
   const app = new App()
   before(async () => {
     await app.start()
@@ -22,3 +23,4 @@ describe.skip('init app', async () => {
     assert.strictEqual(result.status, 200)
   })
 })
+*/
