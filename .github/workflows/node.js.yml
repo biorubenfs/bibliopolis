@@ -35,6 +35,13 @@ jobs:
     - name: Build the project (if necessary)
       run: pnpm run build
 
+    # Uploads dist folder in order to be used in tests job
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist-artifacts
+        path: dist
+
   eslint:
     runs-on: ubuntu-latest
     needs: build
@@ -72,6 +79,11 @@ jobs:
       with:
         node-version: '20.x'
         cache: 'pnpm'
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist-artifacts
 
     - name: Install dependencies
       run: pnpm install
