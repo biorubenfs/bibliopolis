@@ -35,5 +35,46 @@ jobs:
     - name: Build the project (if necessary)
       run: pnpm run build
 
+  eslint:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install pnpm
+      run: |
+        npm install -g pnpm
+
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Run eslint
+      run: pnpm run lint
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install pnpm
+      run: |
+        npm install -g pnpm
+
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install
+
     - name: Run tests
-      run: pnpm test
+      run: pnpm run test

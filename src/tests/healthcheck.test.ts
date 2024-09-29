@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
