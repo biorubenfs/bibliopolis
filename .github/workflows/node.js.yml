@@ -58,9 +58,6 @@ jobs:
         node-version: '20.x'
         cache: 'pnpm'
 
-    - name: Install dependencies
-      run: pnpm install
-
     - name: Run eslint
       run: pnpm run lint
 
@@ -86,9 +83,6 @@ jobs:
       with:
         name: dist-artifacts
         path: dist
-
-    - name: Install dependencies
-      run: pnpm install
 
     - name: Run tests
       run: pnpm run test
