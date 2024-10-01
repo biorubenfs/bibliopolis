@@ -15,7 +15,7 @@ class Mongo {
       console.log(`Generated Mongo URI: ${this.uri}`); // Log de la URI
 
       // await while all SECONDARIES will be ready. Required only in testing.
-      await new Promise((resolve) => setTimeout(resolve, 5000))
+      await new Promise((resolve) => setTimeout(resolve, 10000))
     } else {
       this.uri = config.mongo.uri
     }
