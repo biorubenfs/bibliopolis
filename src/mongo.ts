@@ -9,7 +9,7 @@ class Mongo {
 
   async start (): Promise<void> {
     if (config.environment === 'test') {
-      this.memoryReplSet = await MongoMemoryReplSet.create({ replSet: { count: 3 } })
+      this.memoryReplSet = await MongoMemoryReplSet.create({ replSet: { count: 3 } , instanceOpts: [{storageEngine: 'wiredTiger'}]})
       this.uri = this.memoryReplSet.getUri()
 
       console.log(`Generated Mongo URI: ${this.uri}`); // Log de la URI

@@ -16,7 +16,6 @@ jobs:
 
     env:
       ENVIRONMENT: 'test'
-      MONGO_URI: ''
 
     steps:
     - uses: actions/checkout@v4
