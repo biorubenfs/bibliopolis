@@ -10,7 +10,7 @@ class UsersDao extends Dao<DBAdmin> {
     super('admins')
   }
 
-  async init(): Promise<void> {
+  async init (): Promise<void> {
     const now = new Date()
     const defaultAdmin = {
       name: config.defaultAdmin.name,

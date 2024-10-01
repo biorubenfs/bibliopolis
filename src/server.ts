@@ -27,11 +27,11 @@ export default class Server {
     return this.express
   }
 
-  listen(): void {
+  listen (): void {
     this.httpServer = this.express.listen(this.port, () => console.log(`server listening on port ${this.port}`))
   }
 
-  stop(): void {
+  stop (): void {
     if (this.httpServer != null) {
       this.httpServer.close((err) => {
         if (err != null) {

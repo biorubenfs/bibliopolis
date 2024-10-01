@@ -4,7 +4,7 @@ function parseString (value?: string, dflt = ''): string {
   return value ?? dflt
 }
 
-function parseNumber(value?: string, dflt = 0): number {
+function parseNumber (value?: string, dflt = 0): number {
   return value != null ? parseInt(value) : dflt
 }
 

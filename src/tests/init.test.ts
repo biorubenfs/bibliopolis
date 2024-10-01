@@ -28,16 +28,16 @@ describe('init app', async () => {
   it('replica set should have been established', async () => {
     const db = mongo.client.db('admin')
     const admin = db.admin()
-    const status = await admin.replSetGetStatus();
-    const primary = status.members.filter((m: any) => m.stateStr === 'PRIMARY') as Array<any>
-    const secondary = status.members.filter((m: any) => m.stateStr === 'SECONDARY') as Array<any>
+    const status = await admin.replSetGetStatus()
+    const primary = status.members.filter((m: any) => m.stateStr === 'PRIMARY') as any[]
+    const secondary = status.members.filter((m: any) => m.stateStr === 'SECONDARY') as any[]
     assert.strictEqual(primary.length, 1)
     assert.strictEqual(secondary.length, 2)
   })
 
-  it('default admins should have been created', async () => {    
+  it('default admins should have been created', async () => {
     const res = await adminsDao.collection.findOne({ name: config.defaultAdmin.name })
-      
+
     assert.notEqual(res, null)
     assert.equal(res?.name, config.defaultAdmin.name)
   })

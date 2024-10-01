@@ -13,7 +13,7 @@ export default class App {
     await adminsDao.init()
   }
 
-  async stop(): Promise<void> {
+  async stop (): Promise<void> {
     await mongo.stop()
     this.server?.stop()
   }
