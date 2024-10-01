@@ -8,7 +8,7 @@
     "start:dev": "nodemon --watch src --ext ts --exec \"echo -- compiling -- && pnpm run --silent build && echo -- starting -- && pnpm run --silent start\"",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
-    "test:dev": "pnpm run --silent build && node --test ./dist/tests/*.test.js", 
+    "test:dev": "pnpm run --silent build && node --test ./dist/tests/*.test.js",
     "test": "node --test ./dist/tests/*.test.js"
   },
   "type": "module",
@@ -17,6 +17,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.1",
     "nodemon": "^3.1.7",
@@ -24,9 +25,12 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "mongodb": "^6.9.0"
+    "mongodb": "^6.9.0",
+    "mongodb-memory-server": "^10.0.1",
+    "ulid": "^2.3.0"
   },
   "eslintConfig": {
     "extends": [

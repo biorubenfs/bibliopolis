@@ -27,17 +27,17 @@ export default class Server {
     return this.express
   }
 
-  listen (): void {
+  listen(): void {
     this.httpServer = this.express.listen(this.port, () => console.log(`server listening on port ${this.port}`))
   }
 
-  stop (): void {
+  stop(): void {
     if (this.httpServer != null) {
       this.httpServer.close((err) => {
         if (err != null) {
-          console.log('error stopping server')
+          console.log('error stopping server', err)
         } else {
-          console.log('server stopped succesfuly')
+          console.log('server stopped succesfully')
         }
       })
     }
