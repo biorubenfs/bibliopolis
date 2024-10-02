@@ -12,7 +12,7 @@ class Mongo {
       this.memoryReplSet = await MongoMemoryReplSet.create({ replSet: { count: 3 } , instanceOpts: [{storageEngine: 'wiredTiger'}]})
       this.uri = this.memoryReplSet.getUri()
 
-      console.log(`Generated Mongo URI: ${this.uri}`); // Log de la URI
+      console.log(`Generated Mongo URI: ${this.uri}`)
 
       // await while all SECONDARIES will be ready. Required only in testing.
       await new Promise((resolve) => setTimeout(resolve, 10000))
