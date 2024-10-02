@@ -16,7 +16,7 @@ jobs:
 
     env:
       ENVIRONMENT: 'test'
-      ACTIONS_RUNNER_DEBUG: true
+      PORT: 3000
 
     steps:
     - uses: actions/checkout@v4

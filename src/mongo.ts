@@ -18,7 +18,6 @@ class Mongo {
       this.uri = config.mongo.uri
     }
 
-    console.log(this.uri)
     this.mongoClient = new MongoClient(this.uri, { retryWrites: true, w: 'majority' })
 
     await this.mongoClient.connect()

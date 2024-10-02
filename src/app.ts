@@ -4,11 +4,16 @@ import Server from './server.js'
 
 export default class App {
   server?: Server
+  port: number
+
+  constructor (port: number) {
+    this.port = port
+  }
 
   async start (): Promise<void> {
     await mongo.start()
 
-    this.server = new Server(3000)
+    this.server = new Server(this.port)
     this.server.listen()
     await adminsDao.init()
   }
