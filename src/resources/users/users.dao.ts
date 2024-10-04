@@ -30,7 +30,7 @@ class UsersDao extends Dao<DBUser> {
     return new UserEntity(newUser._id, newUser)
   }
 
-  async listUsers(): Promise<ReadonlyArray<UserEntity>> {
+  async listUsers (): Promise<readonly UserEntity[]> {
     const users = await this.collection.find().toArray()
 
     return users.map(user => new UserEntity(user._id, user))
