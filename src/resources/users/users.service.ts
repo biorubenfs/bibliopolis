@@ -1,17 +1,30 @@
 import { Request, Response } from 'express'
-import { z } from 'zod'
-import { createUserSchema } from './users.schemas.js'
-import ApiError from '../../error/error.js'
-import { ApiErrors } from '../../error/types.js'
-
-type CreateUser = z.infer<typeof createUserSchema>
+import usersDao from './users.dao.js'
+import { CollectionResultObject, SingleResultObject } from '../../results.js'
+import { CreateUser } from './users.interfaces.js'
+import bcrypt from 'bcrypt'
+import config from '../../config.js'
 
 class UserService {
-  async createUser (req: Request, res: Response): Promise<void> {
-    /* eslint-disable @typescript-eslint/no-unused-vars */
+  async createUser (req: Request, res: Response): Promise<SingleResultObject> {
     const body: CreateUser = req.body
 
-    throw new ApiError(ApiErrors.NotFoundError, 404, 'not found')
+    const userData: CreateUser = {
+      ...body,
+      password: bcrypt.hashSync(body.password, config.hashRounds)
+    }
+
+    const newUser = await usersDao.createUser(userData)
+
+    return new SingleResultObject(newUser)
+  }
+
+  async listUsers (req: Request, res: Response): Promise<CollectionResultObject> {
+    const users = await usersDao.listUsers()
+
+    const mockPaginationObject = { page: { limit: 0, offset: 0 }, total: 0 }
+
+    return new CollectionResultObject(users, mockPaginationObject)
   }
 }
 

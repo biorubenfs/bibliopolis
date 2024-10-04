@@ -1,8 +1,15 @@
+import { ulid } from 'ulid'
 import Dao from '../../dao.js'
+import { UserEntity } from './users.entity.js'
+import { CreateUser } from './users.interfaces.js'
 
-interface DBUser {
+export interface DBUser {
   _id: string
-  content: string
+  name: string
+  email: string
+  password: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 class UsersDao extends Dao<DBUser> {
@@ -10,8 +17,23 @@ class UsersDao extends Dao<DBUser> {
     super('users')
   }
 
-  async createUser (): Promise<void> {
-    await this.collection.insertOne({ _id: '1', content: 'content' })
+  async createUser (newUserData: CreateUser): Promise<UserEntity> {
+    const now = new Date()
+    const newUser: DBUser = {
+      ...newUserData,
+      _id: ulid(),
+      createdAt: now,
+      updatedAt: now
+    }
+    await this.collection.insertOne(newUser)
+
+    return new UserEntity(newUser._id, newUser)
+  }
+
+  async listUsers(): Promise<ReadonlyArray<UserEntity>> {
+    const users = await this.collection.find().toArray()
+
+    return users.map(user => new UserEntity(user._id, user))
   }
 }
 

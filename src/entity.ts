@@ -1,5 +1,12 @@
 export enum EntityType {
-  Admins = 'admins'
+  Admins = 'admins',
+  Users = 'users'
+}
+
+interface ResultEntityObject {
+  type: EntityType
+  id: string
+  attributes: Object
 }
 
 export abstract class Entity<T extends EntityType> {
@@ -10,5 +17,13 @@ export abstract class Entity<T extends EntityType> {
   constructor (type: T, id: string) {
     this.type = type
     this.id = id
+  }
+
+  toResult (): ResultEntityObject {
+    return {
+      type: this.type,
+      id: this.id,
+      attributes: this.attributes()
+    }
   }
 }

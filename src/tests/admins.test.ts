@@ -6,7 +6,7 @@ import assert from 'node:assert'
 import adminsDao from '../resources/admins/admins.dao.js'
 import config from '../config.js'
 
-describe('init tests', async () => {
+describe('users tests', async () => {
   const PORT = 3001
   const app = new App(PORT)
 
