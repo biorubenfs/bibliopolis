@@ -19,5 +19,8 @@ export default {
     email: parseString(process.env.DEFAULT_ADMIN_EMAIL),
     password: parseString(process.env.DEFAULT_ADMIN_PASSWORD)
   },
+  jwt: {
+    secret: parseString(process.env.JWT_SECRET, 'foo')
+  },
   hashRounds: parseNumber(process.env.HASH_ROUNDS)
 }

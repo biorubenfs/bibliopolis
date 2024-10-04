@@ -9,6 +9,11 @@ interface ResultEntityObject {
   attributes: Object
 }
 
+export interface ResultMiscObject {
+  type: string
+  attributes: object
+}
+
 export abstract class Entity<T extends EntityType> {
   readonly type: T
   readonly id: string

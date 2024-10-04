@@ -4,6 +4,9 @@ import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { CreateUser, Role } from './users.interfaces.js'
 import bcrypt from 'bcrypt'
 import config from '../../config.js'
+import { UserEntity } from './users.entity.js'
+import ApiError from '../../error/error.js'
+import { ApiErrors } from '../../error/types.js'
 
 class UserService {
   async createUser (req: Request, res: Response): Promise<SingleResultObject> {
@@ -17,6 +20,16 @@ class UserService {
     const newUser = await usersDao.createUser(userData, Role.Regular)
 
     return new SingleResultObject(newUser)
+  }
+
+  async getUserByEmail (email: string): Promise<UserEntity> {
+    const user = await usersDao.findUserByEmail(email)
+
+    if (user == null) {
+      throw new ApiError(ApiErrors.NotFoundError, 404, 'user not found')
+    }
+
+    return user
   }
 
   async listUsers (req: Request, res: Response): Promise<CollectionResultObject> {

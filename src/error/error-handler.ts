@@ -17,7 +17,8 @@ function errorHandler (error: Error, req: Request, res: Response, next: NextFunc
   res.status(500).json({
     statusCode: '500',
     errorCode: ApiErrors.InternalServerError,
-    message: 'Something went really wrong'
+    message: 'Something went really wrong',
+    error: error.message
   })
 }
 

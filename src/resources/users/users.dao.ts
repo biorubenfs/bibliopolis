@@ -26,6 +26,12 @@ class UsersDao extends Dao<DBUser> {
     await this.createUser(defaultAdmin, Role.Admin)
   }
 
+  async findUserByEmail (email: string): Promise<UserEntity | null> {
+    const dbUser = await this.collection.findOne({ email })
+
+    return dbUser != null ? new UserEntity(dbUser) : null
+  }
+
   async createUser (newUserData: CreateUser, role: Role): Promise<UserEntity> {
     const now = new Date()
     const dbUser: DBUser = {

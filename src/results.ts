@@ -1,4 +1,4 @@
-import { Entity, EntityType } from './entity.js'
+import { Entity, EntityType, ResultMiscObject } from './entity.js'
 import { PaginationObject } from './types.js'
 
 abstract class ResultObject {
@@ -10,19 +10,35 @@ abstract class ResultObject {
 }
 
 export class SingleResultObject extends ResultObject {
-  results: Entity<EntityType>
+  readonly entity: Entity<EntityType>
 
   constructor (entity: Entity<EntityType>) {
     super()
-    this.results = entity
+    this.entity = entity
   }
 }
 
 export class CollectionResultObject extends ResultObject {
-  results: ReadonlyArray<Entity<EntityType>>
+  readonly entities: ReadonlyArray<Entity<EntityType>>
 
   constructor (entities: ReadonlyArray<Entity<EntityType>>, paginationInfo: PaginationObject) {
     super(paginationInfo)
-    this.results = entities
+    this.entities = entities
+  }
+}
+
+export class MiscResultObject extends ResultObject {
+  readonly attributes: object
+
+  constructor (attributes: object) {
+    super()
+    this.attributes = attributes
+  }
+
+  toResult (): ResultMiscObject {
+    return {
+      type: 'auth-response',
+      attributes: this.attributes
+    }
   }
 }
