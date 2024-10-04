@@ -3,6 +3,8 @@
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import assert from 'node:assert'
+import usersDao from '../resources/users/users.dao.js'
+import config from '../config.js'
 
 describe('admins tests', async () => {
   const PORT = 3003
@@ -14,6 +16,13 @@ describe('admins tests', async () => {
 
   after(async () => {
     await app.stop()
+  })
+
+  it('default user admin should have been created', async () => {
+    const res = await usersDao.collection.findOne({ name: config.defaultAdmin.name })
+
+    assert.notEqual(res, null)
+    assert.equal(res?.name, config.defaultAdmin.name)
   })
 
   it('should create a user', async () => {
@@ -48,11 +57,11 @@ describe('admins tests', async () => {
     }
 
     const result = await fetch(url, {
-      body: JSON.stringify(body),
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json' // Añadir el header para indicar el tipo de contenido
-      }
+      },
+      method: 'POST',
+      body: JSON.stringify(body)
     })
 
     // add more asserts

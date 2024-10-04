@@ -1,5 +1,5 @@
 import mongo from './mongo.js'
-import adminsDao from './resources/admins/admins.dao.js'
+import usersDao from './resources/users/users.dao.js'
 import Server from './server.js'
 
 export default class App {
@@ -15,7 +15,7 @@ export default class App {
 
     this.server = new Server(this.port)
     this.server.listen()
-    await adminsDao.init()
+    await usersDao.init()
   }
 
   async stop (): Promise<void> {

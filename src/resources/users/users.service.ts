@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import usersDao from './users.dao.js'
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
-import { CreateUser } from './users.interfaces.js'
+import { CreateUser, Role } from './users.interfaces.js'
 import bcrypt from 'bcrypt'
 import config from '../../config.js'
 
@@ -14,7 +14,7 @@ class UserService {
       password: bcrypt.hashSync(body.password, config.hashRounds)
     }
 
-    const newUser = await usersDao.createUser(userData)
+    const newUser = await usersDao.createUser(userData, Role.Regular)
 
     return new SingleResultObject(newUser)
   }
