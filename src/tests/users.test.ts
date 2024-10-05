@@ -21,8 +21,8 @@ describe('admins tests', async () => {
   it('default user admin should have been created', async () => {
     const res = await usersDao.collection.findOne({ name: config.defaultAdmin.name })
 
-    assert.notEqual(res, null)
-    assert.equal(res?.name, config.defaultAdmin.name)
+    assert.ok(res)
+    assert.strictEqual(res.name, config.defaultAdmin.name)
   })
 
   it('should create a user', async () => {
