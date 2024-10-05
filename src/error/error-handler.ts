@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import ApiError from './error.js'
-import { ApiErrors } from './types.js'
+import ApiError from './api-error.js'
+import { ApiRestErrorCode } from './types.js'
 
 function errorHandler (error: Error, req: Request, res: Response, next: NextFunction): void {
   if (error instanceof ApiError) {
@@ -16,7 +16,7 @@ function errorHandler (error: Error, req: Request, res: Response, next: NextFunc
 
   res.status(500).json({
     statusCode: '500',
-    errorCode: ApiErrors.InternalServerError,
+    errorCode: ApiRestErrorCode.InternalServerError,
     message: 'Something went really wrong',
     error: error.message
   })

@@ -1,6 +1,8 @@
-export enum ApiErrors {
-  ValidationError = 'body validation error',
+export enum ApiRestErrorCode {
+  InternalServerError = 'internal server error',
+  InvalidTokenError = 'invalid token',
   InvalidUserOrPasswordError = 'invalid user or password',
   NotFoundError = 'not found',
-  InternalServerError = 'internal server error'
+  TokenNotProvidedError = 'token not provided',
+  ValidationError = 'body validation error',
 }

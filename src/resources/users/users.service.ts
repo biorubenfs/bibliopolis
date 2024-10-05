@@ -5,8 +5,7 @@ import { CreateUser, Role } from './users.interfaces.js'
 import bcrypt from 'bcrypt'
 import config from '../../config.js'
 import { UserEntity } from './users.entity.js'
-import ApiError from '../../error/error.js'
-import { ApiErrors } from '../../error/types.js'
+import { UserNotFoundError } from './users.error.js'
 
 class UserService {
   async createUser (req: Request, res: Response): Promise<SingleResultObject> {
@@ -26,7 +25,7 @@ class UserService {
     const user = await usersDao.findUserByEmail(email)
 
     if (user == null) {
-      throw new ApiError(ApiErrors.NotFoundError, 404, 'user not found')
+      throw new UserNotFoundError('user not found')
     }
 
     return user
