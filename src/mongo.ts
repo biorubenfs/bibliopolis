@@ -36,7 +36,7 @@ class Mongo {
   async stop (): Promise<void> {
     await this.mongoClient.close()
     if (this.memoryReplSet != null) {
-      await this.memoryReplSet.stop()
+      await this.memoryReplSet.stop({doCleanup: true})
     }
   }
 }

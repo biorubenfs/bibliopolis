@@ -1,4 +1,3 @@
-import { Request, Response } from 'express'
 import usersDao from './users.dao.js'
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { CreateUser, Role } from './users.interfaces.js'
@@ -8,9 +7,7 @@ import { UserEntity } from './users.entity.js'
 import { UserNotFoundError } from './users.error.js'
 
 class UserService {
-  async createUser (req: Request, res: Response): Promise<SingleResultObject> {
-    const body: CreateUser = req.body
-
+  async createUser (body: CreateUser): Promise<SingleResultObject> {
     const userData: CreateUser = {
       ...body,
       password: bcrypt.hashSync(body.password, config.hashRounds)
@@ -31,7 +28,7 @@ class UserService {
     return user
   }
 
-  async listUsers (req: Request, res: Response): Promise<CollectionResultObject> {
+  async listUsers (): Promise<CollectionResultObject> {
     const users = await usersDao.listUsers()
 
     const mockPaginationObject = { page: { limit: 0, offset: 0 }, total: 0 }

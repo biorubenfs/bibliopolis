@@ -6,6 +6,6 @@ import authService from './auth.service.js'
 
 const authRouter = Router()
 
-authRouter.post('/', bodyValidator(loginSchema), tryCatch(async (req, res) => await authService.login(req, res)))
+authRouter.post('/', bodyValidator(loginSchema), tryCatch(async (req, res) => await authService.login(req.body)))
 
 export default authRouter

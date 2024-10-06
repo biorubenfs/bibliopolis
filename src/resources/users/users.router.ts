@@ -6,7 +6,7 @@ import { createUserSchema } from './users.schemas.js'
 
 const usersRouter = Router()
 
-usersRouter.post('/', bodyValidator(createUserSchema), tryCatch(usersService.createUser))
+usersRouter.post('/', bodyValidator(createUserSchema), tryCatch(async (req) => await usersService.createUser(req.body)))
 usersRouter.get('/', tryCatch(usersService.listUsers))
 
 export default usersRouter

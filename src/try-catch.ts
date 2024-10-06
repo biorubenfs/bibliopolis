@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express'
-
 import { CollectionResultObject, SingleResultObject, MiscResultObject } from './results.js'
 
 type CustomController = (req: Request, res: Response, next: NextFunction) => Promise<SingleResultObject | CollectionResultObject | MiscResultObject>

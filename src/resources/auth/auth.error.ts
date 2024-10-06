@@ -3,6 +3,6 @@ import { ApiRestErrorCode } from '../../error/types.js'
 
 export class InvalidLoginError extends ApiError {
   constructor (message: string) {
-    super(ApiRestErrorCode.InvalidUserOrPasswordError, 403, message)
+    super(ApiRestErrorCode.InvalidCredentials, 403, message)
   }
 }
