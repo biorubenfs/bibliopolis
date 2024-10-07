@@ -30,7 +30,7 @@ class BooksService {
   async list (): Promise<CollectionResultObject> {
     const books = await booksDao.list()
 
-    const mockPaginationObject = { page: { limit: 0, offset: 0 }, total: 0 }
+    const mockPaginationObject = { page: { limit: 0, skip: 0 }, total: 0 }
 
     return new CollectionResultObject(books, mockPaginationObject)
   }

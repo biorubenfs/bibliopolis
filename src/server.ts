@@ -4,6 +4,7 @@ import usersRouter from './resources/users/users.router.js'
 import errorHandler from './error/error-handler.js'
 import authRouter from './resources/auth/auth.router.js'
 import booksRouter from './resources/books/books.router.js'
+import librariesRouter from './resources/libraries/libraries.router.js'
 
 export default class Server {
   private readonly express: express.Express
@@ -27,6 +28,7 @@ export default class Server {
     this.express.use('/users', usersRouter)
     this.express.use('/auth', authRouter)
     this.express.use('/books', booksRouter)
+    this.express.use('/libraries', librariesRouter)
 
     // error handling
     this.express.use(errorHandler)

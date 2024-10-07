@@ -3,13 +3,10 @@ import Dao from '../../dao.js'
 import { DBBook, NewBook } from './books.interfaces.js'
 import { BookEntity } from './books.entity.js'
 import { BookAlreadyExists } from './books.error.js'
+import { isNotNull } from '../../utils.js'
 
 function dbBookToEntity (dbBook: DBBook | null): BookEntity | null {
   return dbBook == null ? null : new BookEntity(dbBook)
-}
-
-function isNotNull<T> (value: T | null): value is T {
-  return value !== null
 }
 
 class BooksDao extends Dao<DBBook> {

@@ -1,7 +1,7 @@
 export interface PaginationObject {
   page: {
     limit: number
-    offset: number
+    skip: number
   }
   total: number
 }
