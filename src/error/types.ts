@@ -5,4 +5,5 @@ export enum ApiRestErrorCode {
   NotFoundError = 'not found',
   TokenNotProvidedError = 'token not provided',
   ValidationError = 'body validation error',
+  BookConflictError = 'book conflict error'
 }

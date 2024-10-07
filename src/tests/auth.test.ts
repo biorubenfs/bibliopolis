@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
-import { after, before, beforeEach, describe, it } from 'node:test'
+import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import assert from 'node:assert'
 import usersService from '../resources/users/users.service.js'
@@ -16,7 +16,7 @@ describe('init tests', async () => {
     await app.start()
 
     // load user to be used in login test
-    await usersService.createUser({ name: 'fakeJohn', email: 'fakeJohn@mail.com', password: '1234' })
+    await usersService.create({ name: 'fakeJohn', email: 'fakeJohn@mail.com', password: '1234' })
   })
 
   after(async () => {
@@ -73,7 +73,7 @@ describe('init tests', async () => {
 
   it('should throw an error', async () => {
     try {
-      await authService.login({email: "foo@email.com", password: '1234'})
+      await authService.login({ email: 'foo@email.com', password: '1234' })
       assert.fail('should launch an Invalid Login Error')
     } catch (error) {
       if (error instanceof InvalidLoginError) {

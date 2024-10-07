@@ -23,16 +23,16 @@ class UsersDao extends Dao<DBUser> {
     if (current != null) {
       return
     }
-    await this.createUser(defaultAdmin, Role.Admin)
+    await this.create(defaultAdmin, Role.Admin)
   }
 
-  async findUserByEmail (email: string): Promise<UserEntity | null> {
+  async findByEmail (email: string): Promise<UserEntity | null> {
     const dbUser = await this.collection.findOne({ email })
 
     return dbUser != null ? new UserEntity(dbUser) : null
   }
 
-  async createUser (newUserData: CreateUser, role: Role): Promise<UserEntity> {
+  async create (newUserData: CreateUser, role: Role): Promise<UserEntity> {
     const now = new Date()
     const dbUser: DBUser = {
       ...newUserData,
@@ -46,7 +46,7 @@ class UsersDao extends Dao<DBUser> {
     return new UserEntity(dbUser)
   }
 
-  async listUsers (): Promise<readonly UserEntity[]> {
+  async list (): Promise<readonly UserEntity[]> {
     const dbUsers = await this.collection.find().toArray()
 
     return dbUsers.map(dbUser => new UserEntity(dbUser))

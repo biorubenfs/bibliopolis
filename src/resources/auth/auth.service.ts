@@ -24,7 +24,7 @@ class AuthService {
   }
 
   async login (body: Login): Promise<MiscResultObject> {
-    const user = await usersDao.findUserByEmail(body.email)
+    const user = await usersDao.findByEmail(body.email)
     const isPasswordValid = bcrypt.compareSync(body.password, user?.password ?? '')
 
     if (user == null || !isPasswordValid) {

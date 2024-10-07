@@ -1,6 +1,7 @@
 export enum EntityType {
   Admins = 'admins',
-  Users = 'users'
+  Users = 'users',
+  Books = 'books'
 }
 
 interface ResultEntityObject {
