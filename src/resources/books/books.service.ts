@@ -10,7 +10,7 @@ class BooksService {
   }
 
   async getById (id: string): Promise<SingleResultObject> {
-    const book = await booksDao.findByIsbn(id)
+    const book = await booksDao.findById(id)
     if (book == null) {
       throw new BookNotFound(`book with id ${id} not found`)
     }

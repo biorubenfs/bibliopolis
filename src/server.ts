@@ -3,6 +3,7 @@ import * as http from 'http'
 import usersRouter from './resources/users/users.router.js'
 import errorHandler from './error/error-handler.js'
 import authRouter from './resources/auth/auth.router.js'
+import booksRouter from './resources/books/books.router.js'
 
 export default class Server {
   private readonly express: express.Express
@@ -25,6 +26,7 @@ export default class Server {
     // add routers here
     this.express.use('/users', usersRouter)
     this.express.use('/auth', authRouter)
+    this.express.use('/books', booksRouter)
 
     // error handling
     this.express.use(errorHandler)

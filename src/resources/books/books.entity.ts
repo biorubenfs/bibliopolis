@@ -5,7 +5,7 @@ export class BookEntity extends Entity<EntityType.Books> {
   readonly title: string
   readonly authors: readonly string[]
   readonly isbn_13: string
-  readonly cover: string
+  readonly cover: string | null
   readonly createdAt: Date
   readonly updatedAt: Date
 
