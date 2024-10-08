@@ -28,10 +28,12 @@ class BooksService {
     return new SingleResultObject(book)
   }
 
-  async list (): Promise<CollectionResultObject<BookEntity>> {
-    const books = await booksDao.list()
+  async list(skip: number, limit: number): Promise<CollectionResultObject<BookEntity>> {
+    console.log({skip, limit})
+    const books = await booksDao.list(skip, limit)
+    const total = await booksDao.count()
 
-    const mockPaginationObject = { page: { limit: 0, skip: 0 }, total: 0 }
+    const mockPaginationObject = { page: { limit: limit, skip: skip }, total: total }
 
     return new CollectionResultObject(books, mockPaginationObject)
   }

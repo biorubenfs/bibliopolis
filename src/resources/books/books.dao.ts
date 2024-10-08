@@ -45,10 +45,15 @@ class BooksDao extends Dao<DBBook> {
     return dbBookToEntity(dbBook)
   }
 
-  async list (): Promise<readonly BookEntity[]> {
-    const dbBooks = await this.collection.find().toArray()
+  async list (skip: number, limit: number): Promise<readonly BookEntity[]> {
+    const dbBooks = await this.collection.find().skip(skip).limit(limit).toArray()
 
     return dbBooks.map(dbBookToEntity).filter(isNotNull)
+  }
+
+  async count(): Promise<number> {
+    const total = await this.collection.countDocuments()
+    return total
   }
 }
 
