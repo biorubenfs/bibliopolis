@@ -7,20 +7,16 @@ class Mongo {
   memoryReplSet?: MongoMemoryReplSet
   uri!: string
 
-  async start(): Promise<void> {
-    console.log('$$$$$$$$$$$$$$$$$$$$', config.environment)
+  async start (): Promise<void> {
     if (config.environment === 'test') {
       this.memoryReplSet = await MongoMemoryReplSet.create({ replSet: { count: 3 } })
       this.uri = this.memoryReplSet.getUri()
-      console.log('######################', this.uri)
 
       // await while all SECONDARIES will be ready. Required only in testing.
       await new Promise((resolve) => setTimeout(resolve, 2500))
     } else {
       this.uri = config.mongo.uri
     }
-
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.uri)
 
     this.mongoClient = new MongoClient(this.uri, { retryWrites: true, w: 'majority' })
 

@@ -16,7 +16,6 @@ jobs:
 
     env:
       FOO: 'test'
-      PORT: 3000
 
     steps:
     - uses: actions/checkout@v4

@@ -1,4 +1,4 @@
-import { CollectionResultObject, SingleResultObject } from '../../results.js'
+import { CollectionResultObject } from '../../results.js'
 import librariesBooksDao from './libraries-books.dao.js'
 
 class LibrariesBooksService {
