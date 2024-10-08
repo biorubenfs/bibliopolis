@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ENVIRONMENT: 'test'
+      FOO: 'test'
       PORT: 3000
 
     steps:
