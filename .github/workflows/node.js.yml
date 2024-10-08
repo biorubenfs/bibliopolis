@@ -10,12 +10,12 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  ENVIRONMENT: 'test'
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      FOO: 'test'
 
     steps:
     - uses: actions/checkout@v4
@@ -67,10 +67,6 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-
-    env:
-      FOO: 'test'
-
     needs: build
     steps:
     - uses: actions/checkout@v4

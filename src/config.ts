@@ -9,7 +9,7 @@ function parseNumber (value?: string, dflt = 0): number {
 }
 
 export default {
-  environment: parseString(process.env.FOO),
+  environment: parseString(process.env.ENVIRONMENT),
   port: parseNumber(process.env.PORT, 3000),
   mongo: {
     uri: parseString(process.env.MONGO_URI)
