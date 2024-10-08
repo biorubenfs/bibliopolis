@@ -11,6 +11,7 @@ class Mongo {
     if (config.environment === 'test') {
       this.memoryReplSet = await MongoMemoryReplSet.create({ replSet: { count: 3 } })
       this.uri = this.memoryReplSet.getUri()
+      console.log(this.uri)
 
       // await while all SECONDARIES will be ready. Required only in testing.
       await new Promise((resolve) => setTimeout(resolve, 2500))
