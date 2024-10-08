@@ -7,7 +7,8 @@ class Mongo {
   memoryReplSet?: MongoMemoryReplSet
   uri!: string
 
-  async start (): Promise<void> {
+  async start(): Promise<void> {
+    console.log('$$$$$$$$$$$$$$$$$$$$', config.environment)
     if (config.environment === 'test') {
       this.memoryReplSet = await MongoMemoryReplSet.create({ replSet: { count: 3 } })
       this.uri = this.memoryReplSet.getUri()
