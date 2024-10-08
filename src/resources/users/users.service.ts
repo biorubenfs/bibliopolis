@@ -4,9 +4,10 @@ import { CreateUser, Role } from './users.interfaces.js'
 import bcrypt from 'bcrypt'
 import config from '../../config.js'
 import { UserNotFoundError } from './users.error.js'
+import { UserEntity } from './users.entity.js'
 
 class UsersService {
-  async create (body: CreateUser): Promise<SingleResultObject> {
+  async create (body: CreateUser): Promise<SingleResultObject<UserEntity>> {
     const userData: CreateUser = {
       ...body,
       password: bcrypt.hashSync(body.password, config.hashRounds)
@@ -17,7 +18,7 @@ class UsersService {
     return new SingleResultObject(newUser)
   }
 
-  async getByEmail (email: string): Promise<SingleResultObject> {
+  async getByEmail (email: string): Promise<SingleResultObject<UserEntity>> {
     const user = await usersDao.findByEmail(email)
 
     if (user == null) {
@@ -27,7 +28,7 @@ class UsersService {
     return new SingleResultObject(user)
   }
 
-  async list (): Promise<CollectionResultObject> {
+  async list (): Promise<CollectionResultObject<UserEntity>> {
     const users = await usersDao.list()
 
     const mockPaginationObject = { page: { limit: 0, skip: 0 }, total: 0 }

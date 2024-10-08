@@ -8,7 +8,7 @@ function dbLibraryBookToEntity (dbLibraryBook: DBLibraryBook | null): LibraryBoo
   return dbLibraryBook == null ? null : new LibraryBookEntity(dbLibraryBook)
 }
 
-class LibrariesBookDao extends Dao<DBLibraryBook> {
+class LibrariesBooksDao extends Dao<DBLibraryBook> {
   constructor () {
     super('libraries_books')
   }
@@ -18,7 +18,7 @@ class LibrariesBookDao extends Dao<DBLibraryBook> {
     const dbLibraryBook: DBLibraryBook = {
       ...newLibraryBook,
       _id: ulid(),
-      addedAt: now,
+      createdAt: now,
       updatedAt: now
     }
 
@@ -34,4 +34,4 @@ class LibrariesBookDao extends Dao<DBLibraryBook> {
   }
 }
 
-export default new LibrariesBookDao()
+export default new LibrariesBooksDao()

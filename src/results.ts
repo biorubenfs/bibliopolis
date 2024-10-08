@@ -9,19 +9,19 @@ abstract class ResultObject {
   }
 }
 
-export class SingleResultObject extends ResultObject {
-  readonly entity: Entity<EntityType>
+export class SingleResultObject<T extends Entity<EntityType>> extends ResultObject {
+  readonly entity: T
 
-  constructor (entity: Entity<EntityType>) {
+  constructor (entity: T) {
     super()
     this.entity = entity
   }
 }
 
-export class CollectionResultObject extends ResultObject {
-  readonly entities: ReadonlyArray<Entity<EntityType>>
+export class CollectionResultObject<T extends Entity<EntityType>> extends ResultObject {
+  readonly entities: readonly T[]
 
-  constructor (entities: ReadonlyArray<Entity<EntityType>>, paginationInfo: PaginationObject) {
+  constructor (entities: readonly T[], paginationInfo: PaginationObject) {
     super(paginationInfo)
     this.entities = entities
   }

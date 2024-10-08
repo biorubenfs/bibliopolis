@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import { CollectionResultObject, SingleResultObject, MiscResultObject } from './results.js'
+import { Entity, EntityType } from './entity.js'
 
-type CustomController = (req: Request) => Promise<SingleResultObject | CollectionResultObject | MiscResultObject>
+type CustomController = (req: Request) => Promise<SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject>
 
 function tryCatch (controller: CustomController) {
   return async function (req: Request, res: Response, next: NextFunction) {

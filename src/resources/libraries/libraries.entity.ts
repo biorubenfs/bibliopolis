@@ -5,7 +5,7 @@ export class LibraryEntity extends Entity<EntityType.Libraries> {
   readonly name: string
   readonly description: string
   readonly userId: string
-  readonly books: readonly string[] // think about if I want to add this field
+  readonly books: string[]
   readonly createdAt: Date
   readonly updatedAt: Date
 

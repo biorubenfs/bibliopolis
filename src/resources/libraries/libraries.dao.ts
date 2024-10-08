@@ -48,6 +48,23 @@ class LibrariesDao extends Dao<DBLibrary> {
     const dbLibraries = await this.collection.find(mongoFilter).toArray()
     return dbLibraries.map(dbLibrary => dbLibraryToEntity(dbLibrary)).filter(isNotNull)
   }
+
+  async addBookIdToLibrary (libraryId: string, bookId: string): Promise<LibraryEntity | null> {
+    const updatedLibrary: DBLibrary | null = await this.collection.findOneAndUpdate(
+      { _id: libraryId },
+      { $push: { books: bookId } },
+      { returnDocument: 'after' })
+    return dbLibraryToEntity(updatedLibrary)
+  }
+
+  async removeBookIdFromLibrary (libraryId: string, bookId: string): Promise<LibraryEntity | null> {
+    const updatedLibrary = await this.collection.findOneAndUpdate(
+      { _id: libraryId },
+      { $pull: { books: bookId } },
+      { returnDocument: 'after' }
+    )
+    return dbLibraryToEntity(updatedLibrary)
+  }
 }
 
 export default new LibrariesDao()

@@ -7,7 +7,7 @@ export class LibraryBookEntity extends Entity<EntityType.LibrariesBooks> {
   readonly bookTitle: string
   readonly bookAuthors: readonly string[]
   readonly userId: string
-  readonly addedAt: Date
+  readonly createdAt: Date
   readonly updatedAt: Date
 
   constructor (data: DBLibraryBook) {
@@ -17,7 +17,7 @@ export class LibraryBookEntity extends Entity<EntityType.LibrariesBooks> {
     this.bookTitle = data.bookTitle
     this.bookAuthors = data.bookAuthors
     this.userId = data.userId
-    this.addedAt = data.addedAt
+    this.createdAt = data.createdAt
     this.updatedAt = data.updatedAt
   }
 
@@ -28,7 +28,7 @@ export class LibraryBookEntity extends Entity<EntityType.LibrariesBooks> {
       bookTitle: this.bookTitle,
       bookAuthors: this.bookAuthors,
       userId: this.userId,
-      addedAt: this.addedAt,
+      createdAt: this.createdAt,
       updatedAt: this.updatedAt
     }
   }
