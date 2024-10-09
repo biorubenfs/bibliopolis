@@ -37,10 +37,9 @@ describe('books tests', async () => {
     assert.ok(json.results)
     assert.strictEqual(json.results.type, 'books')
     assert.strictEqual(json.results.id, '01J9KKFT64VX47TEDXMBBFRHTV')
-    assert.ok(json.result.attributes)
+    assert.ok(json.results.attributes)
 
-    // book attributes
-    const attributes = json.result.attributes
+    const attributes = json.results.attributes
     assert.strictEqual(attributes.title, 'Underground : Life and Survival in the Russian Black Market')
   })
 })
