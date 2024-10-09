@@ -2,7 +2,6 @@ import { ulid } from 'ulid'
 import Dao from '../../dao.js'
 import { DBBook, NewBook } from './books.interfaces.js'
 import { BookEntity } from './books.entity.js'
-import { BookAlreadyExists } from './books.error.js'
 import { isNotNull } from '../../utils.js'
 
 function dbBookToEntity (dbBook: DBBook | null): BookEntity | null {
@@ -17,10 +16,6 @@ class BooksDao extends Dao<DBBook> {
   async init (): Promise<void> { }
 
   async create (newBook: NewBook): Promise<BookEntity> {
-    const current = await this.collection.findOne({ isbn_13: newBook.isbn_13 })
-    if (current != null) {
-      throw new BookAlreadyExists(`book with this isbn ${newBook.isbn_13} already exists`)
-    }
     const now = new Date()
     const dbBook: DBBook = {
       ...newBook,
