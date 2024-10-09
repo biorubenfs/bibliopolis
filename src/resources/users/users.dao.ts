@@ -31,9 +31,9 @@ class UsersDao extends Dao<DBUser> {
     await this.create(defaultAdmin, Role.Admin)
   }
 
-  async findById(id: string): Promise<UserEntity | null> {
+  async findById (id: string): Promise<UserEntity | null> {
     const dbUser = await this.collection.findOne({ _id: id })
-    
+
     return dbUserToEntity(dbUser)
   }
 

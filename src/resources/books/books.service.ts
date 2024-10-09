@@ -5,7 +5,7 @@ import { BookEntity } from './books.entity.js'
 import { BookAlreadyExists, BookNotFound } from './books.error.js'
 
 class BooksService {
-  async create(body: NewBook): Promise<SingleResultObject<BookEntity>> {
+  async create (body: NewBook): Promise<SingleResultObject<BookEntity>> {
     const existingBook = await booksDao.findByIsbn(body.isbn_13)
     if (existingBook != null) {
       throw new BookAlreadyExists(`there is already a book with isbn ${body.isbn_13}`)

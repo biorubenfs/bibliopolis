@@ -1,0 +1,218 @@
+[
+    {
+    "_id": "01J9KKFQRP6H3F30CNT21G1DWT",
+    "title": "It Never Happened",
+    "authors": [],
+    "cover": 12861662,
+    "isbn": "9781732539419",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKFRGTNGPM5GZ9AVWRR7PN",
+    "title": "My Voice Betrays Me (EEM)",
+    "authors": [
+      "Bernard Ivan Tamas"
+    ],
+    "cover": 5373009,
+    "isbn": "9780880336062",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKFS6CKTSVY0ETH9A7PHXW",
+    "title": "Rossiya",
+    "authors": [
+      "Alex Shishin"
+    ],
+    "cover": 1304487,
+    "isbn": "9780595385294",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKFT64VX47TEDXMBBFRHTV",
+    "title": "Underground : Life and Survival in the Russian Black Market",
+    "authors": [
+      "Larrey Anderson"
+    ],
+    "cover": 10870756,
+    "isbn": "9780595491896",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKFTWAKVR1HGHCER50JJMQ",
+    "title": "Lightning and Ashes",
+    "authors": [
+      "John Guzlowski"
+    ],
+    "cover": 1715106,
+    "isbn": "9780974326450",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKFVKNSRGS40VRJ5B683FF",
+    "title": "People's History of the 20th Century",
+    "authors": [
+      "Travis Elborough"
+    ],
+    "cover": 13261329,
+    "isbn": "9781782437352",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKFWF45DMVVGRS502SG83D",
+    "title": "A people's history of World War II",
+    "authors": [
+      "Marc Favreau"
+    ],
+    "cover": 11492093,
+    "isbn": "9781595581662",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKFXMBJM45AJ2X12JGHRVK",
+    "title": "Voices from Iraq",
+    "authors": [
+      "Mark Kukis"
+    ],
+    "cover": 12186045,
+    "isbn": "9780231156929",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKFYYY0VC2XH0EWC37ER2V",
+    "title": "Hard Times",
+    "authors": [
+      "Studs Terkel"
+    ],
+    "cover": 14397926,
+    "isbn": "9781595587039",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKG07E2T2X78HYXDRPZMG7",
+    "title": "We were Berliners",
+    "authors": [
+      "Helmut Jacobitz"
+    ],
+    "cover": 9767884,
+    "isbn": "9780752464619",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKG3X20MDEXAMYSSQZJ21Y",
+    "title": "Eyewitness to History",
+    "authors": [
+      "John Carey"
+    ],
+    "cover": 12545193,
+    "isbn": "9780380708956",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  },{
+    "_id": "01J9KKG5ZN2MMPHV4M3E5JR98V",
+    "title": "Secondhand Time",
+    "authors": [
+      "Светлана Алексиевич",
+      "Bela Shayevich"
+    ],
+    "cover": 14341214,
+    "isbn": "9780399588822",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728309507317"
+      }
+    }
+  }
+]
