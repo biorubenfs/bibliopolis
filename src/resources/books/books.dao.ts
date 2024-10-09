@@ -51,7 +51,7 @@ class BooksDao extends Dao<DBBook> {
     return dbBooks.map(dbBookToEntity).filter(isNotNull)
   }
 
-  async count(): Promise<number> {
+  async count (): Promise<number> {
     const total = await this.collection.countDocuments()
     return total
   }

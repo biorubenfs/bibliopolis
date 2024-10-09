@@ -2,11 +2,6 @@ import { Request, Response, NextFunction } from 'express'
 import { CollectionResultObject, SingleResultObject, MiscResultObject } from './results.js'
 import { Entity, EntityType } from './entity.js'
 
-interface RequestQuery {
-  skip?: string
-  limit?: string
-}     
-
 type CustomController = (req: Request) => Promise<SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject>
 
 function tryCatch (controller: CustomController) {
