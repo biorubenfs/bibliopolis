@@ -2,7 +2,7 @@
 
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
-import assert from 'node:assert'
+import { expect } from 'chai'
 import usersDao from '../resources/users/users.dao.js'
 import config from '../config.js'
 
@@ -22,8 +22,8 @@ describe('admins tests', async () => {
   it('default user admin should have been created', async () => {
     const response = await usersDao.collection.findOne({ name: config.defaultAdmin.name })
 
-    assert.ok(response)
-    assert.strictEqual(response.name, config.defaultAdmin.name)
+    expect(response).to.be.not.equals(null)
+    expect(response).to.have.property('name').equals(config.defaultAdmin.name)
   })
 
   it('should create a user', async () => {
@@ -42,7 +42,7 @@ describe('admins tests', async () => {
     })
 
     // add more asserts
-    assert.equal(response.status, 200)
+    expect(response.status).equals(200)
   })
 
   it('should fail to create a user', async () => {
@@ -60,6 +60,6 @@ describe('admins tests', async () => {
     })
 
     // add more asserts
-    assert.equal(response.status, 400)
+    expect(response.status).equals(400)
   })
 })

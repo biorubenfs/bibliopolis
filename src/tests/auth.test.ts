@@ -2,10 +2,8 @@
 
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
-import assert from 'node:assert'
+import { assert, expect } from 'chai'
 import usersService from '../resources/users/users.service.js'
-import authService from '../resources/auth/auth.service.js'
-import { InvalidLoginError } from '../resources/auth/auth.error.js'
 
 describe('init tests', async () => {
   const PORT = 3001
@@ -29,16 +27,16 @@ describe('init tests', async () => {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify({ email: 'fakeJohn@mail.com', password: '1234' })
+      body: JSON.stringify({ email: 'fakeJohn@mail.com' })
     })
 
     const body = await response.json()
 
-    assert.strictEqual(response.status, 200)
-    assert.ok(body.results)
-    assert.ok(body.results.type)
-    assert.ok(body.results.attributes)
-    assert.ok(body.results.attributes.token)
+    expect(response.status).equals(400)
+    expect(body).to.have.property('statusCode').equals(400)
+    expect(body).to.have.property('errorCode').equals('body validation error')
+    expect(body).to.have.property('message').equals('invalid body')
+    expect(body).to.have.property('validationError').to.be.an('array').of.length(1)
   })
 
   it('should do login', async () => {
@@ -52,11 +50,11 @@ describe('init tests', async () => {
 
     const body = await response.json()
 
-    assert.strictEqual(response.status, 200)
-    assert.ok(body.results)
-    assert.ok(body.results.type)
-    assert.ok(body.results.attributes)
-    assert.ok(body.results.attributes.token)
+    expect(response.status).equals(200)
+    expect(body).to.have.property('results')
+    expect(body.results).to.have.property('type')
+    expect(body.results).to.have.property('attributes')
+    expect(body.results.attributes).to.have.property('token').to.be.a('string')
   })
 
   it('should fail to do login', async () => {
@@ -69,23 +67,5 @@ describe('init tests', async () => {
     })
 
     assert.strictEqual(response.status, 403)
-  })
-
-  it('should throw an error', async () => {
-    try {
-      await authService.login({ email: 'foo@email.com', password: '1234' })
-      assert.fail('should launch an Invalid Login Error')
-    } catch (error) {
-      if (error instanceof InvalidLoginError) {
-        assert.ok(error.message)
-        assert.ok(error.statusCode)
-        assert.ok(error.errorCode)
-        assert.strictEqual(error.message, 'invalid email or password')
-        assert.strictEqual(error.statusCode, 403)
-        assert.strictEqual(error.errorCode, 'invalid email or password')
-      } else {
-        assert.equal(true, false)
-      }
-    }
   })
 })

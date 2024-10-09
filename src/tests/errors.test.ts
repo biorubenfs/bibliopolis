@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-
+import { expect } from 'chai'
 import assert from 'node:assert'
 import { describe, it } from 'node:test'
 import { InvalidBodyError } from '../error/errors.js'
@@ -14,16 +14,10 @@ describe('testing errors content', () => {
     const error = new InvalidBodyError('invalid body', validationResult.error.issues)
     const validationErrorFields = { code: 'invalid_type', expected: 'string', received: 'undefined', path: ['foo'], message: 'Required' }
 
-    assert.ok(error.statusCode)
-    assert.ok(error.errorCode)
-    assert.ok(error.message)
-    assert.ok(error.validationError)
-
-    assert.strictEqual(error.statusCode, 400)
-    assert.strictEqual(error.errorCode, 'body validation error')
-    assert.strictEqual(error.message, 'invalid body')
-    assert.strictEqual(Array.isArray(error.validationError), true)
-
-    assert.deepStrictEqual(error.validationError.at(0), validationErrorFields, '>>>>>>>>')
+    expect(error).to.have.property('statusCode').equals(400)
+    expect(error).to.have.property('errorCode').equals('body validation error')
+    expect(error).to.have.property('message').equals('invalid body')
+    expect(error).to.have.property('validationError').to.be.an('array')
+    expect(error.validationError?.at(0)).deep.equals(validationErrorFields)
   })
 })

@@ -2,7 +2,7 @@
 
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
-import assert from 'node:assert'
+import { assert, expect } from 'chai'
 import mongo from '../mongo.js'
 
 describe('init tests', async () => {
@@ -32,7 +32,8 @@ describe('init tests', async () => {
     const status = await admin.replSetGetStatus()
     const primary = status.members.filter((m: any) => m.stateStr === 'PRIMARY') as any[]
     const secondary = status.members.filter((m: any) => m.stateStr === 'SECONDARY') as any[]
-    assert.strictEqual(primary.length, 1)
-    assert.strictEqual(secondary.length, 2)
+
+    expect(primary).to.be.an('array').of.length(1)
+    expect(secondary).to.be.an('array').of.length(2)
   })
 })
