@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-
 import { after, before, describe, it } from 'node:test'
+import { expect } from 'chai'
 
 import App from '../app.js'
-import assert from 'node:assert'
 import fs from 'fs'
 import path from 'path/posix'
 import booksDao from '../resources/books/books.dao.js'
 
-describe('books tests', async () => {
+describe('books tests', { only: true }, async () => {
   const PORT = 3004
   const app = new App(PORT)
   const baseUrl = new URL(`http://localhost:${PORT}`)
@@ -18,7 +17,6 @@ describe('books tests', async () => {
 
     const dirPath = new URL(path.join('../../data/test-mock-data'), import.meta.url)
     const filePath = path.join(dirPath.pathname, 'books.json')
-    console.log('>>>>>', filePath)
     const file = fs.readFileSync(filePath, 'utf8')
 
     await booksDao.collection.insertMany(JSON.parse(file))
@@ -28,18 +26,35 @@ describe('books tests', async () => {
     await app.stop()
   })
 
-  it('should get a book', async () => {
+  it('should get a book', { only: true }, async () => {
     const url = new URL('/books/01J9KKFT64VX47TEDXMBBFRHTV', baseUrl)
     const response = await fetch(url, { method: 'GET' })
-    const json = await response.json()
+    const body = await response.json()
 
-    assert.strictEqual(response.status, 200)
-    assert.ok(json.results)
-    assert.strictEqual(json.results.type, 'books')
-    assert.strictEqual(json.results.id, '01J9KKFT64VX47TEDXMBBFRHTV')
-    assert.ok(json.results.attributes)
+    expect(response.status).equals(200)
+    expect(body).to.have.property('results')
+    expect(body.results).to.have.property('type').equals('books')
+    expect(body.results).to.have.property('id').equals('01J9KKFT64VX47TEDXMBBFRHTV')
+    expect(body.results).to.have.property('attributes')
 
-    const attributes = json.results.attributes
-    assert.strictEqual(attributes.title, 'Underground : Life and Survival in the Russian Black Market')
+    const attributes = body.results.attributes
+    expect(attributes.title).to.be.a('string').equals('Underground : Life and Survival in the Russian Black Market')
+  })
+
+  it('should get a list of books paginated', { only: true }, async () => {
+    const url = new URL('/books', baseUrl)
+    const skip = 1
+    const limit = 8
+
+    url.searchParams.set('skip', skip.toString())
+    url.searchParams.set('limit', limit.toString())
+
+    const response = await fetch(url, { method: 'GET' })
+    const body = await response.json()
+
+    expect(response.status).equals(200)
+    expect(body.results).to.be.an('array').of.length(limit)
+    const firstBook = body.results.at(0).attributes
+    expect(firstBook).to.have.property('title').equals('My Voice Betrays Me (EEM)')
   })
 })

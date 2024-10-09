@@ -1,5 +1,5 @@
 [
-    {
+  {
     "_id": "01J9KKFQRP6H3F30CNT21G1DWT",
     "title": "It Never Happened",
     "authors": [],
@@ -15,7 +15,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKFRGTNGPM5GZ9AVWRR7PN",
     "title": "My Voice Betrays Me (EEM)",
     "authors": [
@@ -33,7 +34,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKFS6CKTSVY0ETH9A7PHXW",
     "title": "Rossiya",
     "authors": [
@@ -51,7 +53,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKFT64VX47TEDXMBBFRHTV",
     "title": "Underground : Life and Survival in the Russian Black Market",
     "authors": [
@@ -69,7 +72,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKFTWAKVR1HGHCER50JJMQ",
     "title": "Lightning and Ashes",
     "authors": [
@@ -87,7 +91,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKFVKNSRGS40VRJ5B683FF",
     "title": "People's History of the 20th Century",
     "authors": [
@@ -105,7 +110,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKFWF45DMVVGRS502SG83D",
     "title": "A people's history of World War II",
     "authors": [
@@ -123,7 +129,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKFXMBJM45AJ2X12JGHRVK",
     "title": "Voices from Iraq",
     "authors": [
@@ -141,7 +148,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKFYYY0VC2XH0EWC37ER2V",
     "title": "Hard Times",
     "authors": [
@@ -159,7 +167,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKG07E2T2X78HYXDRPZMG7",
     "title": "We were Berliners",
     "authors": [
@@ -177,7 +186,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKG3X20MDEXAMYSSQZJ21Y",
     "title": "Eyewitness to History",
     "authors": [
@@ -195,7 +205,8 @@
         "$numberLong": "1728309507317"
       }
     }
-  },{
+  },
+  {
     "_id": "01J9KKG5ZN2MMPHV4M3E5JR98V",
     "title": "Secondhand Time",
     "authors": [
