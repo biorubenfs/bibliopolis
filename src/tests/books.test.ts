@@ -18,6 +18,7 @@ describe('books tests', async () => {
 
     const dirPath = new URL(path.join('../../data/test-mock-data'), import.meta.url)
     const filePath = path.join(dirPath.pathname, 'books.json')
+    console.log('>>>>>', filePath)
     const file = fs.readFileSync(filePath, 'utf8')
 
     await booksDao.collection.insertMany(JSON.parse(file))

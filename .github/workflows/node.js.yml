@@ -81,6 +81,12 @@ jobs:
         node-version: '20.x'
         cache: 'pnpm'
 
+    - name: Print pwd
+      run: pwd
+
+    - name: List contents of dist directory
+      run: ls -R .
+
     # Download dist folder in the appropiate plae to run tests below
     - name: Download build artifacts
       uses: actions/download-artifact@v4
