@@ -4,6 +4,11 @@ import { UserEntity } from './users.entity.js'
 import { CreateUser, DBUser, Role } from './users.interfaces.js'
 import config from '../../config.js'
 import bcrypt from 'bcrypt'
+import { isNotNull } from '../../utils.js'
+
+function dbUserToEntity (dbUser: DBUser | null): UserEntity | null {
+  return dbUser == null ? null : new UserEntity(dbUser)
+}
 
 class UsersDao extends Dao<DBUser> {
   constructor () {
@@ -26,10 +31,16 @@ class UsersDao extends Dao<DBUser> {
     await this.create(defaultAdmin, Role.Admin)
   }
 
+  async findById(id: string): Promise<UserEntity | null> {
+    const dbUser = await this.collection.findOne({ _id: id })
+    
+    return dbUserToEntity(dbUser)
+  }
+
   async findByEmail (email: string): Promise<UserEntity | null> {
     const dbUser = await this.collection.findOne({ email })
 
-    return dbUser != null ? new UserEntity(dbUser) : null
+    return dbUserToEntity(dbUser)
   }
 
   async create (newUserData: CreateUser, role: Role): Promise<UserEntity> {
@@ -49,7 +60,7 @@ class UsersDao extends Dao<DBUser> {
   async list (): Promise<readonly UserEntity[]> {
     const dbUsers = await this.collection.find().toArray()
 
-    return dbUsers.map(dbUser => new UserEntity(dbUser))
+    return dbUsers.map(dbUserToEntity).filter(isNotNull)
   }
 }
 

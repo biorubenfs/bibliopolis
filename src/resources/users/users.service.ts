@@ -18,6 +18,15 @@ class UsersService {
     return new SingleResultObject(newUser)
   }
 
+  async getById(id: string): Promise<SingleResultObject<UserEntity>> {
+    const user = await usersDao.findById(id)
+    if (user == null) {
+      throw new UserNotFoundError('user not found')
+    }
+
+    return new SingleResultObject(user)
+  }
+
   async getByEmail (email: string): Promise<SingleResultObject<UserEntity>> {
     const user = await usersDao.findByEmail(email)
 
