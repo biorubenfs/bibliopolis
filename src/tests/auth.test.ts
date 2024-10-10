@@ -3,7 +3,7 @@
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { assert, expect } from 'chai'
-import usersService from '../resources/users/users.service.js'
+import mockDbData from './data.js'
 
 describe('init tests', async () => {
   const PORT = 3001
@@ -14,7 +14,7 @@ describe('init tests', async () => {
     await app.start()
 
     // load user to be used in login test
-    await usersService.create({ name: 'fakeJohn', email: 'fakeJohn@mail.com', password: '1234' })
+    await mockDbData.loadUsersInDB()
   })
 
   after(async () => {
@@ -27,7 +27,7 @@ describe('init tests', async () => {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify({ email: 'fakeJohn@mail.com' })
+      body: JSON.stringify({ email: 'user01@mail.com' })
     })
 
     const body = await response.json()
@@ -45,7 +45,7 @@ describe('init tests', async () => {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify({ email: 'fakeJohn@mail.com', password: '1234' })
+      body: JSON.stringify({ email: 'user01@email.com', password: 'Palabra123$' })
     })
 
     const body = await response.json()
@@ -63,7 +63,7 @@ describe('init tests', async () => {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify({ email: 'fakeJohn@mail.com', password: '123' })
+      body: JSON.stringify({ email: 'user01@email.com', password: 'Palabra' })
     })
 
     assert.strictEqual(response.status, 403)

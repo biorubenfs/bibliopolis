@@ -2,9 +2,7 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'chai'
 import App from '../app.js'
-import fs from 'fs'
-import path from 'path/posix'
-import booksDao from '../resources/books/books.dao.js'
+import mockDbData, { } from './data.js'
 
 describe('books tests', async () => {
   const PORT = 3004
@@ -14,11 +12,7 @@ describe('books tests', async () => {
   before(async () => {
     await app.start()
 
-    const dirPath = new URL(path.join('../../data/test-mock-data'), import.meta.url)
-    const filePath = path.join(dirPath.pathname, 'books.json')
-    const file = fs.readFileSync(filePath, 'utf8')
-
-    await booksDao.collection.insertMany(JSON.parse(file))
+    await mockDbData.loadBooksInDB()
   })
 
   after(async () => {
