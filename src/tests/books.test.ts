@@ -28,7 +28,7 @@ describe('books tests', async () => {
 
   it('should get a book', async () => {
     const url = new URL('/books/01J9KKFT64VX47TEDXMBBFRHTV', baseUrl)
-    const response = await fetch(url, { method: 'GET' , headers: {Authorization: `Bearer ${token}`}})
+    const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${token}` } })
     const body = await response.json()
 
     expect(response.status).equals(200)
@@ -50,7 +50,7 @@ describe('books tests', async () => {
     url.searchParams.set('skip', skip.toString())
     url.searchParams.set('limit', limit.toString())
 
-    const response = await fetch(url, { method: 'GET' , headers: {Authorization: `Bearer ${token}`}})
+    const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${token}` } })
     const body = await response.json()
 
     expect(response.status).equals(200)
