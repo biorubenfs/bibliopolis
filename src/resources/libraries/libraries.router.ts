@@ -11,11 +11,11 @@ import librariesBooksService from '../libraries-books/libraries-books.service.js
 const librariesRouter = Router()
 
 librariesRouter.post('/', bodyValidator(newLibrarySchema), checkJwt, tryCatch(async (req) => await librariesService.create(req.body, req.userId ?? '')))
-librariesRouter.get('/:id', checkJwt, tryCatch(async (req) => await librariesService.get(req.params.id, req.userId ?? '', req.role ?? Role.Regular)))
-librariesRouter.get('/', checkJwt, tryCatch(async (req) => await librariesService.list(req.userId ?? '', req.role ?? Role.Regular)))
+librariesRouter.get('/:id', tryCatch(async (req) => await librariesService.get(req.params.id, req.userId ?? '', req.role ?? Role.Regular)))
+librariesRouter.get('/', tryCatch(async (req) => await librariesService.list(req.userId ?? '', req.role ?? Role.Regular)))
 
 // Libraries-books
-librariesRouter.get('/:id/books', checkJwt, tryCatch(async (req) => await librariesBooksService.list(req.params.id)))
-librariesRouter.post('/:id/books', checkJwt, tryCatch(async (req) => await librariesBooksService.create(req.params.id, req.body.id, req.userId ?? '')))
+librariesRouter.get('/:id/books', tryCatch(async (req) => await librariesBooksService.list(req.params.id)))
+librariesRouter.post('/:id/books', tryCatch(async (req) => await librariesBooksService.create(req.params.id, req.body.id, req.userId ?? '')))
 
 export default librariesRouter

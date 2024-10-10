@@ -1,10 +1,10 @@
 import path from 'path/posix'
 import { readFileSync } from 'fs'
-import booksDao from '../resources/books/books.dao.js'
-import usersDao from '../resources/users/users.dao.js'
+import booksDao from '../../resources/books/books.dao.js'
+import usersDao from '../../resources/users/users.dao.js'
 import { Collection, Document } from 'mongodb'
 
-const MOCK_DATA_DIR_PATH = new URL(path.join('../../data/test-mock-data'), import.meta.url)
+const MOCK_DATA_DIR_PATH = new URL(path.join('../../../data/test-mock-data'), import.meta.url)
 
 async function loadDataInDb<T extends Document> (fileName: string, collection: Collection<T>, dirPath: URL = MOCK_DATA_DIR_PATH): Promise<void> {
   const filePath = path.join(dirPath.pathname, fileName)

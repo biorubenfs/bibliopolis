@@ -5,6 +5,7 @@ import errorHandler from './error/error-handler.js'
 import authRouter from './resources/auth/auth.router.js'
 import booksRouter from './resources/books/books.router.js'
 import librariesRouter from './resources/libraries/libraries.router.js'
+import { checkJwt } from './middlewares/jwt.middleware.js'
 
 export default class Server {
   private readonly express: express.Express
@@ -25,10 +26,10 @@ export default class Server {
     })
 
     // add routers here
-    this.express.use('/users', usersRouter)
     this.express.use('/auth', authRouter)
-    this.express.use('/books', booksRouter)
-    this.express.use('/libraries', librariesRouter)
+    this.express.use('/users', usersRouter)
+    this.express.use('/books', checkJwt, booksRouter)
+    this.express.use('/libraries', checkJwt, librariesRouter)
 
     // error handling
     this.express.use(errorHandler)

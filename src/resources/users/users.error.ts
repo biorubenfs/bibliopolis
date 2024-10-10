@@ -6,3 +6,9 @@ export class UserNotFoundError extends ApiError {
     super(ApiRestErrorCode.NotFoundError, 404, message)
   }
 }
+
+export class UserEmailAlreadyExists extends ApiError {
+  constructor (message: string) {
+    super(ApiRestErrorCode.ConflictError, 409, message)
+  }
+}

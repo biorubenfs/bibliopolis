@@ -2,17 +2,24 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'chai'
 import App from '../app.js'
-import mockDbData, { } from './data.js'
+import mockDbData from './utils/data.js'
+import testUtils from './utils/utils.js'
 
 describe('books tests', async () => {
   const PORT = 3004
   const app = new App(PORT)
   const baseUrl = new URL(`http://localhost:${PORT}`)
+  const loginUrl = new URL('/auth', baseUrl)
+  let token: string
 
   before(async () => {
     await app.start()
 
+    /* load data into database */
     await mockDbData.loadBooksInDB()
+    await mockDbData.loadUsersInDB()
+
+    token = await testUtils.getUserToken(loginUrl, 'user01@email.com', 'Palabra123$')
   })
 
   after(async () => {
@@ -21,7 +28,7 @@ describe('books tests', async () => {
 
   it('should get a book', async () => {
     const url = new URL('/books/01J9KKFT64VX47TEDXMBBFRHTV', baseUrl)
-    const response = await fetch(url, { method: 'GET' })
+    const response = await fetch(url, { method: 'GET' , headers: {Authorization: `Bearer ${token}`}})
     const body = await response.json()
 
     expect(response.status).equals(200)
@@ -39,10 +46,11 @@ describe('books tests', async () => {
     const skip = 1
     const limit = 8
 
+    /* setting pagination query params */
     url.searchParams.set('skip', skip.toString())
     url.searchParams.set('limit', limit.toString())
 
-    const response = await fetch(url, { method: 'GET' })
+    const response = await fetch(url, { method: 'GET' , headers: {Authorization: `Bearer ${token}`}})
     const body = await response.json()
 
     expect(response.status).equals(200)

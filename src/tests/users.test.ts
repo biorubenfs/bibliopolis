@@ -5,14 +5,17 @@ import App from '../app.js'
 import { expect } from 'chai'
 import usersDao from '../resources/users/users.dao.js'
 import config from '../config.js'
+import mockDbData from './utils/data.js'
 
-describe('admins tests', async () => {
+describe('users tests', async () => {
   const PORT = 3003
   const app = new App(PORT)
   const usersURL = new URL('/users', `http://localhost:${PORT}`)
 
   before(async () => {
     await app.start()
+
+    await mockDbData.loadUsersInDB()
   })
 
   after(async () => {
@@ -45,7 +48,7 @@ describe('admins tests', async () => {
     expect(response.status).equals(200)
   })
 
-  it('should fail to create a user', async () => {
+  it('should return a validation body error', async () => {
     const body = {
       name: 'foo',
       email: 'foo@email.com'
@@ -53,13 +56,30 @@ describe('admins tests', async () => {
 
     const response = await fetch(usersURL, {
       headers: {
-        'Content-Type': 'application/json' // Añadir el header para indicar el tipo de contenido
+        'Content-Type': 'application/json'
       },
       method: 'POST',
       body: JSON.stringify(body)
     })
 
-    // add more asserts
     expect(response.status).equals(400)
+  })
+
+  it('should denied to create a new user', async () => {
+    const body = {
+      name: 'user01',
+      email: 'user01@email.com',
+      password: 'Palabra123$'
+    }
+
+    const response = await fetch(usersURL, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(body)
+    })
+
+    expect(response.status).equals(409)
   })
 })

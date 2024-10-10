@@ -3,11 +3,15 @@ import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { CreateUser, Role } from './users.interfaces.js'
 import bcrypt from 'bcrypt'
 import config from '../../config.js'
-import { UserNotFoundError } from './users.error.js'
+import { UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
 import { UserEntity } from './users.entity.js'
 
 class UsersService {
   async create (body: CreateUser): Promise<SingleResultObject<UserEntity>> {
+    const existingUser = await usersDao.findByEmail(body.email)
+    if (existingUser != null) {
+      throw new UserEmailAlreadyExists(`there is already a user registered with email ${body.email}`)
+    }
     const userData: CreateUser = {
       ...body,
       password: bcrypt.hashSync(body.password, config.hashRounds)
@@ -37,12 +41,13 @@ class UsersService {
     return new SingleResultObject(user)
   }
 
-  async list (): Promise<CollectionResultObject<UserEntity>> {
-    const users = await usersDao.list()
+  async list (skip: number, limit: number): Promise<CollectionResultObject<UserEntity>> {
+    const [users, total] = await Promise.all([
+      await usersDao.list(skip, limit),
+      await usersDao.count()
+    ])
 
-    const mockPaginationObject = { page: { limit: 0, skip: 0 }, total: 0 }
-
-    return new CollectionResultObject(users, mockPaginationObject)
+    return new CollectionResultObject(users, { page: { limit, skip }, total })
   }
 }
 

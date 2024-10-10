@@ -57,10 +57,15 @@ class UsersDao extends Dao<DBUser> {
     return new UserEntity(dbUser)
   }
 
-  async list (): Promise<readonly UserEntity[]> {
-    const dbUsers = await this.collection.find().toArray()
+  async list (skip: number, limit: number): Promise<readonly UserEntity[]> {
+    const dbUsers = await this.collection.find().skip(skip).limit(limit).toArray()
 
     return dbUsers.map(dbUserToEntity).filter(isNotNull)
+  }
+
+  async count (): Promise<number> {
+    const total = await this.collection.countDocuments()
+    return total
   }
 }
 

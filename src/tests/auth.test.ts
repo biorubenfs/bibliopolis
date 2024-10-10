@@ -3,7 +3,7 @@
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { assert, expect } from 'chai'
-import mockDbData from './data.js'
+import mockDbData from './utils/data.js'
 
 describe('init tests', async () => {
   const PORT = 3001
