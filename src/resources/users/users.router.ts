@@ -9,7 +9,7 @@ import { parseSkipLimitQP } from '../../utils.js'
 
 const usersRouter = Router()
 
-usersRouter.post('/', bodyValidator(createUserSchema), tryCatch(async (req) => await usersService.create(req.body)))
+usersRouter.post('/', bodyValidator(createUserSchema), tryCatch(async (req) => await usersService.signup(req.body)))
 usersRouter.get('/me', checkJwt, tryCatch(async (req) => await usersService.getById(req.userId ?? '')))
 usersRouter.get('/', checkJwt, checkAdmin, queryPaginationValidator, tryCatch(async (req) => await usersService.list(...parseSkipLimitQP(req))))
 

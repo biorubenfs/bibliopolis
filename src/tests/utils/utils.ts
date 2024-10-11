@@ -11,6 +11,10 @@ async function getUserToken (loginUrl: URL, email: string, password: string): Pr
   return token
 }
 
-const testUtils = { getUserToken }
+function buildBearer (token: string): string {
+  return `Bearer ${token}`
+}
+
+const testUtils = { getUserToken, buildBearer }
 
 export default testUtils

@@ -13,7 +13,7 @@ class Mongo {
       this.uri = this.memoryReplSet.getUri()
 
       // await while all SECONDARIES will be ready. Required only in testing.
-      await new Promise((resolve) => setTimeout(resolve, 2500))
+      await new Promise((resolve) => setTimeout(resolve, 4000))
     } else {
       this.uri = config.mongo.uri
     }

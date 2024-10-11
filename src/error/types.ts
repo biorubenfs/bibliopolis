@@ -1,10 +1,10 @@
 export enum ApiRestErrorCode {
-  InternalServerError = 'internal server error',
-  InvalidTokenError = 'invalid token',
-  InvalidCredentials = 'invalid email or password',
-  NotFoundError = 'not found',
-  TokenNotProvidedError = 'token not provided',
-  ValidationError = 'body validation error',
-  ConflictError = 'conflict error',
-  PermissionError = 'permission error'
+  InternalServerError = 'INTERNAL SERVER ERROR',
+  InvalidTokenError = 'INVALID TOKEN ERROR',
+  InvalidCredentials = 'INVALIDAD CREDENTIALS ERROR',
+  NotFoundError = 'NOT FOUND ERROR',
+  TokenNotProvidedError = 'TOKEN NOT PROVIDED ERROR',
+  ValidationError = 'BODY VALIDATION ERROR',
+  ConflictError = 'CONFLICT ERROR',
+  PermissionError = 'PERMISSION ERROR'
 }

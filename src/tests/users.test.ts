@@ -6,11 +6,16 @@ import { expect } from 'chai'
 import usersDao from '../resources/users/users.dao.js'
 import config from '../config.js'
 import mockDbData from './utils/data.js'
+import { Role } from '../resources/users/users.interfaces.js'
+import { makeJwt } from '../resources/auth/auth.utils.js'
+import testUtils from './utils/utils.js'
 
 describe('users tests', async () => {
   const PORT = 3003
   const app = new App(PORT)
   const usersURL = new URL('/users', `http://localhost:${PORT}`)
+
+  const bearerToken = testUtils.buildBearer(makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular))
 
   before(async () => {
     await app.start()
@@ -65,7 +70,7 @@ describe('users tests', async () => {
     expect(response.status).equals(400)
   })
 
-  it('should denied to create a new user', async () => {
+  it('should deny to create a new user', async () => {
     const body = {
       name: 'user01',
       email: 'user01@email.com',
@@ -81,5 +86,17 @@ describe('users tests', async () => {
     })
 
     expect(response.status).equals(409)
+  })
+
+  it('should get a user', async () => {
+    const usersMeUrl = new URL('/users/me', usersURL)
+    const response = await fetch(usersMeUrl, {
+      headers: {
+        Authorization: bearerToken
+      },
+      method: 'GET'
+    })
+
+    expect(response.status).equals(200)
   })
 })

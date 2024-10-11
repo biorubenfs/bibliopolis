@@ -7,7 +7,7 @@ import { UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
 import { UserEntity } from './users.entity.js'
 
 class UsersService {
-  async create (body: CreateUser): Promise<SingleResultObject<UserEntity>> {
+  async signup (body: CreateUser): Promise<SingleResultObject<UserEntity>> {
     const existingUser = await usersDao.findByEmail(body.email)
     if (existingUser != null) {
       throw new UserEmailAlreadyExists(`there is already a user registered with email ${body.email}`)

@@ -13,7 +13,7 @@ class LibrariesBooksDao extends Dao<DBLibraryBook> {
     super('libraries_books')
   }
 
-  async create (newLibraryBook: NewLibraryBook): Promise<LibraryBookEntity> {
+  async create (newLibraryBook: NewLibraryBook): Promise<void> {
     const now = new Date()
     const dbLibraryBook: DBLibraryBook = {
       ...newLibraryBook,
@@ -23,12 +23,14 @@ class LibrariesBooksDao extends Dao<DBLibraryBook> {
     }
 
     await this.collection.insertOne(dbLibraryBook)
-
-    return new LibraryBookEntity(dbLibraryBook)
   }
 
-  async list (libraryId: string): Promise<readonly LibraryBookEntity[]> {
-    const dbLibrariesBooks = await this.collection.find({ libraryId }).toArray()
+  async delete (libraryId: string, bookId: string, userId: string): Promise<void> {
+    await this.collection.deleteOne({ libraryId, bookId, userId })
+  }
+
+  async list (libraryId: string, userId: string): Promise<readonly LibraryBookEntity[]> {
+    const dbLibrariesBooks = await this.collection.find({ libraryId, userId }).toArray()
 
     return dbLibrariesBooks.map(dbLibraryBookToEntity).filter(isNotNull)
   }

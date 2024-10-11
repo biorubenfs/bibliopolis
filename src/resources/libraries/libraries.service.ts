@@ -1,12 +1,18 @@
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
+import booksService from '../books/books.service.js'
+import librariesBooksDao from '../libraries-books/libraries-books.dao.js'
 import { Role } from '../users/users.interfaces.js'
 import librariesDao from './libraries.dao.js'
 import { LibraryEntity } from './libraries.entity.js'
-import { LibraryNotFound, LibraryPermissionsError } from './libraries.error.js'
+import { BookNotFoundInLibraryError, LibraryAlreadyExistsError, LibraryNotFoundError, LibraryPermissionsError } from './libraries.error.js'
 import { NewLibrary } from './libraries.interfaces.js'
 
 class LibrariesService {
   async create (body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+    const existingLibraries = await librariesDao.findByUserAndName(body.name, userId)
+    if (existingLibraries != null) {
+      throw new LibraryAlreadyExistsError(`user has already a library with name ${body.name}`)
+    }
     const newLibrary = await librariesDao.create(body, userId)
     return new SingleResultObject(newLibrary)
   }
@@ -15,7 +21,7 @@ class LibrariesService {
     const library = await librariesDao.findById(id)
 
     if (library == null) {
-      throw new LibraryNotFound('library not found')
+      throw new LibraryNotFoundError('library not found')
     }
 
     if (role !== Role.Admin && library.userId !== userId) {
@@ -32,16 +38,36 @@ class LibrariesService {
     return new CollectionResultObject(libraries, mockPaginationObject)
   }
 
-  async addBookToLibrary (libraryId: string, bookId: string): Promise<LibraryEntity> {
-    const library = await librariesDao.addBookIdToLibrary(libraryId, bookId)
-    if (library == null) throw new Error()
-    return library
+  async addBook (libraryId: string, bookId: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+    const library = await this.get(libraryId, userId, Role.Regular)
+    const book = await booksService.getById(bookId)
+
+    const updatedLibrary = await librariesDao.addBookIdToLibrary(library.entity.id, bookId)
+
+    if (updatedLibrary == null) {
+      throw new Error('should not happen')
+    }
+
+    await librariesBooksDao.create({ libraryId, userId, bookId: book.entity.id, bookTitle: book.entity.title, bookAuthors: book.entity.authors })
+
+    return new SingleResultObject(updatedLibrary)
   }
 
-  async removeBookFromLibrary (libraryId: string, bookId: string): Promise<LibraryEntity> {
-    const library = await librariesDao.removeBookIdFromLibrary(libraryId, bookId)
-    if (library == null) throw new Error()
-    return library
+  async removeBook (libraryId: string, bookId: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+    const library = await this.get(libraryId, userId, Role.Regular)
+
+    if (!library.entity.books.includes(bookId)) {
+      throw new BookNotFoundInLibraryError(`book with id ${bookId} not found in library ${libraryId}`)
+    }
+
+    const updatedLibrary = await librariesDao.removeBookIdFromLibrary(library.entity.id, bookId)
+    if (updatedLibrary == null) {
+      throw new Error('should not happen')
+    }
+
+    await librariesBooksDao.delete(libraryId, bookId, userId)
+
+    return new SingleResultObject(updatedLibrary)
   }
 }
 

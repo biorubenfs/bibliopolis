@@ -1,13 +1,19 @@
 import ApiError from '../../error/api-error.js'
 import { ApiRestErrorCode } from '../../error/types.js'
 
-export class LibraryAlreadyExists extends ApiError {
+export class LibraryAlreadyExistsError extends ApiError {
   constructor (message: string) {
     super(ApiRestErrorCode.ConflictError, 409, message)
   }
 }
 
-export class LibraryNotFound extends ApiError {
+export class LibraryNotFoundError extends ApiError {
+  constructor (message: string) {
+    super(ApiRestErrorCode.NotFoundError, 404, message)
+  }
+}
+
+export class BookNotFoundInLibraryError extends ApiError {
   constructor (message: string) {
     super(ApiRestErrorCode.NotFoundError, 404, message)
   }
@@ -15,6 +21,6 @@ export class LibraryNotFound extends ApiError {
 
 export class LibraryPermissionsError extends ApiError {
   constructor (message: string) {
-    super(ApiRestErrorCode.PermissionError, 404, message)
+    super(ApiRestErrorCode.PermissionError, 403, message)
   }
 }

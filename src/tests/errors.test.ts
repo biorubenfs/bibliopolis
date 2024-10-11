@@ -15,7 +15,7 @@ describe('testing errors content', () => {
     const validationErrorFields = { code: 'invalid_type', expected: 'string', received: 'undefined', path: ['foo'], message: 'Required' }
 
     expect(error).to.have.property('statusCode').equals(400)
-    expect(error).to.have.property('errorCode').equals('body validation error')
+    expect(error).to.have.property('errorCode').equals('BODY VALIDATION ERROR')
     expect(error).to.have.property('message').equals('invalid body')
     expect(error).to.have.property('validationError').to.be.an('array')
     expect(error.validationError?.at(0)).deep.equals(validationErrorFields)

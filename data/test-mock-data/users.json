@@ -17,6 +17,23 @@
     "role": "regular"
   },
   {
+    "_id": "01J9XDBGCX8QM0GW67T7QGKS41",
+    "email": "user02@email.com",
+    "password": "$2b$10$tpubmvDypzkJbLUpEutaLOjnWHqk.6Xm4ovnoCkwLiUGp5qgQNdvy",
+    "name": "user02",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1728038468885"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1728038468885"
+      }
+    },
+    "role": "regular"
+  },
+  {
     "_id": "01J9BK7YX0D5NHHBN70Q4N7P69",
     "name": "admin01",
     "email": "admin01@email.com",

@@ -5,7 +5,7 @@ import App from '../app.js'
 import { assert, expect } from 'chai'
 import mockDbData from './utils/data.js'
 
-describe('init tests', async () => {
+describe('login tests', async () => {
   const PORT = 3001
   const app = new App(PORT)
   const loginUrl = new URL('/auth', `http://localhost:${PORT}`)
@@ -19,24 +19,6 @@ describe('init tests', async () => {
 
   after(async () => {
     await app.stop()
-  })
-
-  it('should throw a body valition error', async () => {
-    const response = await fetch(loginUrl, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({ email: 'user01@mail.com' })
-    })
-
-    const body = await response.json()
-
-    expect(response.status).equals(400)
-    expect(body).to.have.property('statusCode').equals(400)
-    expect(body).to.have.property('errorCode').equals('body validation error')
-    expect(body).to.have.property('message').equals('invalid body')
-    expect(body).to.have.property('validationError').to.be.an('array').of.length(1)
   })
 
   it('should do login', async () => {
@@ -67,5 +49,23 @@ describe('init tests', async () => {
     })
 
     assert.strictEqual(response.status, 403)
+  })
+
+  it('should throw a body validation error', async () => {
+    const response = await fetch(loginUrl, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ email: 'user01@mail.com' })
+    })
+
+    const body = await response.json()
+
+    expect(response.status).equals(400)
+    expect(body).to.have.property('statusCode').equals(400)
+    expect(body).to.have.property('errorCode').equals('BODY VALIDATION ERROR')
+    expect(body).to.have.property('message').equals('invalid body')
+    expect(body).to.have.property('validationError').to.be.an('array').of.length(1)
   })
 })
