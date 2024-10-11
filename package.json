@@ -32,10 +32,12 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
+    "express-winston": "^4.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.9.0",
     "mongodb-memory-server": "^10.0.1",
     "ulid": "^2.3.0",
+    "winston": "^3.15.0",
     "zod": "^3.23.8"
   },
   "eslintConfig": {

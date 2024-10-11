@@ -1,6 +1,7 @@
 import { Db, MongoClient } from 'mongodb'
 import config from './config.js'
 import { MongoMemoryReplSet } from 'mongodb-memory-server'
+import logger from './logger.js'
 
 class Mongo {
   mongoClient!: MongoClient
@@ -22,7 +23,9 @@ class Mongo {
 
     await this.mongoClient.connect()
 
-    console.log('connected mongodb')
+    if (config.environment !== 'test') {
+      logger.info('connected mongodb')
+    }
   }
 
   get client (): MongoClient {

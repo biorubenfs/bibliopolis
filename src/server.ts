@@ -6,6 +6,9 @@ import authRouter from './resources/auth/auth.router.js'
 import booksRouter from './resources/books/books.router.js'
 import librariesRouter from './resources/libraries/libraries.router.js'
 import { checkJwt } from './middlewares/jwt.middleware.js'
+import logger from './logger.js'
+import expressWinston from 'express-winston'
+import config from './config.js'
 
 export default class Server {
   private readonly express: express.Express
@@ -17,6 +20,20 @@ export default class Server {
 
     this.express = express()
     this.express.use(express.json())
+
+    if (config.environment !== 'test') {
+      this.express.use(expressWinston.logger({
+        winstonInstance: logger,
+        statusLevels: true,
+        meta: false,
+        msg: (req, res) => {
+          const { method, path, userId, role } = req
+          return `${method} ${path}, userId: ${userId ?? 'N/A'}, role: ${role ?? 'N/A'}`
+        },
+        expressFormat: false,
+        colorize: false
+      }))
+    }
 
     this.express.get('/', (req, res) => {
       res.json({
@@ -40,7 +57,11 @@ export default class Server {
   }
 
   listen (): void {
-    this.httpServer = this.express.listen(this.port, () => console.log(`server listening on port ${this.port}`))
+    this.httpServer = this.express.listen(this.port, () => {
+      if (config.environment !== 'test') {
+        logger.info(`server listening on port ${this.port}`)
+      }
+    })
   }
 
   stop (): void {
@@ -49,7 +70,9 @@ export default class Server {
         if (err != null) {
           console.log('error stopping server', err)
         } else {
-          console.log('server stopped succesfully')
+          if (config.environment !== 'test') {
+            console.log('server stopped succesfully')
+          }
         }
       })
     }
