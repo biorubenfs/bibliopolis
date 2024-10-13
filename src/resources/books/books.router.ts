@@ -10,6 +10,6 @@ const booksRouter = Router()
 
 booksRouter.post('/', bodyValidator(newBookSchema), tryCatch(async (req) => await booksService.create(req.body)))
 booksRouter.get('/:id', tryCatch(async (req) => await booksService.getById(req.params.id)))
-booksRouter.get('/', queryPaginationValidator, tryCatch(async (req) => await booksService.list(...parseSkipLimitQP(req))))
+booksRouter.get('/', queryPaginationValidator, tryCatch(async (req) => await booksService.list(parseSkipLimitQP(req))))
 
 export default booksRouter

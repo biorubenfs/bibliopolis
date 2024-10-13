@@ -4,6 +4,7 @@ import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { assert, expect } from 'chai'
 import mockDbData from './utils/data.js'
+import { ApiRestErrorCode } from '../error/types.js'
 
 describe('login tests', async () => {
   const PORT = 3001
@@ -39,7 +40,7 @@ describe('login tests', async () => {
     expect(body.results.attributes).to.have.property('token').to.be.a('string')
   })
 
-  it('should fail to do login', async () => {
+  it('should fail to do login with wrong password', async () => {
     const response = await fetch(loginUrl, {
       headers: {
         'Content-Type': 'application/json'
@@ -48,7 +49,25 @@ describe('login tests', async () => {
       body: JSON.stringify({ email: 'user01@email.com', password: 'Palabra' })
     })
 
+    const body = await response.json()
+
     assert.strictEqual(response.status, 403)
+    expect(body).to.have.property('errorCode').equals(ApiRestErrorCode.InvalidCredentials)
+  })
+
+  it('should fail to do login with wrong email', async () => {
+    const response = await fetch(loginUrl, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ email: 'user@email.com', password: 'Palabra123$' })
+    })
+
+    const body = await response.json()
+
+    assert.strictEqual(response.status, 403)
+    expect(body).to.have.property('errorCode').equals(ApiRestErrorCode.InvalidCredentials)
   })
 
   it('should throw a body validation error', async () => {

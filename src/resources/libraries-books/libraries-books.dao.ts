@@ -29,10 +29,18 @@ class LibrariesBooksDao extends Dao<DBLibraryBook> {
     await this.collection.deleteOne({ libraryId, bookId, userId })
   }
 
-  async list (libraryId: string, userId: string): Promise<readonly LibraryBookEntity[]> {
-    const dbLibrariesBooks = await this.collection.find({ libraryId, userId }).toArray()
+  async list (libraryId: string, userId: string, skip: number, limit: number): Promise<readonly LibraryBookEntity[]> {
+    const dbLibrariesBooks = await this.collection.find({ libraryId, userId })
+      .skip(skip)
+      .limit(limit)
+      .toArray()
 
     return dbLibrariesBooks.map(dbLibraryBookToEntity).filter(isNotNull)
+  }
+
+  async count (libraryId: string, userId: string): Promise<number> {
+    const total = await this.collection.countDocuments({ libraryId, userId })
+    return total
   }
 }
 

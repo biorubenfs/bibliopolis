@@ -1,4 +1,5 @@
 import { Request } from 'express'
+import { Page } from './types'
 
 export function isNotNull<T> (value: T | null): value is T {
   return value !== null
@@ -6,10 +7,10 @@ export function isNotNull<T> (value: T | null): value is T {
 
 /* At this point we know that skip and limit query params are strings parseable to
 number without errors because this function should be applied after query params middleware */
-export function parseSkipLimitQP (req: Request): [number, number] {
+export function parseSkipLimitQP (req: Request): Page {
   const { skip, limit } = req.query
   if (typeof skip !== 'string' || typeof limit !== 'string') {
     throw new Error('should not happen')
   }
-  return [parseInt(skip), parseInt(limit)]
+  return { skip: parseInt(skip), limit: parseInt(limit) }
 }

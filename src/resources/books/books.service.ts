@@ -1,4 +1,5 @@
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
+import { Page } from '../../types.js'
 import { NewBook } from '../books/books.interfaces.js'
 import booksDao from './books.dao.js'
 import { BookEntity } from './books.entity.js'
@@ -32,13 +33,13 @@ class BooksService {
     return new SingleResultObject(book)
   }
 
-  async list (skip: number, limit: number): Promise<CollectionResultObject<BookEntity>> {
+  async list (page: Page): Promise<CollectionResultObject<BookEntity>> {
     const [books, total] = await Promise.all([
-      await booksDao.list(skip, limit),
+      await booksDao.list(page.skip, page.limit),
       await booksDao.count()
     ])
 
-    return new CollectionResultObject(books, { page: { skip, limit }, total })
+    return new CollectionResultObject(books, { page, total })
   }
 }
 

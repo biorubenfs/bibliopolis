@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import config from '../../config.js'
 import { UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
 import { UserEntity } from './users.entity.js'
+import { Page } from '../../types.js'
 
 class UsersService {
   async signup (body: CreateUser): Promise<SingleResultObject<UserEntity>> {
@@ -41,13 +42,13 @@ class UsersService {
     return new SingleResultObject(user)
   }
 
-  async list (skip: number, limit: number): Promise<CollectionResultObject<UserEntity>> {
+  async list (page: Page): Promise<CollectionResultObject<UserEntity>> {
     const [users, total] = await Promise.all([
-      await usersDao.list(skip, limit),
+      await usersDao.list(page.skip, page.limit),
       await usersDao.count()
     ])
 
-    return new CollectionResultObject(users, { page: { limit, skip }, total })
+    return new CollectionResultObject(users, { page, total })
   }
 }
 

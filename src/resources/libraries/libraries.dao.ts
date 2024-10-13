@@ -42,10 +42,19 @@ class LibrariesDao extends Dao<DBLibrary> {
     return dbLibraryToEntity(dbLibrary)
   }
 
-  async list (userId: string, role: Role): Promise<readonly LibraryEntity[]> {
+  async list (userId: string, role: Role, skip: number, limit: number): Promise<readonly LibraryEntity[]> {
     const mongoFilter = role === Role.Regular ? { userId } : {}
-    const dbLibraries = await this.collection.find(mongoFilter).toArray()
+    const dbLibraries = await this.collection.find(mongoFilter)
+      .skip(skip)
+      .limit(limit)
+      .toArray()
     return dbLibraries.map(dbLibrary => dbLibraryToEntity(dbLibrary)).filter(isNotNull)
+  }
+
+  async count (userId: string, role: Role): Promise<number> {
+    const mongoFilter = role === Role.Regular ? { userId } : {}
+    const total = await this.collection.countDocuments(mongoFilter)
+    return total
   }
 
   async addBookIdToLibrary (libraryId: string, bookId: string): Promise<LibraryEntity | null> {

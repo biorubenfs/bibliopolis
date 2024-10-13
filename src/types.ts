@@ -1,7 +1,9 @@
+export interface Page {
+  limit: number
+  skip: number
+}
+
 export interface PaginationObject {
-  page: {
-    limit: number
-    skip: number
-  }
+  page: Page
   total: number
 }

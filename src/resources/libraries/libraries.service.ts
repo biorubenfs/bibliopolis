@@ -1,4 +1,5 @@
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
+import { Page } from '../../types.js'
 import booksService from '../books/books.service.js'
 import librariesBooksDao from '../libraries-books/libraries-books.dao.js'
 import { Role } from '../users/users.interfaces.js'
@@ -31,10 +32,13 @@ class LibrariesService {
     return new SingleResultObject(library)
   }
 
-  async list (userId: string, role: Role): Promise<CollectionResultObject<LibraryEntity>> {
-    const libraries = await librariesDao.list(userId, role)
+  async list (userId: string, role: Role, page: Page): Promise<CollectionResultObject<LibraryEntity>> {
+    const [libraries, total] = await Promise.all([
+      await librariesDao.list(userId, role, page.skip, page.limit),
+      await librariesDao.count(userId, role)
+    ])
 
-    const mockPaginationObject = { page: { skip: 0, limit: 0 }, total: 0 }
+    const mockPaginationObject = { page, total }
     return new CollectionResultObject(libraries, mockPaginationObject)
   }
 
