@@ -22,5 +22,8 @@ export default {
   jwt: {
     secret: parseString(process.env.JWT_SECRET, 'foo')
   },
-  hashRounds: parseNumber(process.env.HASH_ROUNDS)
+  hashRounds: parseNumber(process.env.HASH_ROUNDS),
+  openLibrary: {
+    coverUrlPattern: parseString(process.env.OL_COVER_URL_PATH)
+  }
 }

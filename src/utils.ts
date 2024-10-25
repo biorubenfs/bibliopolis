@@ -1,5 +1,6 @@
 import { Request } from 'express'
 import { Page } from './types'
+import config from './config.js'
 
 export function isNotNull<T> (value: T | null): value is T {
   return value !== null
@@ -13,4 +14,11 @@ export function parseSkipLimitQP (req: Request): Page {
     throw new Error('should not happen')
   }
   return { skip: parseInt(skip), limit: parseInt(limit) }
+}
+
+export function getCoverUrl (coverId: string | null): string | null {
+  if (coverId == null) return null
+
+  const coverUrl = config.openLibrary.coverUrlPattern.replace(':id', coverId)
+  return coverUrl
 }

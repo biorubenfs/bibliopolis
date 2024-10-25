@@ -6,7 +6,6 @@ import { InvalidTokenError, TokenNotProvidedError } from '../error/errors.js'
 
 interface JWTPayload {
   id: string
-  type: string
   role: Role
 }
 
