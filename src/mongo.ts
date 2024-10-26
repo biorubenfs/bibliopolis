@@ -24,7 +24,7 @@ class Mongo {
     await this.mongoClient.connect()
 
     if (config.environment !== 'test') {
-      logger.info('connected mongodb')
+      this.mongoClient.on('connectionCreated', (event) => logger.info(`connected mongodb on ${event.address}`))
     }
   }
 
@@ -40,6 +40,7 @@ class Mongo {
     await this.mongoClient.close()
     if (this.memoryReplSet != null) {
       await this.memoryReplSet.stop({ doCleanup: true })
+      this.mongoClient.on('connectionClosed', () => logger.info('mongodb connection closed'))
     }
   }
 }
