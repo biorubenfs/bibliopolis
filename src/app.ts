@@ -18,10 +18,10 @@ export default class App {
     this.server = new Server(this.port)
     this.server.listen()
 
+    await usersDao.init()
+
     logger.info('app started succesfully')
     logger.info('press CTRL+C to stop app')
-
-    await usersDao.init()
   }
 
   async stop (): Promise<void> {

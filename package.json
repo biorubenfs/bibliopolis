@@ -8,9 +8,9 @@
     "start:dev": "nodemon --watch src --ext ts --exec \"echo -- compiling -- && pnpm run --silent build && echo -- starting -- && pnpm run --silent start\"",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
-    "test:dev": "pnpm run --silent build && node --test ./dist/tests/*.test.js",
-    "test:only": "pnpm run --silent build && node --test --test-only ./dist/tests/*.test.js",
-    "test": "node --test ./dist/tests/*.test.js"
+    "test:dev": "pnpm run --silent build && ENVIRONMENT='test' node --test ./dist/tests/*.test.js",
+    "test:only": "pnpm run --silent build && ENVIRONMENT='test' node --test --test-only ./dist/tests/*.test.js",
+    "test": "ENVIRONMENT='test' node --test ./dist/tests/*.test.js"
   },
   "type": "module",
   "keywords": [],
