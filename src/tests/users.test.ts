@@ -5,7 +5,7 @@ import App from '../app.js'
 import { expect } from 'chai'
 import usersDao from '../resources/users/users.dao.js'
 import config from '../config.js'
-import mockDbData from './utils/data.js'
+import { MockDataSet, loadDataInDb } from './utils/data.js'
 import { Role } from '../resources/users/users.interfaces.js'
 import { makeJwt } from '../resources/auth/auth.utils.js'
 import testUtils from './utils/utils.js'
@@ -20,7 +20,7 @@ describe('users tests', async () => {
   before(async () => {
     await app.start()
 
-    await mockDbData.loadUsersInDB()
+    await loadDataInDb(MockDataSet.Users)
   })
 
   after(async () => {

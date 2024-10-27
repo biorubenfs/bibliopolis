@@ -3,7 +3,7 @@
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { expect } from 'chai'
-import mockDbData from './utils/data.js'
+import { MockDataSet, loadDataInDb } from './utils/data.js'
 import testUtils from './utils/utils.js'
 import { makeJwt } from '../resources/auth/auth.utils.js'
 import { Role } from '../resources/users/users.interfaces.js'
@@ -17,10 +17,7 @@ describe('libraries tests', async () => {
   before(async () => {
     await app.start()
 
-    await mockDbData.loadUsersInDB()
-    await mockDbData.loadLibrariesInDB()
-    await mockDbData.loadLibrariesBooksInDB()
-    await mockDbData.loadBooksInDB()
+    await loadDataInDb(MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.LibrariesBooks)
   })
 
   after(async () => {
@@ -146,7 +143,11 @@ describe('libraries tests', async () => {
       method: 'GET'
     })
 
+    const responseBody = await response.json()
+
     expect(response.status).equals(200)
+    expect(responseBody).to.have.property('results')
+    expect(responseBody.results).to.be.an('array').of.length(3)
   })
 
   it('should fail to list books of a not owned library', async () => {

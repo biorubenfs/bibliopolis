@@ -2,7 +2,7 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'chai'
 import App from '../app.js'
-import mockDbData from './utils/data.js'
+import { MockDataSet, loadDataInDb } from './utils/data.js'
 import testUtils from './utils/utils.js'
 
 describe('books tests', async () => {
@@ -16,8 +16,7 @@ describe('books tests', async () => {
     await app.start()
 
     /* load data into database */
-    await mockDbData.loadBooksInDB()
-    await mockDbData.loadUsersInDB()
+    await loadDataInDb(MockDataSet.Books, MockDataSet.Users)
 
     token = await testUtils.getUserToken(loginUrl, 'user01@email.com', 'Palabra123$')
   })

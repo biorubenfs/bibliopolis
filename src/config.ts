@@ -9,7 +9,7 @@ function parseNumber (value?: string, dflt = 0): number {
 }
 
 export default {
-  environment: parseString(process.env.ENVIRONMENT),
+  environment: parseString(process.env.ENVIRONMENT, 'dev'),
   port: parseNumber(process.env.PORT, 3000),
   mongo: {
     uri: parseString(process.env.MONGO_URI)
@@ -22,7 +22,7 @@ export default {
   jwt: {
     secret: parseString(process.env.JWT_SECRET, 'foo')
   },
-  hashRounds: parseNumber(process.env.HASH_ROUNDS),
+  hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
   openLibrary: {
     coverUrlPattern: parseString(process.env.OL_COVER_URL_PATH)
   }

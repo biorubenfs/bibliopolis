@@ -3,8 +3,8 @@
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { assert, expect } from 'chai'
-import mockDbData from './utils/data.js'
 import { ApiRestErrorCode } from '../error/types.js'
+import { MockDataSet, loadDataInDb } from './utils/data.js'
 
 describe('login tests', async () => {
   const PORT = 3001
@@ -15,7 +15,7 @@ describe('login tests', async () => {
     await app.start()
 
     // load user to be used in login test
-    await mockDbData.loadUsersInDB()
+    await loadDataInDb(MockDataSet.Users)
   })
 
   after(async () => {
