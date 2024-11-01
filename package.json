@@ -4,7 +4,7 @@
   "main": "main.js",
   "scripts": {
     "build": "tsc",
-    "start": "node ./dist/main.js",
+    "start": "node --enable-source-maps ./dist/main.js",
     "start:dev": "nodemon --watch src --ext ts --exec \"echo -- compiling -- && pnpm run --silent build && echo -- starting -- && pnpm run --silent start\"",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
