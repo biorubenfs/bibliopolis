@@ -1,29 +1,40 @@
-import 'dotenv/config'
+import { z } from 'zod'
 
-function parseString (value?: string, dflt = ''): string {
-  return value ?? dflt
-}
+const envSchema = z.object({
+  ENVIRONMENT: z.string().default('dev'),
+  PORT: z.string().default('3000').transform(value => parseInt(value)),
+  MONGO_URI: z.string(),
+  DEFAULT_ADMIN_NAME: z.string(),
+  DEFAULT_ADMIN_EMAIL: z.string().email(),
+  DEFAULT_ADMIN_PASSWORD: z.string(),
+  JWT_SECRET: z.string(),
+  HASH_ROUNDS: z.string().optional().default('10').transform(value => parseInt(value)),
+  OL_COVER_URL_PATH: z.string()
+})
 
-function parseNumber (value?: string, dflt = 0): number {
-  return value != null ? parseInt(value) : dflt
+const { data, error, success } = envSchema.safeParse(process.env)
+
+if (!success) {
+  console.log(error.issues)
+  throw new Error('invalid environment config')
 }
 
 export default {
-  environment: parseString(process.env.ENVIRONMENT, 'dev'),
-  port: parseNumber(process.env.PORT, 3000),
+  environment: data.ENVIRONMENT,
+  port: data.PORT,
   mongo: {
-    uri: parseString(process.env.MONGO_URI)
+    uri: data.MONGO_URI
   },
   defaultAdmin: {
-    name: parseString(process.env.DEFAULT_ADMIN_NAME),
-    email: parseString(process.env.DEFAULT_ADMIN_EMAIL),
-    password: parseString(process.env.DEFAULT_ADMIN_PASSWORD)
+    name: data.DEFAULT_ADMIN_NAME,
+    email: data.DEFAULT_ADMIN_EMAIL,
+    password: data.DEFAULT_ADMIN_PASSWORD
   },
   jwt: {
-    secret: parseString(process.env.JWT_SECRET, 'foo')
+    secret: data.JWT_SECRET
   },
-  hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
+  hashRounds: data.HASH_ROUNDS,
   openLibrary: {
-    coverUrlPattern: parseString(process.env.OL_COVER_URL_PATH)
+    coverUrlPattern: data.OL_COVER_URL_PATH
   }
 }
