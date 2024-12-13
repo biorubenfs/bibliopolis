@@ -8,11 +8,11 @@
     "start:dev": "nodemon --watch src --ext ts --exec \"echo -- compiling -- && pnpm run --silent build && echo -- starting -- && pnpm run --silent start\"",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
-    "test:dev": "pnpm run --silent build && ENVIRONMENT='test' node --test ./dist/tests/*.test.js",
-    "test:only": "pnpm run --silent build && ENVIRONMENT='test' node --test --test-only ./dist/tests/*.test.js",
-    "test": "ENVIRONMENT='test' node --test ./dist/tests/*.test.js",
-    "test:coverage": "ENVIRONMENT='test' node --test --experimental-test-coverage",
-    "seed": "node ./dist/scripts/seed.js"
+    "seed": "node ./dist/scripts/seed.js",
+    "test:dev": "pnpm run --silent build && ENVIRONMENT='test' node --env-file=.env --test ./dist/tests/*.test.js",
+    "test:only": "pnpm run --silent build && ENVIRONMENT='test' node --env-file=.env --test --test-only ./dist/tests/*.test.js",
+    "test": "ENVIRONMENT='test' node --test --env-file=.env ./dist/tests/*.test.js",
+    "test:coverage": "ENVIRONMENT='test' node --env-file=.env --test --experimental-test-coverage"
   },
   "type": "module",
   "keywords": [],
