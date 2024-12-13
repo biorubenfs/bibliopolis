@@ -24,8 +24,8 @@ function parseUrl (value?: string, dflt = ''): URL {
 }
 
 export default {
-  environment: parseString(process.env.ENVIRONMENT, 'local'),
-  port: parseNumber(process.env.PORT, 3000),
+  environment: data.ENVIRONMENT,
+  port: data.PORT,
   mongo: {
     uri: data.MONGO_URI
   },
@@ -35,17 +35,10 @@ export default {
     password: data.DEFAULT_ADMIN_PASSWORD
   },
   jwt: {
-    secret: parseString(process.env.JWT_SECRET, 'foo'),
-    expirationTime: parseNumber(process.env.JWT_EXPIRATION_TIME, 60000)
+    secret: data.JWT_SECRET
   },
   hashRounds: data.HASH_ROUNDS,
   openLibrary: {
-    domain: parseUrl(process.env.OPEN_LIBRARY_DOMAIN, 'https://openlibrary.org'),
-    coverUrlPattern: parseString(process.env.OPEN_LIBRARY_COVER_URL_PATH)
-  },
-  cookieOptions: {
-    httpOnly: true,
-    secure: typeof process.env.ACCESS_TOKEN_COOKIE_SECURE === 'boolean' ? process.env.ACCESS_TOKEN_COOKIE_SECURE : false,
-    sameSite: parseString(process.env.ACCESS_TOKEN_COOKIE_SAME_SITE, 'none')
+    coverUrlPattern: data.OL_COVER_URL_PATH
   }
 }
