@@ -9,6 +9,7 @@ import { checkJwt } from './middlewares/jwt.middleware.js'
 import logger from './logger.js'
 import expressWinston from 'express-winston'
 import config from './config.js'
+import cors from 'cors'
 
 export default class Server {
   private readonly express: express.Express
@@ -20,6 +21,7 @@ export default class Server {
 
     this.express = express()
     this.express.use(express.json())
+    this.express.use(cors())
 
     if (config.environment !== 'test') {
       this.express.use(expressWinston.logger({
@@ -28,7 +30,8 @@ export default class Server {
         meta: false,
         msg: (req, res) => {
           const { method, path, userId, role } = req
-          return `${method} ${path}, userId: ${userId ?? 'N/A'}, role: ${role ?? 'N/A'}`
+          const { statusCode } = res
+          return `${method} ${path}, userId: ${userId ?? 'N/A'}, role: ${role ?? 'N/A'}, status: ${statusCode}}`
         },
         expressFormat: false,
         colorize: false
@@ -45,7 +48,7 @@ export default class Server {
     // add routers here
     this.express.use('/auth', authRouter)
     this.express.use('/users', usersRouter)
-    this.express.use('/books', checkJwt, booksRouter)
+    this.express.use('/books', booksRouter)
     this.express.use('/libraries', checkJwt, librariesRouter)
 
     // error handling
