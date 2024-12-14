@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
 import { CollectionResultObject, SingleResultObject, MiscResultObject } from './results.js'
 import { Entity, EntityType } from './entity.js'
+import { HttpStatusCode } from './types.js'
 
-type CustomController = (req: Request) => Promise<{ status: number, data: SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject }>
+type CustomController = (req: Request) => Promise<{ status: HttpStatusCode, data: SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject }>
 
 function tryCatch (controller: CustomController) {
   return async function (req: Request, res: Response, next: NextFunction) {
