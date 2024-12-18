@@ -50,7 +50,7 @@ describe('users tests', async () => {
     })
 
     // add more asserts
-    expect(response.status).equals(200)
+    expect(response.status).equals(201)
   })
 
   it('should return a validation body error', async () => {

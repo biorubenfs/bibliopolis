@@ -35,7 +35,7 @@ describe('libraries tests', async () => {
       body: JSON.stringify(body)
     })
 
-    expect(response.status).equals(200)
+    expect(response.status).equals(201)
   })
 
   it('should fail to create a library with existing name', async () => {
@@ -66,7 +66,7 @@ describe('libraries tests', async () => {
 
     const responseBody = await response.json()
 
-    expect(response.status).equals(200)
+    expect(response.status).equals(201)
     const books = responseBody.results.attributes.books
     expect(books).to.be.an('array').includes('01J9KKFWF45DMVVGRS502SG83D')
   })
@@ -98,7 +98,7 @@ describe('libraries tests', async () => {
       body: JSON.stringify(body)
     })
 
-    expect(response.status).equals(200)
+    expect(response.status).equals(204)
   })
 
   it('should fail to remove a non existing book in a owned library', async () => { })

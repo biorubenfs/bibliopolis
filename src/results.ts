@@ -1,11 +1,18 @@
 import { Entity, EntityType, ResultMiscObject } from './entity.js'
-import { PaginationObject } from './types.js'
+import { HttpStatusCode, PaginationObject } from './types.js'
 
-abstract class ResultObject {
+export abstract class ResultObject {
   readonly paginationInfo?: PaginationObject
 
   constructor (paginationInfo?: PaginationObject) {
     this.paginationInfo = paginationInfo
+  }
+
+  static toFinal<T> (status: HttpStatusCode, data: T): { status: number, data: T } {
+    return {
+      status,
+      data
+    }
   }
 }
 
