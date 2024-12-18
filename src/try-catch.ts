@@ -4,9 +4,9 @@ import { Entity, EntityType } from './entity.js'
 import { HttpStatusCode } from './types.js'
 
 type StatusCustomController = HttpStatusCode
-type DataCustomController =  SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject
+type DataCustomController = SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject
 
-type CustomController = (req: Request) => Promise<{ status: StatusCustomController, data: DataCustomController}>
+type CustomController = (req: Request) => Promise<{ status: StatusCustomController, data: DataCustomController }>
 
 function tryCatch (controller: CustomController) {
   return async function (req: Request, res: Response, next: NextFunction) {
