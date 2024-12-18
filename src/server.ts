@@ -10,6 +10,9 @@ import logger from './logger.js'
 import expressWinston from 'express-winston'
 import config from './config.js'
 import cors from 'cors'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import viewsRouter from './resources/views/views.router.js'
 
 export default class Server {
   private readonly express: express.Express
@@ -22,6 +25,9 @@ export default class Server {
     this.express = express()
     this.express.use(express.json())
     this.express.use(cors())
+
+    this.express.set('views', path.join(path.dirname(fileURLToPath(import.meta.url)), 'views'))
+    this.express.set('view engine', 'ejs')
 
     if (config.environment !== 'test') {
       this.express.use(expressWinston.logger({
@@ -45,6 +51,7 @@ export default class Server {
       })
     })
 
+    this.express.use('/views', viewsRouter)
     // add routers here
     this.express.use('/auth', authRouter)
     this.express.use('/users', usersRouter)

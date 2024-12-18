@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "npx tsc && copyfiles -u 1 \"src/views/**\" dist",
     "start": "node --enable-source-maps ./dist/main.js",
-    "start:dev": "nodemon --watch src --ext ts --exec \"echo -- compiling -- && pnpm run --silent build && echo -- starting -- && pnpm run --silent start\"",
+    "start:dev": "nodemon --watch src --ext ts,ejs --exec \"echo -- compiling -- && pnpm run --silent build && echo -- starting -- && pnpm run --silent start\"",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
     "test:dev": "pnpm run --silent build && ENVIRONMENT='test' node --test ./dist/tests/*.test.js",
@@ -26,6 +26,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.7.1",
     "chai": "^5.1.1",
+    "copyfiles": "^2.4.1",
     "nodemon": "^3.1.7",
     "ts-standard": "^12.0.2",
     "typescript": "^5.6.2"
@@ -34,6 +35,7 @@
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.21.0",
     "express-winston": "^4.2.0",
     "jsonwebtoken": "^9.0.2",

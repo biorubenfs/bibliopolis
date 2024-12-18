@@ -1,0 +1,17 @@
+<div class="book">
+
+  <div class="book-cover">
+    <% if (book.cover) { %>
+      <img src="https://covers.openlibrary.org/b/id/<%= book.cover %>-L.jpg" alt="<%= book.title %>">
+    <% } else { %>
+      <img src="https://via.placeholder.com/100x150?text=No+Cover" alt="No Cover Available">
+    <% } %>
+  </div>
+
+  <div class="book-info">
+    <h4><%= book.title %></h4>
+    <p><strong>Authors:</strong> <%= book.authors.join(', ') %></p>
+    <p><strong>ISBN-13:</strong> <%= book.isbn_13 %></p>
+  </div>
+
+</div>

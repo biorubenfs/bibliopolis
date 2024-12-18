@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books List</title>
+  <style>
+
+    body {
+      font-family: Arial;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      display: grid;
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .book {
+      display: flex;
+      flex-direction: column;
+      
+      border: 1px solid #f1f1f1;
+      border-radius: 5px;
+      margin: 10px 0;
+      padding: 15px;
+      transition: 0.3s;
+    }
+
+    .book:hover {
+      border: 1px solid grey;
+      background-color: azure;
+    }
+
+    .book-cover {
+      display: flex;
+      height: 250px;
+
+      justify-content: center; /* center horizontally */
+      align-items: center; /* center vertically */
+    }
+
+    .book img {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+    }
+
+    .book-info {
+      display: flex;
+      flex-direction: column; /* Asegura que los elementos estén en una columna */
+      align-items: center; /* Centra horizontalmente los elementos dentro de .book-info */
+      text-align: center; /* Opcional: centra el texto de los párrafos y el título */
+    }
+
+    h4 {
+      max-width: 100%;
+      display: -webkit-box; /* Usa un contenedor flexible para limitar las líneas */
+      -webkit-line-clamp: 1; /* Limita el contenido a 2 líneas */
+      -webkit-box-orient: vertical; /* Define la orientación de las líneas */
+      overflow: hidden; /* Oculta el contenido que excede el área visible */
+      text-overflow: ellipsis; /* Añade puntos suspensivos (...) al final */
+      word-break: break-word; /* Ajusta la palabra si no cabe dentro del ancho */
+    }
+
+    @media (min-width: 600px) {
+      .container { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 900px) {
+      .container { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (min-width: 1200px) {
+      .container {grid-template-columns: repeat(5, 1fr); }
+    }
+
+    @media (min-width: 1500px) {
+      .container {grid-template-columns: repeat(6, 1fr); }
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Books List</h1>
+
+  <div class="container">
+    <% if (books && books.length > 0) { %>
+      <% books.forEach(book => { %>
+        <%- include('partials/books.card.ejs', { book }) %>
+      <% }); %>
+    <% } else { %>
+      <p>No books found</p>
+    <% } %>
+  </div>
+
+</body>
+</html>
