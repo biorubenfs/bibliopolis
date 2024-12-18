@@ -55,8 +55,8 @@ describe('books tests', async () => {
     expect(response.status).equals(200)
     expect(body.results).to.be.an('array').of.length(limit)
     expect(body).to.have.property('paginationInfo')
-    expect(body.paginationInfo.page.limit).to.be.a('number').equals(limit)
-    expect(body.paginationInfo.page.skip).to.be.a('number').equals(skip)
+    expect(body.paginationInfo.limit).to.be.a('number').equals(limit)
+    expect(body.paginationInfo.skip).to.be.a('number').equals(skip)
     expect(body.paginationInfo.total).to.be.a('number').equals(12)
 
     const firstBook = body.results.at(0).attributes

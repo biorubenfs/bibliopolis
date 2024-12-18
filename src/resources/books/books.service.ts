@@ -39,7 +39,7 @@ class BooksService {
       await booksDao.count()
     ])
 
-    return new CollectionResultObject(books, { page, total })
+    return new CollectionResultObject(books, { ...page, total })
   }
 }
 

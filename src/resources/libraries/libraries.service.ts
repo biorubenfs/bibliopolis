@@ -38,7 +38,7 @@ class LibrariesService {
       await librariesDao.count(userId, role)
     ])
 
-    const mockPaginationObject = { page, total }
+    const mockPaginationObject = { ...page, total }
     return new CollectionResultObject(libraries, mockPaginationObject)
   }
 
