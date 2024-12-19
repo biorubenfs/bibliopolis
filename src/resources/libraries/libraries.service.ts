@@ -32,6 +32,12 @@ class LibrariesService {
     return new SingleResultObject(library)
   }
 
+  async delete (id: string, userId: string, role: Role): Promise<void> {
+    const library = await this.get(id, userId, role)
+
+    await librariesDao.delete(library.entity.id)
+  }
+
   async list (userId: string, role: Role, page: Page): Promise<CollectionResultObject<LibraryEntity>> {
     const [libraries, total] = await Promise.all([
       await librariesDao.list(userId, role, page.skip, page.limit),
