@@ -2,11 +2,11 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'chai'
 import App from '../app.js'
-import { MockDataSet, loadDataInDb } from './utils/data.js'
+import { MockDataSet, TESTS_PORTS, loadDataInDb } from './utils/data.js'
 import testUtils from './utils/utils.js'
 
 describe('books tests', async () => {
-  const PORT = 3004
+  const PORT = TESTS_PORTS.BOOKS_PORT
   const app = new App(PORT)
   const baseUrl = new URL(`http://localhost:${PORT}`)
   const loginUrl = new URL('/auth', baseUrl)

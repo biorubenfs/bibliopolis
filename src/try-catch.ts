@@ -12,23 +12,21 @@ function tryCatch (controller: CustomController) {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const resultObject = await controller(req)
+      
       if (resultObject.data instanceof CollectionResultObject) {
         res.status(resultObject.status).json({
           results: resultObject.data.entities.map(r => r.toResult()),
           paginationInfo: resultObject.data.paginationInfo
         })
-      }
-      if (resultObject.data instanceof SingleResultObject) {
+      } else if (resultObject.data instanceof SingleResultObject) {
         res.status(resultObject.status).json({ results: resultObject.data.entity.toResult() })
-      }
-      if (resultObject.data instanceof MiscResultObject) {
+      } else if (resultObject.data instanceof MiscResultObject) {
         res.status(resultObject.status).json({ results: resultObject.data.toResult() })
-      }
-      if (resultObject.data == null) {
+      } else if ((resultObject.data == null)) {
         res.sendStatus(resultObject.status)
+      } else {
+        res.sendStatus(200)
       }
-
-      res.sendStatus(200)
     } catch (error) {
       next(error)
     }

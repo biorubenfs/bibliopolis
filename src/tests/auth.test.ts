@@ -4,10 +4,10 @@ import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { assert, expect } from 'chai'
 import { ApiRestErrorCode } from '../error/types.js'
-import { MockDataSet, loadDataInDb } from './utils/data.js'
+import { MockDataSet, TESTS_PORTS, loadDataInDb } from './utils/data.js'
 
 describe('login tests', async () => {
-  const PORT = 3001
+  const PORT = TESTS_PORTS.AUTH_PORT
   const app = new App(PORT)
   const loginUrl = new URL('/auth', `http://localhost:${PORT}`)
 
