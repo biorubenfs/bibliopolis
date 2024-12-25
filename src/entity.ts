@@ -6,7 +6,7 @@ export enum EntityType {
   LibrariesBooks = 'libraries-books'
 }
 
-interface ResultEntityObject {
+export interface ResultEntityObject {
   type: EntityType
   id: string
   attributes: Object
