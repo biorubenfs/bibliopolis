@@ -12,7 +12,7 @@ function tryCatch (controller: CustomController) {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const resultObject = await controller(req)
-      
+
       if (resultObject.data instanceof CollectionResultObject) {
         res.status(resultObject.status).json({
           results: resultObject.data.entities.map(r => r.toResult()),

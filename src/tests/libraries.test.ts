@@ -59,7 +59,7 @@ describe('libraries tests', async () => {
         Authorization: bearerToken,
         'Content-Type': 'application/json'
       },
-      method: 'DELETE',
+      method: 'DELETE'
     })
 
     expect(response.status).equals(204)
@@ -72,7 +72,7 @@ describe('libraries tests', async () => {
         Authorization: bearerToken,
         'Content-Type': 'application/json'
       },
-      method: 'DELETE',
+      method: 'DELETE'
     })
 
     expect(response.status).equals(403)
