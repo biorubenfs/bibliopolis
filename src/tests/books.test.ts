@@ -2,11 +2,11 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'chai'
 import App from '../app.js'
-import { MockDataSet, loadDataInDb } from './utils/data.js'
+import { MockDataSet, TESTS_PORTS, loadDataInDb } from './utils/data.js'
 import testUtils from './utils/utils.js'
 
 describe('books tests', async () => {
-  const PORT = 3004
+  const PORT = TESTS_PORTS.BOOKS_PORT
   const app = new App(PORT)
   const baseUrl = new URL(`http://localhost:${PORT}`)
   const loginUrl = new URL('/auth', baseUrl)
@@ -55,8 +55,8 @@ describe('books tests', async () => {
     expect(response.status).equals(200)
     expect(body.results).to.be.an('array').of.length(limit)
     expect(body).to.have.property('paginationInfo')
-    expect(body.paginationInfo.page.limit).to.be.a('number').equals(limit)
-    expect(body.paginationInfo.page.skip).to.be.a('number').equals(skip)
+    expect(body.paginationInfo.limit).to.be.a('number').equals(limit)
+    expect(body.paginationInfo.skip).to.be.a('number').equals(skip)
     expect(body.paginationInfo.total).to.be.a('number').equals(12)
 
     const firstBook = body.results.at(0).attributes

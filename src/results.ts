@@ -1,14 +1,9 @@
 import { Entity, EntityType, ResultMiscObject } from './entity.js'
 import { HttpStatusCode, PaginationObject } from './types.js'
 
+// eslint-disable-next-line
 export abstract class ResultObject {
-  readonly paginationInfo?: PaginationObject
-
-  constructor (paginationInfo?: PaginationObject) {
-    this.paginationInfo = paginationInfo
-  }
-
-  static toFinal<T> (status: HttpStatusCode, data: T): { status: number, data: T } {
+  static toFinal<T> (status: HttpStatusCode, data: T): { status: HttpStatusCode, data: T } {
     return {
       status,
       data
@@ -27,9 +22,11 @@ export class SingleResultObject<T extends Entity<EntityType>> extends ResultObje
 
 export class CollectionResultObject<T extends Entity<EntityType>> extends ResultObject {
   readonly entities: readonly T[]
+  readonly paginationInfo: PaginationObject
 
   constructor (entities: readonly T[], paginationInfo: PaginationObject) {
-    super(paginationInfo)
+    super()
+    this.paginationInfo = paginationInfo
     this.entities = entities
   }
 }

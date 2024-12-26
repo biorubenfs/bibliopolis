@@ -3,8 +3,7 @@ export interface Page {
   skip: number
 }
 
-export interface PaginationObject {
-  page: Page
+export interface PaginationObject extends Page {
   total: number
 }
 

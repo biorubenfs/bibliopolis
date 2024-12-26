@@ -29,10 +29,16 @@ librariesRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
   return ResultObject.toFinal(HttpStatusCode.OK, result)
 }))
 
+librariesRouter.delete('/:id', checkJwt, tryCatch(async (req) => {
+  await librariesService.delete(req.params.id, req.userId ?? '', req.role ?? Role.Regular)
+  return ResultObject.toFinal(HttpStatusCode.NoContent, null)
+}))
+
 librariesRouter.post('/:id/books', bodyValidator(bookdIdSchema), tryCatch(async (req) => {
   const result = await librariesService.addBook(req.params.id, req.body.id, req.userId ?? '')
   return ResultObject.toFinal(HttpStatusCode.Created, result)
 }))
+
 librariesRouter.delete('/:id/books', bodyValidator(bookdIdSchema), tryCatch(async (req) => {
   const result = await librariesService.removeBook(req.params.id, req.body.id, req.userId ?? '')
   return ResultObject.toFinal(HttpStatusCode.NoContent, result)

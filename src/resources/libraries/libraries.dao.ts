@@ -42,6 +42,10 @@ class LibrariesDao extends Dao<DBLibrary> {
     return dbLibraryToEntity(dbLibrary)
   }
 
+  async delete (id: string): Promise<void> {
+    await this.collection.deleteOne({ _id: id })
+  }
+
   async list (userId: string, role: Role, skip: number, limit: number): Promise<readonly LibraryEntity[]> {
     const mongoFilter = role === Role.Regular ? { userId } : {}
     const dbLibraries = await this.collection.find(mongoFilter)

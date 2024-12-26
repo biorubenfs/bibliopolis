@@ -8,6 +8,14 @@ import librariesBooksDao from '../../resources/libraries-books/libraries-books.d
 
 const MOCK_DATA_DIR_PATH = new URL(path.join('../../../data/test-mock-data'), import.meta.url)
 
+export enum TESTS_PORTS {
+  INIT_PORT = 3001,
+  AUTH_PORT = 3002,
+  USERS_PORT = 3003,
+  BOOKS_PORT = 3004,
+  LIBRARIES_PORT = 3005,
+}
+
 export enum MockDataSet {
   Books = 'books',
   Libraries = 'libraries',

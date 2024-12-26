@@ -48,7 +48,7 @@ class UsersService {
       await usersDao.count()
     ])
 
-    return new CollectionResultObject(users, { page, total })
+    return new CollectionResultObject(users, { ...page, total })
   }
 }
 

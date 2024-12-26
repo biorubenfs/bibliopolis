@@ -3,13 +3,13 @@
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { expect } from 'chai'
-import { MockDataSet, loadDataInDb } from './utils/data.js'
+import { MockDataSet, TESTS_PORTS, loadDataInDb } from './utils/data.js'
 import testUtils from './utils/utils.js'
 import { makeJwt } from '../resources/auth/auth.utils.js'
 import { Role } from '../resources/users/users.interfaces.js'
 
 describe('libraries tests', async () => {
-  const PORT = 3005
+  const PORT = TESTS_PORTS.LIBRARIES_PORT
   const app = new App(PORT)
   const librariesUrl = new URL('/libraries', `http://localhost:${PORT}`)
   const bearerToken = testUtils.buildBearer(makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular))
@@ -50,6 +50,32 @@ describe('libraries tests', async () => {
     })
 
     expect(response.status).equals(409)
+  })
+
+  it('should remove a owned library', async () => {
+    const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEZ', librariesUrl)
+    const response = await fetch(url, {
+      headers: {
+        Authorization: bearerToken,
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE'
+    })
+
+    expect(response.status).equals(204)
+  })
+
+  it('should fail to remove a non-owned library', async () => {
+    const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X', librariesUrl)
+    const response = await fetch(url, {
+      headers: {
+        Authorization: bearerToken,
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE'
+    })
+
+    expect(response.status).equals(403)
   })
 
   it('should add a book to owned library', async () => {
@@ -142,7 +168,6 @@ describe('libraries tests', async () => {
       },
       method: 'GET'
     })
-
     const responseBody = await response.json()
 
     expect(response.status).equals(200)
