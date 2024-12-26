@@ -1,6 +1,7 @@
 import { Entity, EntityType, ResultMiscObject } from './entity.js'
 import { HttpStatusCode, PaginationObject } from './types.js'
 
+// eslint-disable-next-line
 export abstract class ResultObject {
   static toFinal<T> (status: HttpStatusCode, data: T): { status: HttpStatusCode, data: T } {
     return {

@@ -8,8 +8,8 @@ type DataCustomController = SingleResultObject<Entity<EntityType>> | CollectionR
 
 type CustomController = (req: Request) => Promise<{ status: StatusCustomController, data: DataCustomController }>
 
-function sendResponse(res: Response, status: number, data: any) {
-  res.status(status).json(data);
+function sendResponse (res: Response, status: number, data: any): void {
+  res.status(status).json(data)
 }
 
 function tryCatch (controller: CustomController) {
@@ -24,23 +24,22 @@ function tryCatch (controller: CustomController) {
             paginationInfo: resultObject.data.paginationInfo
           })
           return
-        
+
         case resultObject.data instanceof SingleResultObject:
           sendResponse(res, resultObject.status, { results: resultObject.data.entity.toResult() })
           return
-        
+
         case resultObject.data instanceof MiscResultObject:
           sendResponse(res, resultObject.status, { results: resultObject.data.toResult() })
           return
-        
+
         case resultObject.data == null:
           res.sendStatus(resultObject.status)
           return
-        
+
         default:
           /* maybe we should throw and error or log something, although all cases are covered */
           res.sendStatus(200)
-          return;
       }
     } catch (error) {
       next(error)
