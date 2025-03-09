@@ -5,14 +5,10 @@
     "password": "$2b$10$tpubmvDypzkJbLUpEutaLOjnWHqk.6Xm4ovnoCkwLiUGp5qgQNdvy",
     "name": "user01",
     "createdAt": {
-      "$date": {
-        "$numberLong": "1728038468885"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": {
-        "$numberLong": "1728038468885"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "role": "regular"
   },
@@ -22,14 +18,10 @@
     "password": "$2b$10$tpubmvDypzkJbLUpEutaLOjnWHqk.6Xm4ovnoCkwLiUGp5qgQNdvy",
     "name": "user02",
     "createdAt": {
-      "$date": {
-        "$numberLong": "1728038468885"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": {
-        "$numberLong": "1728038468885"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "role": "regular"
   },
@@ -39,14 +31,10 @@
     "email": "admin01@email.com",
     "password": "$2b$10$mpISt6rrTdVtrvranx8ctO/S2lHBq.iQwk7Yonl1lOK/LnhvHwq2a",
     "createdAt": {
-      "$date": {
-        "$numberLong": "1728039877536"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": {
-        "$numberLong": "1728039877536"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "role": "admin"
   }

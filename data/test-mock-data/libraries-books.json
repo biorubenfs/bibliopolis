@@ -9,14 +9,10 @@
     ],
     "bookId": "01J9KKFS6CKTSVY0ETH9A7PHXW",
     "createdAt": {
-      "$date": {
-        "$numberLong": "1728600283781"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": {
-        "$numberLong": "1728600283781"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     }
   },
   {
@@ -29,14 +25,10 @@
     ],
     "bookId": "01J9KKFTWAKVR1HGHCER50JJMQ",
     "createdAt": {
-      "$date": {
-        "$numberLong": "1728600293824"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": {
-        "$numberLong": "1728600293824"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     }
   },
   {
@@ -47,14 +39,10 @@
     "bookAuthors": [],
     "bookId": "01J9KKFQRP6H3F30CNT21G1DWT",
     "createdAt": {
-      "$date": {
-        "$numberLong": "1728600293824"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": {
-        "$numberLong": "1728600293824"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     }
   },
   {
@@ -68,14 +56,10 @@
     ],
     "bookId": "01J9KKG5ZN2MMPHV4M3E5JR98V",
     "createdAt": {
-      "$date": {
-        "$numberLong": "1728637783009"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": {
-        "$numberLong": "1728637783009"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     }
   },
   {
@@ -86,14 +70,10 @@
     "bookAuthors": [],
     "bookId": "01J9KKFQRP6H3F30CNT21G1DWT",
     "createdAt": {
-      "$date": {
-        "$numberLong": "1728637803474"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": {
-        "$numberLong": "1728637803474"
-      }
+      "$date": "2000-01-01T00:00:00.000Z"
     }
   }
 ]
