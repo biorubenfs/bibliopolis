@@ -62,8 +62,6 @@ export async function loadDataInDb (dataSetType: DataSetType, ...mockDataSets: M
     ? new URL(path.join('../data/test-mock-data'), import.meta.url)
     : new URL(path.join('../data/seed'), import.meta.url)
 
-  console.log(DIR_PATH.href)
-
   await Promise.all(mockDataSets.map(async (mockDataSet) => {
     const { filename, collection } = getMockDataSetParams(mockDataSet)
     await insertDataInDb(filename, collection, DIR_PATH)
