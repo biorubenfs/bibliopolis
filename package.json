@@ -11,7 +11,8 @@
     "test:dev": "pnpm run --silent build && ENVIRONMENT='test' node --test ./dist/tests/*.test.js",
     "test:only": "pnpm run --silent build && ENVIRONMENT='test' node --test --test-only ./dist/tests/*.test.js",
     "test": "ENVIRONMENT='test' node --test ./dist/tests/*.test.js",
-    "test:coverage": "ENVIRONMENT='test' node --test --experimental-test-coverage"
+    "test:coverage": "ENVIRONMENT='test' node --test --experimental-test-coverage",
+    "seed": "node ./dist/scripts/seed.js"
   },
   "type": "module",
   "keywords": [],

@@ -1,0 +1,41 @@
+[
+    {
+      "_id": "01J9BHWZ8N4B1JBSAFCBKQGERS",
+      "email": "user01@email.com",
+      "password": "$2b$10$tpubmvDypzkJbLUpEutaLOjnWHqk.6Xm4ovnoCkwLiUGp5qgQNdvy",
+      "name": "user01",
+      "createdAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "role": "regular"
+    },
+    {
+      "_id": "01J9XDBGCX8QM0GW67T7QGKS41",
+      "email": "user02@email.com",
+      "password": "$2b$10$tpubmvDypzkJbLUpEutaLOjnWHqk.6Xm4ovnoCkwLiUGp5qgQNdvy",
+      "name": "user02",
+      "createdAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "role": "regular"
+    },
+    {
+      "_id": "01J9BK7YX0D5NHHBN70Q4N7P69",
+      "name": "admin01",
+      "email": "admin01@email.com",
+      "password": "$2b$10$mpISt6rrTdVtrvranx8ctO/S2lHBq.iQwk7Yonl1lOK/LnhvHwq2a",
+      "createdAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "role": "admin"
+    }
+  ]

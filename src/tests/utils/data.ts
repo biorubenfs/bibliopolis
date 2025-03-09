@@ -27,7 +27,7 @@ function neverReached (param: never): never {
   throw new Error(`Unhandled case: ${String(param)}`)
 }
 
-function getMockDataSetParams (data: MockDataSet): { filename: string, collection: Collection<any> } {
+export function getMockDataSetParams (data: MockDataSet): { filename: string, collection: Collection<any> } {
   const filename = data.concat('.json')
   switch (data) {
     case MockDataSet.Users:

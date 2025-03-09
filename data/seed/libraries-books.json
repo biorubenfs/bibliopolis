@@ -1,0 +1,79 @@
+[
+    {
+      "_id": "01J9W9P6M5S0VRKVSRX3Q9T3W7",
+      "libraryId": "01J9W8VR2CFZW8PJ1Q8Y4Y5WEX",
+      "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
+      "bookTitle": "Rossiya",
+      "bookAuthors": [
+        "Alex Shishin"
+      ],
+      "bookId": "01J9KKFS6CKTSVY0ETH9A7PHXW",
+      "createdAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      }
+    },
+    {
+      "_id": "01J9W9PGE06ANTMG3Y24KGCAFF",
+      "libraryId": "01J9W8VR2CFZW8PJ1Q8Y4Y5WEX",
+      "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
+      "bookTitle": "Lightning and Ashes",
+      "bookAuthors": [
+        "John Guzlowski"
+      ],
+      "bookId": "01J9KKFTWAKVR1HGHCER50JJMQ",
+      "createdAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      }
+    },
+    {
+      "_id": "01J9WA3W9TE5NG1H21PTK9VS4Q",
+      "libraryId": "01J9W8VR2CFZW8PJ1Q8Y4Y5WEX",
+      "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
+      "bookTitle": "It Never Happened",
+      "bookAuthors": [],
+      "bookId": "01J9KKFQRP6H3F30CNT21G1DWT",
+      "createdAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      }
+    },
+    {
+      "_id": "01J9XDEJZ1ZQZ71X46ESEJHQ5D",
+      "libraryId": "01J9XDD1NAFHP0159FYT245D8X",
+      "userId": "01J9XDBGCX8QM0GW67T7QGKS41",
+      "bookTitle": "Secondhand Time",
+      "bookAuthors": [
+        "Светлана Алексиевич",
+        "Bela Shayevich"
+      ],
+      "bookId": "01J9KKG5ZN2MMPHV4M3E5JR98V",
+      "createdAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      }
+    },
+    {
+      "_id": "01J9XDF6YJWYZ7EC2MDR8R58MW",
+      "libraryId": "01J9XDD1NAFHP0159FYT245D8X",
+      "userId": "01J9XDBGCX8QM0GW67T7QGKS41",
+      "bookTitle": "It Never Happened",
+      "bookAuthors": [],
+      "bookId": "01J9KKFQRP6H3F30CNT21G1DWT",
+      "createdAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2000-01-01T00:00:00.000Z"
+      }
+    }
+  ]
