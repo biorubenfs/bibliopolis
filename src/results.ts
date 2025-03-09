@@ -11,31 +11,28 @@ export abstract class ResultObject {
   }
 }
 
-export class SingleResultObject<T extends Entity<EntityType>> extends ResultObject {
+export class SingleResultObject<T extends Entity<EntityType>> {
   readonly entity: T
 
   constructor (entity: T) {
-    super()
     this.entity = entity
   }
 }
 
-export class CollectionResultObject<T extends Entity<EntityType>> extends ResultObject {
+export class CollectionResultObject<T extends Entity<EntityType>> {
   readonly entities: readonly T[]
   readonly paginationInfo: PaginationObject
 
   constructor (entities: readonly T[], paginationInfo: PaginationObject) {
-    super()
     this.paginationInfo = paginationInfo
     this.entities = entities
   }
 }
 
-export class MiscResultObject extends ResultObject {
+export class MiscResultObject {
   readonly attributes: object
 
   constructor (attributes: object) {
-    super()
     this.attributes = attributes
   }
 
