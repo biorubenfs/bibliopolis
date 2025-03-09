@@ -3,7 +3,7 @@ import Dao from '../../dao.js'
 import { UserEntity } from './users.entity.js'
 import { CreateUser, DBUser, Role } from './users.interfaces.js'
 import config from '../../config.js'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { isNotNull } from '../../utils.js'
 
 function dbUserToEntity (dbUser: DBUser | null): UserEntity | null {

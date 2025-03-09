@@ -1,7 +1,7 @@
 import usersDao from './users.dao.js'
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { CreateUser, Role } from './users.interfaces.js'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import config from '../../config.js'
 import { UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
 import { UserEntity } from './users.entity.js'

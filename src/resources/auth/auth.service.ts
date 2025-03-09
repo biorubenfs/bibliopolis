@@ -1,5 +1,5 @@
 import { MiscResultObject } from '../../results.js'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { Login } from './auth.interfaces.js'
 import usersDao from '../users/users.dao.js'
 import { InvalidLoginError } from './auth.error.js'
