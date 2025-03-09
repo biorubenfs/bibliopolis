@@ -4,10 +4,10 @@ import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { assert, expect } from 'chai'
 import mongo from '../mongo.js'
-import { TESTS_PORTS } from './utils/data.js'
+import testUtils from './utils/utils.js'
 
 describe('init tests', async () => {
-  const PORT = TESTS_PORTS.INIT_PORT
+  const PORT = testUtils.TESTS_PORTS.INIT_PORT
   const app = new App(PORT)
 
   before(async () => {

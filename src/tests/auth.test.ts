@@ -4,10 +4,11 @@ import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { assert, expect } from 'chai'
 import { ApiRestErrorCode } from '../error/types.js'
-import { MockDataSet, TESTS_PORTS, loadDataInDb } from './utils/data.js'
+import testUtils from './utils/utils.js'
+import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 
 describe('login tests', async () => {
-  const PORT = TESTS_PORTS.AUTH_PORT
+  const PORT = testUtils.TESTS_PORTS.AUTH_PORT
   const app = new App(PORT)
   const loginUrl = new URL('/auth', `http://localhost:${PORT}`)
 
@@ -15,7 +16,7 @@ describe('login tests', async () => {
     await app.start()
 
     // load user to be used in login test
-    await loadDataInDb(MockDataSet.Users)
+    await loadDataInDb(DataSetType.Test, MockDataSet.Users)
   })
 
   after(async () => {

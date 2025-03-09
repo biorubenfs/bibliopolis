@@ -3,13 +3,13 @@
 import { after, before, describe, it } from 'node:test'
 import App from '../app.js'
 import { expect } from 'chai'
-import { MockDataSet, TESTS_PORTS, loadDataInDb } from './utils/data.js'
 import testUtils from './utils/utils.js'
 import { makeJwt } from '../resources/auth/auth.utils.js'
 import { Role } from '../resources/users/users.interfaces.js'
+import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 
 describe('libraries tests', async () => {
-  const PORT = TESTS_PORTS.LIBRARIES_PORT
+  const PORT = testUtils.TESTS_PORTS.LIBRARIES_PORT
   const app = new App(PORT)
   const librariesUrl = new URL('/libraries', `http://localhost:${PORT}`)
   const bearerToken = testUtils.buildBearer(makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular))
@@ -17,7 +17,7 @@ describe('libraries tests', async () => {
   before(async () => {
     await app.start()
 
-    await loadDataInDb(MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.LibrariesBooks)
+    await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.LibrariesBooks)
   })
 
   after(async () => {

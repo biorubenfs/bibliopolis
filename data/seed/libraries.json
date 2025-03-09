@@ -15,38 +15,5 @@
       "updatedAt": {
         "$date": "2000-01-01T00:00:00.000Z"
       }
-    },
-    {
-      "_id": "01J9W8VR2CFZW8PJ1Q8Y4Y5WEZ",
-      "name": "sample second library",
-      "description": "description of the sample second library",
-      "books": [
-        "01J9KKFQRP6H3F30CNT21G1DWT",
-        "01J9KKFS6CKTSVY0ETH9A7PHXW",
-        "01J9KKFTWAKVR1HGHCER50JJMQ"
-      ],
-      "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
-      "createdAt": {
-        "$date": "2000-01-01T00:00:00.000Z"
-      },
-      "updatedAt": {
-        "$date": "2000-01-01T00:00:00.000Z"
-      }
-    },
-    {
-      "_id": "01J9XDD1NAFHP0159FYT245D8X",
-      "name": "sample first library user02",
-      "description": "description of the sample first library user02",
-      "books": [
-        "01J9KKG5ZN2MMPHV4M3E5JR98V",
-        "01J9KKFQRP6H3F30CNT21G1DWT"
-      ],
-      "userId": "01J9XDBGCX8QM0GW67T7QGKS41",
-      "createdAt": {
-        "$date": "2000-01-01T00:00:00.000Z"
-      },
-      "updatedAt": {
-        "$date": "2000-01-01T00:00:00.000Z"
-      }
     }
   ]

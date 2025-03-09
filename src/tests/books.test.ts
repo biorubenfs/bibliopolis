@@ -2,11 +2,11 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'chai'
 import App from '../app.js'
-import { MockDataSet, TESTS_PORTS, loadDataInDb } from './utils/data.js'
 import testUtils from './utils/utils.js'
+import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 
 describe('books tests', async () => {
-  const PORT = TESTS_PORTS.BOOKS_PORT
+  const PORT = testUtils.TESTS_PORTS.BOOKS_PORT
   const app = new App(PORT)
   const baseUrl = new URL(`http://localhost:${PORT}`)
   const loginUrl = new URL('/auth', baseUrl)
@@ -16,7 +16,7 @@ describe('books tests', async () => {
     await app.start()
 
     /* load data into database */
-    await loadDataInDb(MockDataSet.Books, MockDataSet.Users)
+    await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users)
 
     token = await testUtils.getUserToken(loginUrl, 'user01@email.com', 'Palabra123$')
   })
