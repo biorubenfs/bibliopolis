@@ -91,5 +91,11 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
+    - name: Create .env file
+      run: echo "${{ secrets.ENV_FILE }}" > .env
+
     - name: Run tests
       run: pnpm run test
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
