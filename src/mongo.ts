@@ -36,7 +36,7 @@ class Mongo {
     return this.mongoClient.db(dbName)
   }
 
-  async stop(): Promise<void> {
+  async stop (): Promise<void> {
     this.mongoClient.on('connectionClosed', () => logger.info('mongodb connection closed'))
     await this.mongoClient.close()
     if (this.memoryReplSet != null) {
