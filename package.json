@@ -9,10 +9,10 @@
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
     "seed": "node ./dist/scripts/seed.js",
-    "test:dev": "pnpm run --silent build && ENVIRONMENT='test' node --env-file=.env --test ./dist/tests/*.test.js",
-    "test:only": "pnpm run --silent build && ENVIRONMENT='test' node --env-file=.env --test --test-only ./dist/tests/*.test.js",
-    "test": "ENVIRONMENT='test' node --test --env-file=.env ./dist/tests/*.test.js",
-    "test:coverage": "ENVIRONMENT='test' node --env-file=.env --test --experimental-test-coverage"
+    "test:dev": "pnpm run --silent build && node --env-file=.env.memory --test ./dist/tests/*.test.js",
+    "test:only": "pnpm run --silent build && node --env-file=.env.memory --test --test-only ./dist/tests/*.test.js",
+    "test": "node --test --env-file=.env.memory ./dist/tests/*.test.js",
+    "test:coverage": "node --env-file=.env.memory --test --experimental-test-coverage"
   },
   "type": "module",
   "keywords": [],
