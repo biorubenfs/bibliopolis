@@ -1,14 +1,11 @@
+import { CookieOptions } from 'express'
 import { Entity, EntityType, ResultMiscObject } from './entity.js'
-import { HttpStatusCode, PaginationObject } from './types.js'
+import { PaginationObject } from './types.js'
 
-// eslint-disable-next-line
-export abstract class ResultObject {
-  static toFinal<T> (status: HttpStatusCode, data: T): { status: HttpStatusCode, data: T } {
-    return {
-      status,
-      data
-    }
-  }
+interface Cookie {
+  name: string
+  value: string
+  options: CookieOptions
 }
 
 export class SingleResultObject<T extends Entity<EntityType>> {
@@ -41,5 +38,29 @@ export class MiscResultObject {
       type: 'auth-response',
       attributes: this.attributes
     }
+  }
+}
+
+export class SetCookieResultObject<T extends Entity<EntityType>> {
+  readonly name: string
+  readonly value: string
+  readonly options: CookieOptions
+  readonly entity: T
+
+  constructor (name: string, value: string, options: CookieOptions, entity: T) {
+    this.name = name
+    this.value = value
+    this.options = options
+    this.entity = entity
+  }
+}
+
+export class ClearCookieResultObject {
+  readonly name: string
+  readonly options: CookieOptions
+
+  constructor (name: string, options: CookieOptions) {
+    this.name = name
+    this.options = options
   }
 }
