@@ -4,7 +4,7 @@ import { Entity, EntityType } from './entity.js'
 import { HttpStatusCode } from './types.js'
 
 type StatusCustomController = HttpStatusCode
-type DataCustomController = SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject<Entity<EntityType>> | SetCookieResultObject<Entity<EntityType>> | ClearCookieResultObject | null
+type DataCustomController = SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject | SetCookieResultObject<Entity<EntityType>> | ClearCookieResultObject | null
 
 type CustomController = (req: Request) => Promise<{ status: StatusCustomController, data: DataCustomController }>
 
@@ -28,10 +28,8 @@ function tryCatch (controller: CustomController) {
           return
 
         case data instanceof MiscResultObject:
-          const { name, value, options } = data.cookie
-          res.cookie(name, value, options)
-            .status(status)
-            .json(data.entity.toResult())
+          res.status(status)
+            .json(data.toResult())
           return
 
         case data instanceof SetCookieResultObject:
