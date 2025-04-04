@@ -10,6 +10,7 @@ import logger from './logger.js'
 import expressWinston from 'express-winston'
 import config from './config.js'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 export default class Server {
   private readonly express: express.Express
@@ -22,6 +23,7 @@ export default class Server {
     this.express = express()
     this.express.use(express.json())
     this.express.use(cors())
+    this.express.use(cookieParser())
 
     if (config.environment !== 'test') {
       this.express.use(expressWinston.logger({
