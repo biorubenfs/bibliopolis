@@ -26,8 +26,8 @@ export default class App {
 
   async stop (): Promise<void> {
     logger.info('stopping app...')
-    await mongo.stop()
     await this.server?.stop()
+    await mongo.stop()
     logger.info('app stopped succesfully')
   }
 }
