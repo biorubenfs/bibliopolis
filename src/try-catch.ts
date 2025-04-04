@@ -29,7 +29,7 @@ function tryCatch (controller: CustomController) {
 
         case data instanceof MiscResultObject:
           res.status(status)
-            .json(data.toResult())
+            .json({ results: data.toResult() })
           return
 
         case data instanceof SetCookieResultObject:
