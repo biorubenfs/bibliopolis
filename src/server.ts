@@ -67,17 +67,23 @@ export default class Server {
     })
   }
 
-  stop (): void {
-    if (this.httpServer != null) {
-      this.httpServer.close((err) => {
-        if (err != null) {
-          console.log('error stopping server', err)
-        } else {
-          if (config.environment !== 'test') {
-            console.log('server stopped succesfully')
+  async stop (): Promise<void> {
+    return await new Promise((resolve, reject) => {
+      if (this.httpServer != null) {
+        this.httpServer.close((err) => {
+          if (err != null) {
+            console.log('Error stopping server', err)
+            reject(err)
+          } else {
+            if (config.environment !== 'test') {
+              console.log('Server stopped successfully')
+            }
+            resolve()
           }
-        }
-      })
-    }
+        })
+      } else {
+        resolve()
+      }
+    })
   }
 }
