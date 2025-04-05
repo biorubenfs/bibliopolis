@@ -44,7 +44,7 @@ function tryCatch (controller: CustomController) {
           return
 
         case data == null:
-          res.status(status)
+          res.sendStatus(status)
           return
 
         default:
