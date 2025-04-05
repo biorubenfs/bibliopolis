@@ -1,23 +1,22 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
-import { after, before, describe, it } from 'node:test'
+import { afterAll, beforeAll, describe, it, assert, expect } from 'vitest'
 import App from '../app.js'
-import { assert, expect } from 'chai'
 import mongo from '../mongo.js'
 import testUtils from './utils/utils.js'
 
+const PORT = testUtils.TESTS_PORTS.INIT_PORT
+const app = new App(PORT)
+
+beforeAll(async () => {
+  await app.start()
+})
+
+afterAll(async () => {
+  await app.stop()
+})
+
 describe('init tests', async () => {
-  const PORT = testUtils.TESTS_PORTS.INIT_PORT
-  const app = new App(PORT)
-
-  before(async () => {
-    await app.start()
-  })
-
-  after(async () => {
-    await app.stop()
-  })
-
   it('healthcheck', async () => {
     const url = new URL('/', `http://localhost:${PORT}`)
     const result = await fetch(url, {

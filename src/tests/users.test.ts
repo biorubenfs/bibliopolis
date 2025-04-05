@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
-import { after, before, describe, it } from 'node:test'
+import { afterAll, beforeAll, describe, it, expect } from 'vitest'
 import App from '../app.js'
-import { expect } from 'chai'
 import usersDao from '../resources/users/users.dao.js'
 import config from '../config.js'
 import { Role } from '../resources/users/users.interfaces.js'
@@ -10,23 +9,22 @@ import { makeJwt } from '../resources/auth/auth.utils.js'
 import testUtils from './utils/utils.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 
+const PORT = testUtils.TESTS_PORTS.USERS_PORT
+const app = new App(PORT)
+const usersURL = new URL('/users', `http://localhost:${PORT}`)
+
+const bearerToken = testUtils.buildBearer(makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular))
+
+beforeAll(async () => {
+  await app.start()
+  await loadDataInDb(DataSetType.Test, MockDataSet.Users)
+})
+
+afterAll(async () => {
+  await app.stop()
+})
+
 describe('users tests', async () => {
-  const PORT = testUtils.TESTS_PORTS.USERS_PORT
-  const app = new App(PORT)
-  const usersURL = new URL('/users', `http://localhost:${PORT}`)
-
-  const bearerToken = testUtils.buildBearer(makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular))
-
-  before(async () => {
-    await app.start()
-
-    await loadDataInDb(DataSetType.Test, MockDataSet.Users)
-  })
-
-  after(async () => {
-    await app.stop()
-  })
-
   it('default user admin should have been created', async () => {
     const response = await usersDao.collection.findOne({ name: config.defaultAdmin.name })
 
