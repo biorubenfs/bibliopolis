@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-
 import { afterAll, beforeAll, describe, it, expect } from 'vitest'
 import App from '../app.js'
 import testUtils from './utils/utils.js'
@@ -10,7 +8,9 @@ import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 const PORT = testUtils.TESTS_PORTS.LIBRARIES_PORT
 const app = new App(PORT)
 const librariesUrl = new URL('/libraries', `http://localhost:${PORT}`)
-const bearerToken = testUtils.buildBearer(makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular))
+const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
+const cookie = testUtils.buildAccessTokenCookie(token)
+
 
 beforeAll(async () => {
   await app.start()
@@ -27,7 +27,7 @@ describe('libraries tests', async () => {
     const body = { name: 'new library', description: 'description of the new library' }
     const response = await fetch(librariesUrl, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -41,7 +41,7 @@ describe('libraries tests', async () => {
     const body = { name: 'sample first library', description: 'description of the sample first library' }
     const response = await fetch(librariesUrl, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -55,7 +55,7 @@ describe('libraries tests', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEZ', librariesUrl)
     const response = await fetch(url, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'DELETE'
@@ -68,7 +68,7 @@ describe('libraries tests', async () => {
     const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X', librariesUrl)
     const response = await fetch(url, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'DELETE'
@@ -82,7 +82,7 @@ describe('libraries tests', async () => {
     const body = { id: '01J9KKFWF45DMVVGRS502SG83D' }
     const response = await fetch(url, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -101,7 +101,7 @@ describe('libraries tests', async () => {
     const body = { id: '01J9KKFWF45DMVVGRS502SFAKE' }
     const response = await fetch(url, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -116,7 +116,7 @@ describe('libraries tests', async () => {
     const body = { id: '01J9KKFS6CKTSVY0ETH9A7PHXW' }
     const response = await fetch(url, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'DELETE',
@@ -133,7 +133,7 @@ describe('libraries tests', async () => {
     const body = { id: '01J9KKFWF45DMVVGRS502SG83D' }
     const response = await fetch(url, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -148,7 +148,7 @@ describe('libraries tests', async () => {
     const body = { id: '01J9KKFQRP6H3F30CNT21G1DWT' }
     const response = await fetch(url, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'DELETE',
@@ -162,7 +162,7 @@ describe('libraries tests', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
     const response = await fetch(url, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'GET'
@@ -178,7 +178,7 @@ describe('libraries tests', async () => {
     const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X/books', librariesUrl)
     const response = await fetch(url, {
       headers: {
-        Authorization: bearerToken,
+        cookie,
         'Content-Type': 'application/json'
       },
       method: 'GET'

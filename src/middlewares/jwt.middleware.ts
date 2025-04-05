@@ -9,28 +9,9 @@ interface JWTPayload {
   role: Role
 }
 
-export function checkJwt (req: Request, res: Response, next: NextFunction): void {
-  const header = req.header('Authorization')
-  const token = header?.split(' ').at(1)
-
-  if (token == null) {
-    throw new TokenNotProvidedError('token not provided')
-  }
-
-  try {
-    const payload = jwt.verify(token, config.jwt.secret) as JWTPayload
-
-    req.userId = payload.id
-    req.role = payload.role
-
-    next()
-  } catch (error) {
-    throw new InvalidTokenError('invalid token')
-  }
-}
-
-// export function checkJwt(req: Request, res: Response, next: NextFunction): void {
-//   const token = req.cookies.access_token
+// export function checkJwt (req: Request, res: Response, next: NextFunction): void {
+//   const header = req.header('Authorization')
+//   const token = header?.split(' ').at(1)
 
 //   if (token == null) {
 //     throw new TokenNotProvidedError('token not provided')
@@ -47,6 +28,25 @@ export function checkJwt (req: Request, res: Response, next: NextFunction): void
 //     throw new InvalidTokenError('invalid token')
 //   }
 // }
+
+export function checkJwt(req: Request, res: Response, next: NextFunction): void {
+  const token = req.cookies.access_token
+
+  if (token == null) {
+    throw new TokenNotProvidedError('token not provided')
+  }
+
+  try {
+    const payload = jwt.verify(token, config.jwt.secret) as JWTPayload
+
+    req.userId = payload.id
+    req.role = payload.role
+
+    next()
+  } catch (error) {
+    throw new InvalidTokenError('invalid token')
+  }
+}
 
 export function checkAdmin (req: Request, res: Response, next: NextFunction): void {
   if (req.role !== Role.Admin) {

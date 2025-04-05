@@ -6,7 +6,7 @@ import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 
 const PORT = testUtils.TESTS_PORTS.AUTH_PORT
 const app = new App(PORT)
-const loginUrl = new URL('/auth', `http://localhost:${PORT}`)
+const loginUrl = new URL('/auth/login', `http://localhost:${PORT}`)
 
 beforeAll(async () => {
   await app.start()
@@ -25,9 +25,16 @@ describe('login tests', () => {
       body: JSON.stringify({ email: 'user01@email.com', password: 'Palabra123$' })
     })
 
+    const cookies = response.headers.getSetCookie()
+    const accessToken = cookies.find(cookie => cookie.startsWith('access_token'))
+    expect(accessToken).toBeDefined()
+
     const body = await response.json()
+
     expect(response.status).toBe(200)
-    expect(body).toHaveProperty('results.attributes.token')
+
+    expect(body).toHaveProperty('id')
+    expect(body).property('id').equals('01J9BHWZ8N4B1JBSAFCBKQGERS')
   })
 
   it('should fail to do login with wrong password', async () => {

@@ -8,10 +8,6 @@ import { HttpStatusCode } from '../../types.js'
 
 const authRouter = Router()
 
-authRouter.post('/', bodyValidator(loginSchema), tryCatch(async (req) => {
-  const result = await authService.login(req.body)
-  return { status: HttpStatusCode.OK, data: result }
-}))
 
 authRouter.post('/login', bodyValidator(loginSchema), tryCatch(async (req) => {
   const result = await authService.login(req.body)
