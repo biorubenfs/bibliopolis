@@ -1,33 +1,32 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-import { after, before, describe, it } from 'node:test'
-import { expect } from 'chai'
+import { beforeAll, afterAll, describe, it, expect } from 'vitest'
 import App from '../app.js'
 import testUtils from './utils/utils.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
+import { makeJwt } from '../resources/auth/auth.utils.js'
+import { Role } from '../resources/users/users.interfaces.js'
+
+const PORT = testUtils.TESTS_PORTS.BOOKS_PORT
+const app = new App(PORT)
+const baseUrl = new URL(`http://localhost:${PORT}`)
+let token: string
+let cookie: string
+
+beforeAll(async () => {
+  await app.start()
+  await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users)
+
+  token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
+  cookie = testUtils.buildAccessTokenCookie(token)
+})
+
+afterAll(async () => {
+  await app.stop()
+})
 
 describe('books tests', async () => {
-  const PORT = testUtils.TESTS_PORTS.BOOKS_PORT
-  const app = new App(PORT)
-  const baseUrl = new URL(`http://localhost:${PORT}`)
-  const loginUrl = new URL('/auth', baseUrl)
-  let token: string
-
-  before(async () => {
-    await app.start()
-
-    /* load data into database */
-    await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users)
-
-    token = await testUtils.getUserToken(loginUrl, 'user01@email.com', 'Palabra123$')
-  })
-
-  after(async () => {
-    await app.stop()
-  })
-
   it('should get a book', async () => {
     const url = new URL('/books/01J9KKFT64VX47TEDXMBBFRHTV', baseUrl)
-    const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${token}` } })
+    const response = await fetch(url, { method: 'GET', headers: { cookie } })
     const body = await response.json()
 
     expect(response.status).equals(200)
@@ -49,7 +48,7 @@ describe('books tests', async () => {
     url.searchParams.set('skip', skip.toString())
     url.searchParams.set('limit', limit.toString())
 
-    const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${token}` } })
+    const response = await fetch(url, { method: 'GET', headers: { cookie } })
     const body = await response.json()
 
     expect(response.status).equals(200)

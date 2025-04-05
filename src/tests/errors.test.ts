@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { expect } from 'chai'
-import assert from 'node:assert'
-import { describe, it } from 'node:test'
+import { describe, it, assert, expect } from 'vitest'
 import { InvalidBodyError } from '../error/errors.js'
 import z from 'zod'
 
