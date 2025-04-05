@@ -1,4 +1,4 @@
-import { MiscResultObject, SetCookieResultObject } from '../../results.js'
+import { SetCookieResultObject } from '../../results.js'
 import bcrypt from 'bcryptjs'
 import { Login } from './auth.interfaces.js'
 import usersDao from '../users/users.dao.js'
@@ -23,7 +23,6 @@ class AuthService {
 
   //   return new MiscResultObject({ token })
   // }
-
 
   async login (body: Login): Promise<SetCookieResultObject<UserEntity>> {
     const user = await usersDao.findByEmail(body.email)

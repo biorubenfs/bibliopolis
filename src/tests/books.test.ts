@@ -26,7 +26,7 @@ afterAll(async () => {
 describe('books tests', async () => {
   it('should get a book', async () => {
     const url = new URL('/books/01J9KKFT64VX47TEDXMBBFRHTV', baseUrl)
-    const response = await fetch(url, { method: 'GET', headers: { cookie} })
+    const response = await fetch(url, { method: 'GET', headers: { cookie } })
     const body = await response.json()
 
     expect(response.status).equals(200)

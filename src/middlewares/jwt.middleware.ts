@@ -29,7 +29,7 @@ interface JWTPayload {
 //   }
 // }
 
-export function checkJwt(req: Request, res: Response, next: NextFunction): void {
+export function checkJwt (req: Request, res: Response, next: NextFunction): void {
   const token = req.cookies.access_token
 
   if (token == null) {

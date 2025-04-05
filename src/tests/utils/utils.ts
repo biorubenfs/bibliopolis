@@ -6,7 +6,7 @@ enum TESTS_PORTS {
   LIBRARIES_PORT = 3005,
 }
 
-function buildAccessTokenCookie(token: string) {
+function buildAccessTokenCookie (token: string): string {
   return `access_token=${token}`
 }
 
