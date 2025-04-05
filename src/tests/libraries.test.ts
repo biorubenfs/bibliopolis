@@ -11,7 +11,6 @@ const librariesUrl = new URL('/libraries', `http://localhost:${PORT}`)
 const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
 const cookie = testUtils.buildAccessTokenCookie(token)
 
-
 beforeAll(async () => {
   await app.start()
 

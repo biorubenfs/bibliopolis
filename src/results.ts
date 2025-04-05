@@ -2,12 +2,6 @@ import { CookieOptions } from 'express'
 import { Entity, EntityType, ResultMiscObject } from './entity.js'
 import { PaginationObject } from './types.js'
 
-interface Cookie {
-  name: string
-  value: string
-  options: CookieOptions
-}
-
 export class SingleResultObject<T extends Entity<EntityType>> {
   readonly entity: T
 

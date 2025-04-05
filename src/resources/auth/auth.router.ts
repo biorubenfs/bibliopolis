@@ -3,11 +3,10 @@ import tryCatch from '../../try-catch.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 import { loginSchema } from './auth.schemas.js'
 import authService from './auth.service.js'
-import { SetCookieResultObject, ClearCookieResultObject } from '../../results.js'
+import { ClearCookieResultObject } from '../../results.js'
 import { HttpStatusCode } from '../../types.js'
 
 const authRouter = Router()
-
 
 authRouter.post('/login', bodyValidator(loginSchema), tryCatch(async (req) => {
   const result = await authService.login(req.body)
