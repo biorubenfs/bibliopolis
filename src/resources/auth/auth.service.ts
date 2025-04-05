@@ -24,20 +24,8 @@ class AuthService {
   //   return new MiscResultObject({ token })
   // }
 
-  async login (body: Login): Promise<Promise<MiscResultObject>> {
-    const user = await usersDao.findByEmail(body.email)
-    const isPasswordValid = bcrypt.compareSync(body.password, user?.password ?? '')
 
-    if (user == null || !isPasswordValid) {
-      throw new InvalidLoginError('invalid email or password')
-    }
-
-    const token = makeJwt(user.id, user.role)
-
-    return new MiscResultObject({ token })
-  }
-
-  async loginCookie (body: Login): Promise<SetCookieResultObject<UserEntity>> {
+  async login (body: Login): Promise<SetCookieResultObject<UserEntity>> {
     const user = await usersDao.findByEmail(body.email)
     const isPasswordValid = bcrypt.compareSync(body.password, user?.password ?? '')
 

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-
 import { afterAll, beforeAll, describe, it, assert, expect } from 'vitest'
 import App from '../app.js'
 import mongo from '../mongo.js'

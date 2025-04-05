@@ -9,12 +9,14 @@ const PORT = testUtils.TESTS_PORTS.BOOKS_PORT
 const app = new App(PORT)
 const baseUrl = new URL(`http://localhost:${PORT}`)
 let token: string
+let cookie: string
 
 beforeAll(async () => {
   await app.start()
   await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users)
 
   token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
+  cookie = testUtils.buildAccessTokenCookie(token)
 })
 
 afterAll(async () => {
@@ -24,7 +26,7 @@ afterAll(async () => {
 describe('books tests', async () => {
   it('should get a book', async () => {
     const url = new URL('/books/01J9KKFT64VX47TEDXMBBFRHTV', baseUrl)
-    const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${token}` } })
+    const response = await fetch(url, { method: 'GET', headers: { cookie} })
     const body = await response.json()
 
     expect(response.status).equals(200)
@@ -46,7 +48,7 @@ describe('books tests', async () => {
     url.searchParams.set('skip', skip.toString())
     url.searchParams.set('limit', limit.toString())
 
-    const response = await fetch(url, { method: 'GET', headers: { Authorization: `Bearer ${token}` } })
+    const response = await fetch(url, { method: 'GET', headers: { cookie } })
     const body = await response.json()
 
     expect(response.status).equals(200)
