@@ -8,11 +8,10 @@
     "start:dev": "nodemon --watch src --ext ts --exec \"echo -- compiling -- && pnpm run --silent build && echo -- starting -- && pnpm run --silent start\"",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
-    "test:dev": "pnpm run --silent build && ENVIRONMENT='test' node --test ./dist/tests/*.test.js",
-    "test:only": "pnpm run --silent build && ENVIRONMENT='test' node --test --test-only ./dist/tests/*.test.js",
-    "test": "ENVIRONMENT='test' node --test ./dist/tests/*.test.js",
-    "test:coverage": "ENVIRONMENT='test' node --test --experimental-test-coverage",
-    "seed": "node ./dist/scripts/seed.js"
+    "seed": "node ./dist/scripts/seed.js",
+    "test": "ENVIRONMENT='test' vitest run",
+    "test:dev": "pnpm run --silent build && ENVIRONMENT='test' vitest run",
+    "test:coverage": "ENVIRONMENT='test' vitest run --coverage"
   },
   "type": "module",
   "keywords": [],
@@ -20,15 +19,17 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@types/chai": "^5.0.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.7.1",
-    "chai": "^5.1.1",
+    "@vitest/coverage-v8": "3.1.1",
+    "@vitest/ui": "^3.1.1",
     "nodemon": "^3.1.7",
     "ts-standard": "^12.0.2",
-    "typescript": "^5.6.2"
+    "tsx": "^4.19.3",
+    "typescript": "^5.6.2",
+    "vitest": "^3.1.1"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -48,12 +49,15 @@
       "./node_modules/ts-standard/eslintrc.json"
     ],
     "parserOptions": {
-      "project": "./tsconfig.json"
+      "project": [
+        "./tsconfig.json"
+      ]
     }
   },
   "ts-standard": {
     "ignore": [
-      "dist"
+      "dist",
+      "vitest.config.ts"
     ]
   }
 }
