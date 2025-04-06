@@ -74,11 +74,11 @@ export default class Server {
       if (this.httpServer != null) {
         this.httpServer.close((err) => {
           if (err != null) {
-            console.log('Error stopping server', err)
+            logger.info('error stopping server', err)
             reject(err)
           } else {
             if (config.environment !== 'test') {
-              console.log('Server stopped successfully')
+              logger.info('server stopped successfully')
             }
             resolve()
           }
