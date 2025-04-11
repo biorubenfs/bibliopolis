@@ -1,6 +1,6 @@
 import { Collection } from 'mongodb'
 import booksDao from './resources/books/books.dao.js'
-import librariesBooksDao from './resources/libraries-books/libraries-books.dao.js'
+import userBooksDao from './resources/user-books/user-books.dao.js'
 import librariesDao from './resources/libraries/libraries.dao.js'
 import usersDao from './resources/users/users.dao.js'
 import { readFileSync } from 'fs'
@@ -10,7 +10,7 @@ export enum MockDataSet {
   Books = 'books',
   Libraries = 'libraries',
   Users = 'users',
-  LibrariesBooks = 'libraries-books'
+  UserBooks = 'user-books'
 }
 
 export enum DataSetType {
@@ -40,10 +40,10 @@ export function getMockDataSetParams (data: MockDataSet): { filename: string, co
         filename,
         collection: booksDao.collection
       }
-    case MockDataSet.LibrariesBooks:
+    case MockDataSet.UserBooks:
       return {
         filename,
-        collection: librariesBooksDao.collection
+        collection: userBooksDao.collection
       }
     default: {
       neverReached(data)

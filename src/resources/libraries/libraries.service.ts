@@ -1,7 +1,7 @@
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { Page } from '../../types.js'
 import booksService from '../books/books.service.js'
-import librariesBooksDao from '../libraries-books/libraries-books.dao.js'
+import userBooksDao from '../user-books/user-books.dao.js'
 import { Role } from '../users/users.interfaces.js'
 import librariesDao from './libraries.dao.js'
 import { LibraryEntity } from './libraries.entity.js'
@@ -58,7 +58,16 @@ class LibrariesService {
       throw new Error('should not happen')
     }
 
-    await librariesBooksDao.create({ libraryId, userId, bookId: book.entity.id, bookTitle: book.entity.title, bookAuthors: book.entity.authors })
+    await userBooksDao.create({
+      libraryId,
+      userId,
+      bookId: book.entity.id,
+      bookTitle: book.entity.title,
+      bookAuthors: book.entity.authors,
+      bookCover: book.entity.cover,
+      bookRating: null,
+      bookNotes: null
+    })
 
     return new SingleResultObject(updatedLibrary)
   }
@@ -75,7 +84,7 @@ class LibrariesService {
       throw new Error('should not happen')
     }
 
-    await librariesBooksDao.delete(libraryId, bookId, userId)
+    await userBooksDao.delete(libraryId, bookId, userId)
 
     return new SingleResultObject(updatedLibrary)
   }
