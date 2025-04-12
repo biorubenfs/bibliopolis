@@ -3,7 +3,7 @@ export enum EntityType {
   Users = 'users',
   Books = 'books',
   Libraries = 'libraries',
-  LibrariesBooks = 'libraries-books'
+  UserBooks = 'user-books'
 }
 
 export interface ResultEntityObject {

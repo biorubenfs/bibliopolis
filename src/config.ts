@@ -19,6 +19,10 @@ if (!success) {
   throw new Error('invalid environment config')
 }
 
+function parseUrl (value?: string, dflt = ''): URL {
+  return new URL(value ?? dflt)
+}
+
 export default {
   environment: data.ENVIRONMENT,
   port: data.PORT,
@@ -35,6 +39,7 @@ export default {
   },
   hashRounds: data.HASH_ROUNDS,
   openLibrary: {
-    coverUrlPattern: data.OL_COVER_URL_PATH
+    domain: parseUrl(process.env.OPEN_LIBRARY_DOMAIN, 'https://openlibrary.org'),
+    coverUrlPattern: parseString(process.env.OPEN_LIBRARY_COVER_URL_PATH)
   }
 }
