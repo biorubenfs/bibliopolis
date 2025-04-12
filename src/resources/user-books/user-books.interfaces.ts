@@ -10,7 +10,7 @@ export interface NewUserBook {
   bookTitle: string
   bookAuthors: readonly string[]
   bookCover: null | string
-  bookRating: null
-  bookNotes: null
+  rating: null
+  notes: null
   userId: string
 }

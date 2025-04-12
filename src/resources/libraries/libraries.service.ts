@@ -65,8 +65,8 @@ class LibrariesService {
       bookTitle: book.entity.title,
       bookAuthors: book.entity.authors,
       bookCover: book.entity.cover,
-      bookRating: null,
-      bookNotes: null
+      rating: null,
+      notes: null
     })
 
     return new SingleResultObject(updatedLibrary)
