@@ -8,6 +8,10 @@ function parseNumber (value?: string, dflt = 0): number {
   return value != null ? parseInt(value) : dflt
 }
 
+function parseUrl (value?: string, dflt = ''): URL {
+  return new URL(value ?? dflt)
+}
+
 export default {
   environment: parseString(process.env.ENVIRONMENT, 'dev'),
   port: parseNumber(process.env.PORT, 3000),
@@ -24,6 +28,7 @@ export default {
   },
   hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
   openLibrary: {
-    coverUrlPattern: parseString(process.env.OL_COVER_URL_PATH)
+    domain: parseUrl(process.env.OPEN_LIBRARY_DOMAIN, 'https://openlibrary.org'),
+    coverUrlPattern: parseString(process.env.OPEN_LIBRARY_COVER_URL_PATH)
   }
 }

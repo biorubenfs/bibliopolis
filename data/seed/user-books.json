@@ -7,6 +7,9 @@
     "bookAuthors": [
       "Alex Shishin"
     ],
+    "bookNotes": null,
+    "bookRating": null,
+    "bookCover": null,
     "bookId": "01J9KKFS6CKTSVY0ETH9A7PHXW",
     "createdAt": {
       "$date": "2000-01-01T00:00:00.000Z"
@@ -24,6 +27,9 @@
       "John Guzlowski"
     ],
     "bookId": "01J9KKFTWAKVR1HGHCER50JJMQ",
+    "bookNotes": null,
+    "bookRating": null,
+    "bookCover": null,
     "createdAt": {
       "$date": "2000-01-01T00:00:00.000Z"
     },
@@ -38,37 +44,9 @@
     "bookTitle": "It Never Happened",
     "bookAuthors": [],
     "bookId": "01J9KKFQRP6H3F30CNT21G1DWT",
-    "createdAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    }
-  },
-  {
-    "_id": "01J9XDEJZ1ZQZ71X46ESEJHQ5D",
-    "libraryId": "01J9XDD1NAFHP0159FYT245D8X",
-    "userId": "01J9XDBGCX8QM0GW67T7QGKS41",
-    "bookTitle": "Secondhand Time",
-    "bookAuthors": [
-      "Светлана Алексиевич",
-      "Bela Shayevich"
-    ],
-    "bookId": "01J9KKG5ZN2MMPHV4M3E5JR98V",
-    "createdAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    }
-  },
-  {
-    "_id": "01J9XDF6YJWYZ7EC2MDR8R58MW",
-    "libraryId": "01J9XDD1NAFHP0159FYT245D8X",
-    "userId": "01J9XDBGCX8QM0GW67T7QGKS41",
-    "bookTitle": "It Never Happened",
-    "bookAuthors": [],
-    "bookId": "01J9KKFQRP6H3F30CNT21G1DWT",
+    "bookNotes": null,
+    "bookRating": null,
+    "bookCover": null,
     "createdAt": {
       "$date": "2000-01-01T00:00:00.000Z"
     },
