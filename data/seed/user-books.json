@@ -7,8 +7,8 @@
     "bookAuthors": [
       "Alex Shishin"
     ],
-    "bookNotes": null,
-    "bookRating": null,
+    "notes": null,
+    "rating": null,
     "bookCover": null,
     "bookId": "01J9KKFS6CKTSVY0ETH9A7PHXW",
     "createdAt": {
@@ -27,8 +27,8 @@
       "John Guzlowski"
     ],
     "bookId": "01J9KKFTWAKVR1HGHCER50JJMQ",
-    "bookNotes": null,
-    "bookRating": null,
+    "notes": null,
+    "rating": null,
     "bookCover": null,
     "createdAt": {
       "$date": "2000-01-01T00:00:00.000Z"
@@ -44,8 +44,8 @@
     "bookTitle": "It Never Happened",
     "bookAuthors": [],
     "bookId": "01J9KKFQRP6H3F30CNT21G1DWT",
-    "bookNotes": null,
-    "bookRating": null,
+    "notes": null,
+    "rating": null,
     "bookCover": null,
     "createdAt": {
       "$date": "2000-01-01T00:00:00.000Z"
