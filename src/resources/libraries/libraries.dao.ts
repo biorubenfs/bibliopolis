@@ -4,6 +4,7 @@ import { isNotNull } from '../../utils.js'
 import { DBLibrary, NewLibrary } from './libraries.interfaces.js'
 import { LibraryEntity } from './libraries.entity.js'
 import { Role } from '../users/users.interfaces.js'
+import { ClientSession } from 'mongodb'
 
 function dbLibraryToEntity (dbLibrary: DBLibrary | null): LibraryEntity | null {
   return dbLibrary == null ? null : new LibraryEntity(dbLibrary)
@@ -61,11 +62,11 @@ class LibrariesDao extends Dao<DBLibrary> {
     return total
   }
 
-  async addBookIdToLibrary (libraryId: string, bookId: string): Promise<LibraryEntity | null> {
+  async addBookIdToLibrary (libraryId: string, bookId: string, session?: ClientSession): Promise<LibraryEntity | null> {
     const updatedLibrary: DBLibrary | null = await this.collection.findOneAndUpdate(
       { _id: libraryId },
       { $push: { books: bookId } },
-      { returnDocument: 'after' })
+      { returnDocument: 'after', session })
     return dbLibraryToEntity(updatedLibrary)
   }
 

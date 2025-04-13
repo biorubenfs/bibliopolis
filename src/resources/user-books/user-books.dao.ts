@@ -3,6 +3,7 @@ import Dao from '../../dao.js'
 import { isNotNull } from '../../utils.js'
 import { DBUserBook, NewUserBook } from './user-books.interfaces.js'
 import { UserBookEntity } from './user-books.entity.js'
+import { ClientSession } from 'mongodb'
 
 function dbUserBookToEntity (dbUserBook: DBUserBook | null): UserBookEntity | null {
   return dbUserBook == null ? null : new UserBookEntity(dbUserBook)
@@ -13,7 +14,7 @@ class UserBooksDao extends Dao<DBUserBook> {
     super('user_books')
   }
 
-  async create (newUserBook: NewUserBook): Promise<void> {
+  async create (newUserBook: NewUserBook, session: ClientSession): Promise<void> {
     const now = new Date()
     const dbUserBook: DBUserBook = {
       ...newUserBook,
@@ -22,11 +23,11 @@ class UserBooksDao extends Dao<DBUserBook> {
       updatedAt: now
     }
 
-    await this.collection.insertOne(dbUserBook)
+    await this.collection.insertOne(dbUserBook, { session })
   }
 
-  async delete (libraryId: string, bookId: string, userId: string): Promise<void> {
-    await this.collection.deleteOne({ libraryId, bookId, userId })
+  async delete (libraryId: string, bookId: string, userId: string, session: ClientSession): Promise<void> {
+    await this.collection.deleteOne({ libraryId, bookId, userId }, { session })
   }
 
   async list (libraryId: string, userId: string, skip: number, limit: number): Promise<readonly UserBookEntity[]> {
