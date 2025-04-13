@@ -15,6 +15,10 @@ class BooksService {
     return new SingleResultObject(newBook)
   }
 
+  async fetchById (id: string): Promise<BookEntity | null> {
+    return await booksDao.findById(id)
+  }
+
   async getById (id: string): Promise<SingleResultObject<BookEntity>> {
     const book = await booksDao.findById(id)
     if (book == null) {

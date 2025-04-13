@@ -1,13 +1,9 @@
-export interface Type {
-  key: string
-}
-
-export interface Edition {
+export interface OpenLibraryBook {
   title: string
-  authors: Type[]
-  isbn_10: string[]
-  isbn_13: string[]
-  covers: number[]
+  authors: Array<{ key: string }>
+  isbn_10?: string[]
+  isbn_13?: string[]
+  covers?: number[]
 }
 
 export interface Author {
