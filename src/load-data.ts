@@ -54,8 +54,8 @@ export function getMockDataSetParams (data: MockDataSet): { filename: string, co
 async function insertDataInDb<T extends Document> (filename: string, collection: Collection<T>, dirPath: URL): Promise<void> {
   const filePath = path.join(dirPath.pathname, filename)
   const file = readFileSync(filePath, 'utf8')
-  const data: Array<Document> = JSON.parse(file)
-  const parsedData: Array<any> = data.map(item => ({
+  const data: Document[] = JSON.parse(file)
+  const parsedData: any[] = data.map(item => ({
     ...item,
     createdAt: new Date(item.createdAt),
     updatedAt: new Date(item.updatedAt)
