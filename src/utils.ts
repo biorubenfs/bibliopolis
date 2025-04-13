@@ -16,9 +16,9 @@ export function parseSkipLimitQP (req: Request): Page {
   return { skip: parseInt(skip), limit: parseInt(limit) }
 }
 
-export function getCoverUrl (coverId: string | null): string | null {
+export function getCoverUrl (coverId: number | null): string | null {
   if (coverId == null) return null
 
-  const coverUrl = config.openLibrary.coverUrlPattern.replace(':id', coverId)
+  const coverUrl = config.openLibrary.coverUrlPattern.replace(':id', coverId.toString())
   return coverUrl
 }
