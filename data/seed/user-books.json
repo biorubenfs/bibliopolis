@@ -7,9 +7,9 @@
     "bookAuthors": [
       "Alex Shishin"
     ],
-    "notes": null,
-    "rating": null,
-    "bookCover": null,
+    "notes": "Lorem ipsum",
+    "rating": 5,
+    "bookCover": 1304487,
     "bookId": "01J9KKFS6CKTSVY0ETH9A7PHXW",
     "createdAt": "2000-01-01T00:00:00.000Z",
     "updatedAt": "2000-01-01T00:00:00.000Z"
@@ -23,9 +23,9 @@
       "John Guzlowski"
     ],
     "bookId": "01J9KKFTWAKVR1HGHCER50JJMQ",
-    "notes": null,
+    "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis libero id sem egestas, ut scelerisque nisi mattis. Maecenas auctor. ",
     "rating": null,
-    "bookCover": null,
+    "bookCover": 1715106,
     "createdAt": "2000-01-01T00:00:00.000Z",
     "updatedAt": "2000-01-01T00:00:00.000Z"
   },
@@ -37,8 +37,8 @@
     "bookAuthors": [],
     "bookId": "01J9KKFQRP6H3F30CNT21G1DWT",
     "notes": null,
-    "rating": null,
-    "bookCover": null,
+    "rating": 10,
+    "bookCover": 12861662,
     "createdAt": "2000-01-01T00:00:00.000Z",
     "updatedAt": "2000-01-01T00:00:00.000Z"
   }
