@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb'
+import { Collection, Document } from 'mongodb'
 import booksDao from './resources/books/books.dao.js'
 import userBooksDao from './resources/user-books/user-books.dao.js'
 import librariesDao from './resources/libraries/libraries.dao.js'
@@ -54,7 +54,14 @@ export function getMockDataSetParams (data: MockDataSet): { filename: string, co
 async function insertDataInDb<T extends Document> (filename: string, collection: Collection<T>, dirPath: URL): Promise<void> {
   const filePath = path.join(dirPath.pathname, filename)
   const file = readFileSync(filePath, 'utf8')
-  await collection.insertMany(JSON.parse(file))
+  const data: Array<Document> = JSON.parse(file)
+  const parsedData: Array<any> = data.map(item => ({
+    ...item,
+    createdAt: new Date(item.createdAt),
+    updatedAt: new Date(item.updatedAt)
+  }))
+
+  await collection.insertMany(parsedData)
 }
 
 export async function loadDataInDb (dataSetType: DataSetType, ...mockDataSets: MockDataSet[]): Promise<void> {

@@ -9,12 +9,8 @@
       "01J9KKFTWAKVR1HGHCER50JJMQ"
     ],
     "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
-    "createdAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    }
+    "createdAt": "2000-01-01T00:00:00.000Z",
+    "updatedAt": "2000-01-01T00:00:00.000Z"
   },
   {
     "_id": "01J9W8VR2CFZW8PJ1Q8Y4Y5WEZ",
@@ -26,12 +22,8 @@
       "01J9KKFTWAKVR1HGHCER50JJMQ"
     ],
     "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
-    "createdAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    }
+    "createdAt": "2000-01-01T00:00:00.000Z",
+    "updatedAt": "2000-01-01T00:00:00.000Z"
   },
   {
     "_id": "01J9XDD1NAFHP0159FYT245D8X",
@@ -42,11 +34,7 @@
       "01J9KKFQRP6H3F30CNT21G1DWT"
     ],
     "userId": "01J9XDBGCX8QM0GW67T7QGKS41",
-    "createdAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    }
+    "createdAt": "2000-01-01T00:00:00.000Z",
+    "updatedAt": "2000-01-01T00:00:00.000Z"
   }
 ]
