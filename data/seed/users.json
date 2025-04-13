@@ -4,12 +4,8 @@
       "email": "user01@email.com",
       "password": "$2b$10$tpubmvDypzkJbLUpEutaLOjnWHqk.6Xm4ovnoCkwLiUGp5qgQNdvy",
       "name": "user01",
-      "createdAt": {
-        "$date": "2000-01-01T00:00:00.000Z"
-      },
-      "updatedAt": {
-        "$date": "2000-01-01T00:00:00.000Z"
-      },
+      "createdAt": "2000-01-01T00:00:00.000Z",
+      "updatedAt": "2000-01-01T00:00:00.000Z",
       "role": "regular"
     },
     {
@@ -17,12 +13,8 @@
       "name": "admin01",
       "email": "admin01@email.com",
       "password": "$2b$10$mpISt6rrTdVtrvranx8ctO/S2lHBq.iQwk7Yonl1lOK/LnhvHwq2a",
-      "createdAt": {
-        "$date": "2000-01-01T00:00:00.000Z"
-      },
-      "updatedAt": {
-        "$date": "2000-01-01T00:00:00.000Z"
-      },
+      "createdAt": "2000-01-01T00:00:00.000Z",
+      "updatedAt": "2000-01-01T00:00:00.000Z",
       "role": "admin"
     }
   ]

@@ -11,12 +11,8 @@
     "rating": null,
     "bookCover": null,
     "bookId": "01J9KKFS6CKTSVY0ETH9A7PHXW",
-    "createdAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    }
+    "createdAt": "2000-01-01T00:00:00.000Z",
+    "updatedAt": "2000-01-01T00:00:00.000Z"
   },
   {
     "_id": "01J9W9PGE06ANTMG3Y24KGCAFF",
@@ -30,12 +26,8 @@
     "notes": null,
     "rating": null,
     "bookCover": null,
-    "createdAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    }
+    "createdAt": "2000-01-01T00:00:00.000Z",
+    "updatedAt": "2000-01-01T00:00:00.000Z"
   },
   {
     "_id": "01J9WA3W9TE5NG1H21PTK9VS4Q",
@@ -47,11 +39,7 @@
     "notes": null,
     "rating": null,
     "bookCover": null,
-    "createdAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2000-01-01T00:00:00.000Z"
-    }
+    "createdAt": "2000-01-01T00:00:00.000Z",
+    "updatedAt": "2000-01-01T00:00:00.000Z"
   }
 ]
