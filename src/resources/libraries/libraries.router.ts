@@ -6,7 +6,7 @@ import { checkJwt } from '../../middlewares/jwt.middleware.js'
 import { bookdIdSchema, newLibrarySchema } from './libraries.schemas.js'
 import librariesService from './libraries.service.js'
 import { Role } from '../users/users.interfaces.js'
-import librariesBooksService from '../user-books/user-books.service.js'
+import userBooksService from '../user-books/user-books.service.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
 import { parseSkipLimitQP } from '../../utils.js'
 import { HttpStatusCode } from '../../types.js'
@@ -45,7 +45,7 @@ librariesRouter.delete('/:id/books', bodyValidator(bookdIdSchema), tryCatch(asyn
 
 // Libraries-books
 librariesRouter.get('/:id/books', queryPaginationValidator, tryCatch(async (req) => {
-  const result = await librariesBooksService.list(req.params.id, req.userId ?? '', parseSkipLimitQP(req))
+  const result = await userBooksService.list(req.params.id, req.userId ?? '', parseSkipLimitQP(req))
   return { status: HttpStatusCode.OK, data: result }
 }))
 
