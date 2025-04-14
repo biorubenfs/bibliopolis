@@ -1,12 +1,13 @@
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
+import { runInTransaction } from '../../transaction-helper.js'
 import { Page } from '../../types.js'
-import booksService from '../books/books.service.js'
 import userBooksDao from '../user-books/user-books.dao.js'
 import { Role } from '../users/users.interfaces.js'
 import librariesDao from './libraries.dao.js'
 import { LibraryEntity } from './libraries.entity.js'
 import { BookNotFoundInLibraryError, LibraryAlreadyExistsError, LibraryNotFoundError, LibraryPermissionsError } from './libraries.error.js'
 import { NewLibrary } from './libraries.interfaces.js'
+import { ensureBookInBooks } from './open-library/utils.js'
 
 class LibrariesService {
   async create (body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {
@@ -50,23 +51,25 @@ class LibrariesService {
 
   async addBook (libraryId: string, bookId: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
     const library = await this.get(libraryId, userId, Role.Regular)
-    const book = await booksService.getById(bookId)
 
-    const updatedLibrary = await librariesDao.addBookIdToLibrary(library.entity.id, bookId)
+    const book = await ensureBookInBooks(bookId)
 
-    if (updatedLibrary == null) {
-      throw new Error('should not happen')
-    }
+    const updatedLibrary = await runInTransaction<LibraryEntity>(async (session) => {
+      const updated = await librariesDao.addBookIdToLibrary(library.entity.id, book.id, session)
+      if (updated == null) throw new Error('should not happen')
 
-    await userBooksDao.create({
-      libraryId,
-      userId,
-      bookId: book.entity.id,
-      bookTitle: book.entity.title,
-      bookAuthors: book.entity.authors,
-      bookCover: book.entity.cover,
-      rating: null,
-      notes: null
+      await userBooksDao.create({
+        libraryId,
+        userId,
+        bookId: book.id,
+        bookTitle: book.title,
+        bookAuthors: book.authors,
+        bookCover: book.cover,
+        rating: null,
+        notes: null
+      }, session)
+
+      return updated
     })
 
     return new SingleResultObject(updatedLibrary)
@@ -79,12 +82,16 @@ class LibrariesService {
       throw new BookNotFoundInLibraryError(`book with id ${bookId} not found in library ${libraryId}`)
     }
 
-    const updatedLibrary = await librariesDao.removeBookIdFromLibrary(library.entity.id, bookId)
-    if (updatedLibrary == null) {
-      throw new Error('should not happen')
-    }
+    const updatedLibrary = await runInTransaction(async (session) => {
+      const updatedLibrary = await librariesDao.removeBookIdFromLibrary(library.entity.id, bookId)
+      if (updatedLibrary == null) {
+        throw new Error('should not happen')
+      }
 
-    await userBooksDao.delete(libraryId, bookId, userId)
+      await userBooksDao.delete(libraryId, bookId, userId, session)
+
+      return updatedLibrary
+    })
 
     return new SingleResultObject(updatedLibrary)
   }
