@@ -1,6 +1,9 @@
 import z from 'zod'
 
-export const loginSchema = z.object({
+export const signupSchema = z.object({
   email: z.string().email(),
-  password: z.string()
+  password: z.string(),
+  name: z.string()
 })
+
+export const loginSchema = signupSchema.omit({ name: true })
