@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
-import { CollectionResultObject, SingleResultObject, MiscResultObject, SetCookieResultObject, ClearCookieResultObject } from './results.js'
+import { CollectionResultObject, SingleResultObject, MiscResultObject, SetCookieResultObject, ClearCookieResultObject, RedirectResultObject } from './results.js'
 import { Entity, EntityType } from './entity.js'
 import { HttpStatusCode } from './types.js'
 
 type StatusCustomController = HttpStatusCode
-type DataCustomController = SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject | SetCookieResultObject<Entity<EntityType>> | ClearCookieResultObject | null
+type DataCustomController = SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject | SetCookieResultObject<Entity<EntityType>> | ClearCookieResultObject | RedirectResultObject | null
 
 type CustomController = (req: Request) => Promise<{ status: StatusCustomController, data: DataCustomController }>
 
@@ -41,6 +41,10 @@ function tryCatch (controller: CustomController) {
         case data instanceof ClearCookieResultObject:
           res.clearCookie(data.name, data.options)
             .status(status)
+          return
+
+        case data instanceof RedirectResultObject:
+          res.redirect(status, data.url.href)
           return
 
         case data == null:
