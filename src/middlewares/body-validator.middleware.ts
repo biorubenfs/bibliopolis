@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, RequestHandler, Response } from 'express'
 
-import { ZodSchema } from 'zod'
+import { z, ZodSchema } from 'zod'
 import { InvalidBodyError } from '../error/errors.js'
 
-function bodyValidator (schema: ZodSchema): (req: Request, res: Response, next: NextFunction) => void {
+function bodyValidator<TSchema extends ZodSchema> (schema: TSchema): RequestHandler<any, any, z.infer<TSchema>> {
   return function (req: Request, res: Response, next: NextFunction): void {
     const validationResult = schema.safeParse(req.body)
 
