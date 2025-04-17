@@ -19,3 +19,9 @@ export class InvalidTokenError extends ApiError {
     super(ApiRestErrorCode.InvalidTokenError, 403, message)
   }
 }
+
+export class ExpiredTokenError extends ApiError {
+  constructor (message: string) {
+    super(ApiRestErrorCode.InvalidTokenError, 403, message)
+  }
+}

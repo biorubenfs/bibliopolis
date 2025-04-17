@@ -1,13 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from '../config.js'
 import { Role } from '../resources/users/users.interfaces.js'
-import { InvalidTokenError, TokenNotProvidedError } from '../error/errors.js'
-
-interface JWTPayload {
-  id: string
-  role: Role
-}
+import { ExpiredTokenError, InvalidTokenError, TokenNotProvidedError } from '../error/errors.js'
 
 // export function checkJwt (req: Request, res: Response, next: NextFunction): void {
 //   const header = req.header('Authorization')
@@ -37,10 +32,20 @@ export function checkJwt (req: Request, res: Response, next: NextFunction): void
   }
 
   try {
-    const payload = jwt.verify(token, config.jwt.secret) as JWTPayload
+    const payload = jwt.verify(token, config.jwt.secret) as JwtPayload
+
+    if (payload.id == null || payload.role == null || payload.exp == null) {
+      throw new InvalidTokenError('invalid token')
+    }
 
     req.userId = payload.id
     req.role = payload.role
+
+    const now = new Date()
+
+    if (payload.exp < now.getTime() / 1000) {
+      throw new ExpiredTokenError('token expired')
+    }
 
     next()
   } catch (error) {

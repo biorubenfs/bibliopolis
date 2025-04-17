@@ -6,7 +6,7 @@ export function makeJwt (userId: string, role: Role): string {
   const token = jwt.sign({
     id: userId,
     role
-  }, config.jwt.secret, { expiresIn: '1d' })
+  }, config.jwt.secret, { expiresIn: config.jwt.expiration })
 
   return token
 }

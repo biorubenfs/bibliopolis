@@ -35,7 +35,8 @@ export default {
     password: data.DEFAULT_ADMIN_PASSWORD
   },
   jwt: {
-    secret: data.JWT_SECRET
+    secret: parseString(process.env.JWT_SECRET, 'foo'),
+    expiration: parseNumber(process.env.JWT_EXPIRATION_TIME, 60000)
   },
   hashRounds: data.HASH_ROUNDS,
   openLibrary: {
