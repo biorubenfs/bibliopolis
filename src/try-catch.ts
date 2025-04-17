@@ -1,14 +1,20 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction, RequestHandler } from 'express'
 import { CollectionResultObject, SingleResultObject, MiscResultObject, SetCookieResultObject, ClearCookieResultObject } from './results.js'
 import { Entity, EntityType } from './entity.js'
 import { HttpStatusCode } from './types.js'
 
 type StatusCustomController = HttpStatusCode
-type DataCustomController = SingleResultObject<Entity<EntityType>> | CollectionResultObject<Entity<EntityType>> | MiscResultObject | SetCookieResultObject<Entity<EntityType>> | ClearCookieResultObject | null
+type DataCustomController =
+  SingleResultObject<Entity<EntityType>> |
+  CollectionResultObject<Entity<EntityType>> |
+  MiscResultObject |
+  SetCookieResultObject<Entity<EntityType>> |
+  ClearCookieResultObject |
+  null
 
-type CustomController = (req: Request) => Promise<{ status: StatusCustomController, data: DataCustomController }>
+type CustomController<TBody> = (req: Request<any, any, TBody>) => Promise<{ status: StatusCustomController, data: DataCustomController }>
 
-function tryCatch (controller: CustomController) {
+function tryCatch<TBody> (controller: CustomController<TBody>): RequestHandler<any, any, TBody> {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const { status, data } = await controller(req)
