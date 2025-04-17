@@ -35,8 +35,18 @@ class AuthService {
   }
 
   async login (body: Login): Promise<SetCookieResultObject<UserEntity>> {
-    const user = await usersService.getByEmail(body.email)
-    const isPasswordValid = bcrypt.compareSync(body.password, user.password ?? '')
+    let user
+    try {
+      user = await usersService.getByEmail(body.email)
+    } catch (error) {
+      if (typeof error === 'object' && error != null && 'statusCode' in error && error.statusCode === 404) {
+        // do nothing
+      } else {
+        throw error
+      }
+    }
+
+    const isPasswordValid = (user != null) ? bcrypt.compareSync(body.password, user.password) : false
 
     if (user == null || !isPasswordValid) {
       throw new InvalidLoginError('invalid email or password')
