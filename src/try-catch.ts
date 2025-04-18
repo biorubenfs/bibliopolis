@@ -14,19 +14,18 @@ type DataCustomController =
   ClearCookieResultObject |
   null
 
-
 const exampleRouter = Router()
 
 const params = ['id']
 const _params = z.object({ id: z.string() })
 const schema = z.object({ name: z.string(), email: z.string(), password: z.string() })
 const query = ['skip', 'limit']
-const _query = z.object({skip: z.string().transform(val => parseInt(val)), limit: z.string().transform(val => parseInt(val))})
+const _query = z.object({ skip: z.string().transform(val => parseInt(val)), limit: z.string().transform(val => parseInt(val)) })
 
 exampleRouter.post('/:id', handler(params, schema, query, async (params, body, query) => {
   await usersService.signup(body)
 
-  return {status: 200, data: null}
+  return { status: 200, data: null }
 }))
 
 exampleRouter.post('/:id', fullHandler(_params, schema, _query, async (params, body, query) => {
@@ -34,18 +33,17 @@ exampleRouter.post('/:id', fullHandler(_params, schema, _query, async (params, b
   await usersService.getById(params.id)
   await usersService.list(query)
 
-  return {status: 200, data: null}
+  return { status: 200, data: null }
 }))
 
 type TypedCustomController<_TParams, _TBody, _TQuery> = (params: _TParams, body: _TBody, query: _TQuery) => Promise<{ status: StatusCustomController, data: DataCustomController }>
 
-function handler<_TParams, _TSchema extends ZodSchema, _TQuery>(params: _TParams, schema: _TSchema, query: _TQuery, controller: TypedCustomController<_TParams, z.infer<_TSchema>, _TQuery>): RequestHandler<_TParams, any, z.infer<ZodSchema>, _TQuery> {
+function handler<_TParams, _TSchema extends ZodSchema, _TQuery> (params: _TParams, schema: _TSchema, query: _TQuery, controller: TypedCustomController<_TParams, z.infer<_TSchema>, _TQuery>): RequestHandler<_TParams, any, z.infer<ZodSchema>, _TQuery> {
   return async function (req, res, next) {
-
     // validate params
 
     // validate query
-    
+
     // validate body
     const validationResult = schema.safeParse(req.body)
     if (!validationResult.success) {
@@ -99,14 +97,12 @@ function handler<_TParams, _TSchema extends ZodSchema, _TQuery>(params: _TParams
   }
 }
 
-
 function fullHandler<
   _TParamsSchema extends ZodSchema,
   _TBodySchema extends ZodSchema,
   _TQuerySchema extends ZodSchema
->(paramsSchema: _TParamsSchema, bodySchema: _TBodySchema, querySchema: _TQuerySchema, controller: TypedCustomController<z.infer<_TParamsSchema>, z.infer<_TBodySchema>, z.infer<_TQuerySchema>>): RequestHandler<z.infer<_TParamsSchema>, any, z.infer<ZodSchema>, z.infer<_TQuerySchema>> {
+> (paramsSchema: _TParamsSchema, bodySchema: _TBodySchema, querySchema: _TQuerySchema, controller: TypedCustomController<z.infer<_TParamsSchema>, z.infer<_TBodySchema>, z.infer<_TQuerySchema>>): RequestHandler<z.infer<_TParamsSchema>, any, z.infer<ZodSchema>, z.infer<_TQuerySchema>> {
   return async function (req, res, next) {
-
     // validate params
     const valParamsResult = paramsSchema.safeParse(req.params)
     if (!valParamsResult.success) {
