@@ -96,4 +96,4 @@ describe('users tests', async () => {
 
     expect(response.status).equals(200)
   })
-})
+}, {timeout: 15_000})

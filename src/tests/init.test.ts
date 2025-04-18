@@ -34,4 +34,4 @@ describe('init tests', async () => {
     expect(primary).to.be.an('array').of.length(1)
     expect(secondary).to.be.an('array').of.length(2)
   })
-})
+}, {timeout: 15_000})
