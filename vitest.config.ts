@@ -8,8 +8,6 @@ export default defineConfig({
     include: ['src/tests/**/*.test.ts'],
     watch: false,
     isolate: true,
-    sequence: {
-      concurrent: false
-    }
+    hookTimeout: 20_000
   }
 })
