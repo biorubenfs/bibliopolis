@@ -27,7 +27,7 @@ class LibrariesDao extends Dao<DBLibrary> {
   }
 
   async init (): Promise<void> {
-    if (config.environment !== 'local') {
+    if (config.environment !== 'local' && config.environment !== 'test') {
       await this.collection.createSearchIndex({
         name: 'library_search',
         definition: {
