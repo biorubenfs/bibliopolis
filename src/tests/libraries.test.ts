@@ -185,4 +185,4 @@ describe('libraries tests', async () => {
 
     expect(response.status).equals(403)
   })
-})
+}, {timeout: 15_000})

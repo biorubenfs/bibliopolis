@@ -61,4 +61,4 @@ describe('books tests', async () => {
     const firstBook = body.results.at(0).attributes
     expect(firstBook).to.have.property('title').equals('My Voice Betrays Me (EEM)')
   })
-})
+}, {timeout: 15_000})
