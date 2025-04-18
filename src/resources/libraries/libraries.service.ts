@@ -39,10 +39,10 @@ class LibrariesService {
     await librariesDao.delete(library.entity.id)
   }
 
-  async list (userId: string, role: Role, page: Page): Promise<CollectionResultObject<LibraryEntity>> {
+  async list (userId: string, role: Role, page: Page, search?: string): Promise<CollectionResultObject<LibraryEntity>> {
     const [libraries, total] = await Promise.all([
-      await librariesDao.list(userId, role, page.skip, page.limit),
-      await librariesDao.count(userId, role)
+      await librariesDao.list(userId, role, page.skip, page.limit, search),
+      await librariesDao.count(userId, role, search)
     ])
 
     const mockPaginationObject = { ...page, total }
