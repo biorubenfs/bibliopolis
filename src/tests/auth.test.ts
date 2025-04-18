@@ -74,4 +74,4 @@ describe('login tests', () => {
     expect(body.validationError).toBeInstanceOf(Array)
     expect(body.validationError.length).toBe(1)
   })
-}, {timeout: 15_000})
+}, 15_000)
