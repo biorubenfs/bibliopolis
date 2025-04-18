@@ -7,6 +7,9 @@ export default defineConfig({
     setupFiles: [],
     include: ['src/tests/**/*.test.ts'],
     watch: false,
-    isolate: true
+    isolate: true,
+    sequence: {
+      concurrent: false
+    }
   }
 })
