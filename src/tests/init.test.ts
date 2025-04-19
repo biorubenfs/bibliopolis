@@ -3,8 +3,7 @@ import App from '../app.js'
 import mongo from '../mongo.js'
 import testUtils from './utils/utils.js'
 
-const PORT = testUtils.TESTS_PORTS.INIT_PORT
-const app = new App(PORT)
+const app = new App(testUtils.TESTS_PORT)
 
 beforeAll(async () => {
   await app.start()
@@ -16,7 +15,7 @@ afterAll(async () => {
 
 describe('init tests', async () => {
   it('healthcheck', async () => {
-    const url = new URL('/', `http://localhost:${PORT}`)
+    const url = new URL('/', testUtils.TESTS_BASE_URL)
     const result = await fetch(url, {
       method: 'GET'
     })

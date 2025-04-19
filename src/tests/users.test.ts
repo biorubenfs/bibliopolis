@@ -7,9 +7,8 @@ import { makeJwt } from '../resources/auth/auth.utils.js'
 import testUtils from './utils/utils.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 
-const PORT = testUtils.TESTS_PORTS.USERS_PORT
-const app = new App(PORT)
-const usersURL = new URL('/users', `http://localhost:${PORT}`)
+const app = new App(testUtils.TESTS_PORT)
+const usersURL = new URL('/users', testUtils.TESTS_BASE_URL)
 
 const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
 const cookie = testUtils.buildAccessTokenCookie(token)

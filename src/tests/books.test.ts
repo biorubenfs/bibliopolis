@@ -5,9 +5,8 @@ import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 import { makeJwt } from '../resources/auth/auth.utils.js'
 import { Role } from '../resources/users/users.interfaces.js'
 
-const PORT = testUtils.TESTS_PORTS.BOOKS_PORT
-const app = new App(PORT)
-const baseUrl = new URL(`http://localhost:${PORT}`)
+const app = new App(testUtils.TESTS_PORT)
+const baseUrl = new URL(testUtils.TESTS_BASE_URL)
 const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
 const cookie = testUtils.buildAccessTokenCookie(token)
 
