@@ -1,25 +1,23 @@
 import { afterAll, beforeAll, describe, it, expect } from 'vitest'
-import App from '../app.js'
 import usersDao from '../resources/users/users.dao.js'
 import config from '../config.js'
 import { Role } from '../resources/users/users.interfaces.js'
 import { makeJwt } from '../resources/auth/auth.utils.js'
 import testUtils from './utils/utils.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
+import mongo from '../mongo.js'
 
-const app = new App(testUtils.TESTS_PORT)
 const usersURL = new URL('/users', testUtils.TESTS_BASE_URL)
 
 const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
 const cookie = testUtils.buildAccessTokenCookie(token)
 
 beforeAll(async () => {
-  await app.start()
-  await loadDataInDb(DataSetType.Test, MockDataSet.Users)
+  await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
 })
 
 afterAll(async () => {
-  await app.stop()
+  await mongo.clean()
 })
 
 describe('users tests', async () => {

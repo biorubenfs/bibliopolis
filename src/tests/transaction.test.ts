@@ -9,7 +9,7 @@ let testCollection: Collection
 
 describe('mongodb transaction tests', () => {
   beforeAll(async () => {
-    await mongo.start()
+    await mongo.start({ memory: true })
     db = mongo.db('test-db')
     testCollection = db.collection('test_collection')
   })

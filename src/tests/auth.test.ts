@@ -1,19 +1,18 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest'
-import App from '../app.js'
 import { ApiRestErrorCode } from '../error/types.js'
 import testUtils, { } from './utils/utils.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
+import mongo from '../mongo.js'
 
-const app = new App(testUtils.TESTS_PORT)
+// const app = new App(testUtils.TESTS_PORT)
 const loginUrl = new URL('/auth/login', testUtils.TESTS_BASE_URL)
 
 beforeAll(async () => {
-  await app.start()
-  await loadDataInDb(DataSetType.Test, MockDataSet.Users)
+  await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
 })
 
 afterAll(async () => {
-  await app.stop()
+  await mongo.clean()
 })
 
 describe('login tests', () => {

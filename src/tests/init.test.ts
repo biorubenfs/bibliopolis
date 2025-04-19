@@ -1,17 +1,6 @@
-import { afterAll, beforeAll, describe, it, assert, expect } from 'vitest'
-import App from '../app.js'
+import { describe, it, assert, expect } from 'vitest'
 import mongo from '../mongo.js'
 import testUtils from './utils/utils.js'
-
-const app = new App(testUtils.TESTS_PORT)
-
-beforeAll(async () => {
-  await app.start()
-})
-
-afterAll(async () => {
-  await app.stop()
-})
 
 describe('init tests', async () => {
   it('healthcheck', async () => {
