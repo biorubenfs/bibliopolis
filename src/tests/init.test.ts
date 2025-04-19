@@ -1,4 +1,4 @@
-import {describe, it, assert, expect } from 'vitest'
+import { describe, it, assert, expect } from 'vitest'
 import mongo from '../mongo.js'
 import testUtils from './utils/utils.js'
 
