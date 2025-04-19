@@ -8,15 +8,12 @@ import { Role } from '../resources/users/users.interfaces.js'
 const PORT = testUtils.TESTS_PORTS.BOOKS_PORT
 const app = new App(PORT)
 const baseUrl = new URL(`http://localhost:${PORT}`)
-let token: string
-let cookie: string
+const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
+const cookie = testUtils.buildAccessTokenCookie(token)
 
 beforeAll(async () => {
   await app.start()
   await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users)
-
-  token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
-  cookie = testUtils.buildAccessTokenCookie(token)
 })
 
 afterAll(async () => {
@@ -61,4 +58,4 @@ describe('books tests', async () => {
     const firstBook = body.results.at(0).attributes
     expect(firstBook).to.have.property('title').equals('My Voice Betrays Me (EEM)')
   })
-}, 15_000)
+})

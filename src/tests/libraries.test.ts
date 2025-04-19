@@ -13,7 +13,6 @@ const cookie = testUtils.buildAccessTokenCookie(token)
 
 beforeAll(async () => {
   await app.start()
-
   await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
 })
 
@@ -185,4 +184,4 @@ describe('libraries tests', async () => {
 
     expect(response.status).equals(403)
   })
-}, 15_000)
+})

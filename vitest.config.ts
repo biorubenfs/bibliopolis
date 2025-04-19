@@ -7,6 +7,12 @@ export default defineConfig({
     setupFiles: [],
     include: ['src/tests/**/*.test.ts'],
     watch: false,
-    isolate: true
+    isolate: true,
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
+    hookTimeout: 20_000
   }
 })

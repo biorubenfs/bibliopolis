@@ -96,4 +96,4 @@ describe('users tests', async () => {
 
     expect(response.status).equals(200)
   })
-}, 15_000)
+})
