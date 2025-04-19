@@ -10,15 +10,16 @@ class Mongo {
 
   async start (options: { memory: boolean } = { memory: false }): Promise<void> {
     if (this.mongoClient != null) return
-    if (this.uri == null) {
+    if (this.uri == null) { // relevant in testing to be able to reuse the mongodb-memory-server (mms). Avoid to instantiate a new mms for each test
       if (options.memory && config.environment === 'test') {
         this.memoryReplSet = await MongoMemoryReplSet.create({ replSet: { count: 3 } })
-        this.uri = this.memoryReplSet.getUri()
+        this.setUri(this.memoryReplSet.getUri())
 
         // await while all SECONDARIES will be ready. Required only in testing.
-        await new Promise((resolve) => setTimeout(resolve, 4000))
+        await this.memoryReplSet.waitUntilRunning()
+        // await new Promise((resolve) => setTimeout(resolve, 4000))
       } else {
-        this.uri = config.mongo.uri
+        this.setUri(config.mongo.uri)
       }
     }
 
