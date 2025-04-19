@@ -1,4 +1,4 @@
-import { describe, it, assert, expect } from 'vitest'
+import {describe, it, assert, expect } from 'vitest'
 import mongo from '../mongo.js'
 import testUtils from './utils/utils.js'
 
@@ -13,8 +13,8 @@ describe('init tests', async () => {
   })
 
   it('replica set should have been established', async () => {
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    const db = mongo.client.db('')
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    const db = mongo.client.db('admin')
     const admin = db.admin()
     const status = await admin.replSetGetStatus()
     const primary = status.members.filter((m: any) => m.stateStr === 'PRIMARY') as any[]
