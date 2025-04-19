@@ -14,6 +14,7 @@ const cookie = testUtils.buildAccessTokenCookie(token)
 
 beforeAll(async () => {
   await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
+  await usersDao.init()
 })
 
 afterAll(async () => {
