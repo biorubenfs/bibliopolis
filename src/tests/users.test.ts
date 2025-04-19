@@ -22,6 +22,9 @@ afterAll(async () => {
 
 describe('users tests', async () => {
   it('default user admin should have been created', async () => {
+    console.log(config.defaultAdmin.name)
+    const users = await usersDao.collection.find({ role: Role.Admin }).toArray()
+    console.log(users)
     const response = await usersDao.collection.findOne({ name: config.defaultAdmin.name })
 
     expect(response).to.be.not.equals(null)
