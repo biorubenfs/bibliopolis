@@ -37,7 +37,6 @@ describe('libraries tests', async () => {
 
   it('GET /libraries?search=first - should list user libraries using search', async () => {
     const url = new URL('/libraries?search=first', testUtils.TESTS_BASE_URL)
-    console.log(url.href)
     const response = await fetch(url.href, {
       headers: {
         cookie,
@@ -47,7 +46,6 @@ describe('libraries tests', async () => {
     })
 
     const body = await response.json()
-    console.log(body)
 
     expect(response.status).equals(200)
     expect(body.results.length).equals(1)
