@@ -13,6 +13,7 @@ describe('init tests', async () => {
   })
 
   it('replica set should have been established', async () => {
+    // It looks that we have to wait a bit
     await new Promise(resolve => setTimeout(resolve, 500))
     const db = mongo.client.db('admin')
     const admin = db.admin()

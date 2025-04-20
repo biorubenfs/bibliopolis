@@ -73,3 +73,27 @@ Proceso 2: setup-tests.ts (uno por worker de Vitest)
 │   └── Reutiliza el URI para conectarse a `mongodb-memory-server`
 └── Tests pueden ejecutar queries reales
 ```
+
+## Ejecutar los tests de forma secuencial
+
+Por defecto, la mayoría de tests runners ejecuta los tests en paralelo. Esto es buena idea para tests unitarios, ya que reduce el tiempo de ejecución de los tests. Sin embargo, cuando deseamos hacer tests para un API REST con una base de datos en memoria esta aproximación puede darnos muchos problemas. Por ejemplo, si por cada suite de tests levantamos una aplicación y una base de datos en memoria y los tests de cada suite se ejecutan de forma paralela, esto significa que se ejecutan en memoria varias instancias de `mongodb-memory-server` (mms), con la consiguiente carga. Y en Github Actions he encontrado problemas como este:
+
+```
+Starting the MongoMemoryServer Instance failed, enable debug log for more information. Error:
+ UnableToUnlockLockfileError: Cannot unlock file "/home/runner/.cache/mongodb-binaries/7.0.11.lock", because it is not locked by this process
+```
+
+Que parece proceder de que cada instancia de mms utiliza el mismo cichero de cache y conlleva conflictos y eventualmente que los test fallen sin motivo aparente.
+Para solucionar este problema, además de lo descrito anteriormente y levantar un único mms, los tests se ejecutan de forma secuencial, purgando la base de datos en cada suite de test gracias a `beforeAll`y `afterAll`.
+
+Para lograr que los tests se ejecuten de forma secuencial fue necesarioa ajustar el script de `package.json` agregando el frag `--pool=forks` y en la configuración de vitest:
+
+```js
+poolOptions: {
+  forks: {
+    singleFork: true,
+  },
+},
+```
+
+Es posible que existan otras formas de hacer que los tests se ejecutan secuencialmente. Yo encontré esta [aquí](https://adequatica.medium.com/api-testing-with-vitest-391697942527).
