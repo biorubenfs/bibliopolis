@@ -1,10 +1,9 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest'
 import { ApiRestErrorCode } from '../error/types.js'
-import testUtils, { } from './utils/utils.js'
+import testUtils from './utils/utils.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 import mongo from '../mongo.js'
 
-// const app = new App(testUtils.TESTS_PORT)
 const loginUrl = new URL('/auth/login', testUtils.TESTS_BASE_URL)
 
 beforeAll(async () => {
@@ -16,7 +15,7 @@ afterAll(async () => {
 })
 
 describe('login tests', () => {
-  it('should do login', async () => {
+  it('POST /auth/login - should do login', async () => {
     const response = await fetch(loginUrl, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -35,7 +34,7 @@ describe('login tests', () => {
     expect(body).property('id').equals('01J9BHWZ8N4B1JBSAFCBKQGERS')
   })
 
-  it('should fail to do login with wrong password', async () => {
+  it('POST /auth/login - should fail to do login with wrong password', async () => {
     const response = await fetch(loginUrl, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -47,7 +46,7 @@ describe('login tests', () => {
     expect(body.errorCode).toBe(ApiRestErrorCode.InvalidCredentials)
   })
 
-  it('should fail to do login with wrong email', async () => {
+  it('POST /auth/login - should fail to do login with wrong email', async () => {
     const response = await fetch(loginUrl, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -59,7 +58,7 @@ describe('login tests', () => {
     expect(body.errorCode).toBe(ApiRestErrorCode.InvalidCredentials)
   })
 
-  it('should throw a body validation error', async () => {
+  it('POST /auth/login - should throw a body validation error', async () => {
     const response = await fetch(loginUrl, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',

@@ -3,7 +3,7 @@ import mongo from '../mongo.js'
 import testUtils from './utils/utils.js'
 
 describe('init tests', async () => {
-  it('healthcheck', async () => {
+  it('GET / - healthcheck', async () => {
     const url = new URL('/', testUtils.TESTS_BASE_URL)
     const result = await fetch(url, {
       method: 'GET'

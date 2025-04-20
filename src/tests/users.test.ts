@@ -33,7 +33,7 @@ describe('users tests', async () => {
     expect(response).to.have.property('name').equals(config.defaultAdmin.name)
   })
 
-  it('should create a user', async () => {
+  it('POST /users - should create a user', async () => {
     const body = {
       name: 'name',
       email: 'email@email.com',
@@ -52,7 +52,7 @@ describe('users tests', async () => {
     expect(response.status).equals(201)
   })
 
-  it('should return a validation body error', async () => {
+  it('POST /users - should return a validation body error', async () => {
     const body = {
       name: 'foo',
       email: 'foo@email.com'
@@ -69,7 +69,7 @@ describe('users tests', async () => {
     expect(response.status).equals(400)
   })
 
-  it('should deny to create a new user', async () => {
+  it('POST /users - should deny to create a new user', async () => {
     const body = {
       name: 'user01',
       email: 'user01@email.com',
@@ -87,7 +87,7 @@ describe('users tests', async () => {
     expect(response.status).equals(409)
   })
 
-  it('should get a user', async () => {
+  it('GET /users -  /users should get a user', async () => {
     const usersMeUrl = new URL('/users/me', usersURL)
     const response = await fetch(usersMeUrl, {
       headers: {

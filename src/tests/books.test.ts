@@ -5,7 +5,6 @@ import { makeJwt } from '../resources/auth/auth.utils.js'
 import { Role } from '../resources/users/users.interfaces.js'
 import mongo from '../mongo.js'
 
-// const app = new App(testUtils.TESTS_PORT)
 const baseUrl = new URL(testUtils.TESTS_BASE_URL)
 const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
 const cookie = testUtils.buildAccessTokenCookie(token)
@@ -19,7 +18,7 @@ afterAll(async () => {
 })
 
 describe('books tests', async () => {
-  it('should get a book', async () => {
+  it('GET /books/:id - should get a book', async () => {
     const url = new URL('/books/01J9KKFT64VX47TEDXMBBFRHTV', baseUrl)
     const response = await fetch(url, { method: 'GET', headers: { cookie } })
     const body = await response.json()
@@ -34,7 +33,7 @@ describe('books tests', async () => {
     expect(attributes.title).to.be.a('string').equals('Underground : Life and Survival in the Russian Black Market')
   })
 
-  it('should get a list of books paginated', async () => {
+  it('GET /books - should get a list of books paginated', async () => {
     const url = new URL('/books', baseUrl)
     const skip = 1
     const limit = 8
