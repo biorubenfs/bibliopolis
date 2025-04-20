@@ -1,15 +1,10 @@
-enum TESTS_PORTS {
-  INIT_PORT = 3001,
-  AUTH_PORT = 3002,
-  USERS_PORT = 3003,
-  BOOKS_PORT = 3004,
-  LIBRARIES_PORT = 3005,
-}
+const TESTS_PORT = 3001
+const TESTS_BASE_URL = `http://localhost:${TESTS_PORT}`
 
 function buildAccessTokenCookie (token: string): string {
   return `access_token=${token}`
 }
 
-const testUtils = { buildAccessTokenCookie, TESTS_PORTS }
+const testUtils = { buildAccessTokenCookie, TESTS_PORT, TESTS_BASE_URL }
 
 export default testUtils

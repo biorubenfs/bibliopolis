@@ -24,8 +24,8 @@ function parseUrl (value?: string, dflt = ''): URL {
 }
 
 export default {
-  environment: data.ENVIRONMENT,
-  port: data.PORT,
+  environment: parseString(process.env.ENVIRONMENT, 'local'),
+  port: parseNumber(process.env.PORT, 3000),
   mongo: {
     uri: data.MONGO_URI
   },

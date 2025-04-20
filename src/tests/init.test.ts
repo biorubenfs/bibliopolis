@@ -1,22 +1,10 @@
-import { afterAll, beforeAll, describe, it, assert, expect } from 'vitest'
-import App from '../app.js'
+import { describe, it, assert, expect } from 'vitest'
 import mongo from '../mongo.js'
 import testUtils from './utils/utils.js'
 
-const PORT = testUtils.TESTS_PORTS.INIT_PORT
-const app = new App(PORT)
-
-beforeAll(async () => {
-  await app.start()
-})
-
-afterAll(async () => {
-  await app.stop()
-})
-
 describe('init tests', async () => {
-  it('healthcheck', async () => {
-    const url = new URL('/', `http://localhost:${PORT}`)
+  it('GET / - healthcheck', async () => {
+    const url = new URL('/', testUtils.TESTS_BASE_URL)
     const result = await fetch(url, {
       method: 'GET'
     })
@@ -25,6 +13,8 @@ describe('init tests', async () => {
   })
 
   it('replica set should have been established', async () => {
+    // It looks that we have to wait a bit
+    await new Promise(resolve => setTimeout(resolve, 500))
     const db = mongo.client.db('admin')
     const admin = db.admin()
     const status = await admin.replSetGetStatus()
@@ -34,4 +24,4 @@ describe('init tests', async () => {
     expect(primary).to.be.an('array').of.length(1)
     expect(secondary).to.be.an('array').of.length(2)
   })
-}, 15_000)
+})

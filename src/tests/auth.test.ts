@@ -1,24 +1,21 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest'
-import App from '../app.js'
 import { ApiRestErrorCode } from '../error/types.js'
 import testUtils from './utils/utils.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
+import mongo from '../mongo.js'
 
-const PORT = testUtils.TESTS_PORTS.AUTH_PORT
-const app = new App(PORT)
-const loginUrl = new URL('/auth/login', `http://localhost:${PORT}`)
+const loginUrl = new URL('/auth/login', testUtils.TESTS_BASE_URL)
 
 beforeAll(async () => {
-  await app.start()
-  await loadDataInDb(DataSetType.Test, MockDataSet.Users)
+  await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
 })
 
 afterAll(async () => {
-  await app.stop()
+  await mongo.clean()
 })
 
 describe('login tests', () => {
-  it('should do login', async () => {
+  it('POST /auth/login - should do login', async () => {
     const response = await fetch(loginUrl, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -37,7 +34,7 @@ describe('login tests', () => {
     expect(body).property('id').equals('01J9BHWZ8N4B1JBSAFCBKQGERS')
   })
 
-  it('should fail to do login with wrong password', async () => {
+  it('POST /auth/login - should fail to do login with wrong password', async () => {
     const response = await fetch(loginUrl, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -49,7 +46,7 @@ describe('login tests', () => {
     expect(body.errorCode).toBe(ApiRestErrorCode.InvalidCredentials)
   })
 
-  it('should fail to do login with wrong email', async () => {
+  it('POST /auth/login - should fail to do login with wrong email', async () => {
     const response = await fetch(loginUrl, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -61,7 +58,7 @@ describe('login tests', () => {
     expect(body.errorCode).toBe(ApiRestErrorCode.InvalidCredentials)
   })
 
-  it('should throw a body validation error', async () => {
+  it('POST /auth/login - should throw a body validation error', async () => {
     const response = await fetch(loginUrl, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -74,4 +71,4 @@ describe('login tests', () => {
     expect(body.validationError).toBeInstanceOf(Array)
     expect(body.validationError.length).toBe(1)
   })
-}, 15_000)
+})
