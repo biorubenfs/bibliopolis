@@ -24,7 +24,8 @@ librariesRouter.get('/:id', tryCatch(async (req) => {
 }))
 
 librariesRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
-  const result = await librariesService.list(req.userId ?? '', req.role ?? Role.Regular, parseSkipLimitQP(req))
+  const search = req.query.search
+  const result = await librariesService.list(req.userId ?? '', req.role ?? Role.Regular, parseSkipLimitQP(req), search as string)
   return { status: HttpStatusCode.OK, data: result }
 }))
 

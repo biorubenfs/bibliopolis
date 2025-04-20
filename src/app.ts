@@ -1,5 +1,6 @@
 import logger from './logger.js'
 import mongo from './mongo.js'
+import librariesDao from './resources/libraries/libraries.dao.js'
 import usersDao from './resources/users/users.dao.js'
 import Server from './server.js'
 
@@ -19,6 +20,7 @@ export default class App {
     this.server.listen()
 
     await usersDao.init()
+    await librariesDao.init()
 
     logger.info('app started succesfully')
     logger.info('press CTRL+C to stop app')
