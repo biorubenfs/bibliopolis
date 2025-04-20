@@ -7,13 +7,13 @@ import { checkAdmin, checkJwt } from '../../middlewares/jwt.middleware.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
 import { parseSkipLimitQP } from '../../utils.js'
 import { HttpStatusCode } from '../../types.js'
-import { RedirectResultObject } from '../../results.js'
+import { RedirectResultObject, SingleResultObject } from '../../results.js'
 
 const usersRouter = Router()
 
 usersRouter.post('/', checkJwt, checkAdmin, bodyValidator(createUserSchema), tryCatch(async (req) => {
   const result = await usersService.signup(req.body)
-  return { status: HttpStatusCode.Created, data: result }
+  return { status: HttpStatusCode.Created, data: new SingleResultObject(result) }
 }))
 
 usersRouter.get('/me', checkJwt, tryCatch(async (req) => {
