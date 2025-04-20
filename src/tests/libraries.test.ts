@@ -24,7 +24,7 @@ describe('libraries tests', async () => {
         cookie,
         'Content-Type': 'application/json'
       },
-      method: 'GET',
+      method: 'GET'
     })
 
     const body = await response.json()
