@@ -4,10 +4,21 @@ import { isNotNull } from '../../utils.js'
 import { DBLibrary, NewLibrary } from './libraries.interfaces.js'
 import { LibraryEntity } from './libraries.entity.js'
 import { Role } from '../users/users.interfaces.js'
-import { ClientSession } from 'mongodb'
+import { ClientSession, Filter } from 'mongodb'
+import config from '../../config.js'
 
 function dbLibraryToEntity (dbLibrary: DBLibrary | null): LibraryEntity | null {
   return dbLibrary == null ? null : new LibraryEntity(dbLibrary)
+}
+
+function listLibrariesMongoFilter (userId: string, role: Role, search?: string): Filter<DBLibrary> {
+  const mongoFilter: Filter<DBLibrary> = role === Role.Regular ? { userId } : {}
+
+  if (search != null) {
+    mongoFilter.$text = { $search: search }
+  }
+
+  return mongoFilter
 }
 
 class LibrariesDao extends Dao<DBLibrary> {
@@ -15,7 +26,24 @@ class LibrariesDao extends Dao<DBLibrary> {
     super('libraries')
   }
 
-  async init (): Promise<void> { }
+  async init (): Promise<void> {
+    if (config.environment !== 'local' && config.environment !== 'test') {
+      await this.collection.createSearchIndex({
+        name: 'library_search',
+        definition: {
+          mappings: {
+            dynamic: false,
+            fields: {
+              name: { type: 'string' },
+              description: { type: 'string' }
+            }
+          }
+        }
+      })
+    } else {
+      await this.collection.createIndex({ name: 'text', description: 'text' })
+    }
+  }
 
   async create (newLibrary: NewLibrary, userId: string): Promise<LibraryEntity> {
     const now = new Date()
@@ -47,8 +75,8 @@ class LibrariesDao extends Dao<DBLibrary> {
     await this.collection.deleteOne({ _id: id })
   }
 
-  async list (userId: string, role: Role, skip: number, limit: number): Promise<readonly LibraryEntity[]> {
-    const mongoFilter = role === Role.Regular ? { userId } : {}
+  async list (userId: string, role: Role, skip: number, limit: number, search?: string): Promise<readonly LibraryEntity[]> {
+    const mongoFilter = listLibrariesMongoFilter(userId, role, search)
     const dbLibraries = await this.collection.find(mongoFilter)
       .skip(skip)
       .limit(limit)
@@ -56,8 +84,8 @@ class LibrariesDao extends Dao<DBLibrary> {
     return dbLibraries.map(dbLibrary => dbLibraryToEntity(dbLibrary)).filter(isNotNull)
   }
 
-  async count (userId: string, role: Role): Promise<number> {
-    const mongoFilter = role === Role.Regular ? { userId } : {}
+  async count (userId: string, role: Role, search?: string): Promise<number> {
+    const mongoFilter = listLibrariesMongoFilter(userId, role, search)
     const total = await this.collection.countDocuments(mongoFilter)
     return total
   }

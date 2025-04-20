@@ -4,6 +4,7 @@ import { makeJwt } from '../resources/auth/auth.utils.js'
 import { Role } from '../resources/users/users.interfaces.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 import mongo from '../mongo.js'
+import librariesDao from '../resources/libraries/libraries.dao.js'
 
 const librariesUrl = new URL('/libraries', testUtils.TESTS_BASE_URL)
 const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
@@ -11,6 +12,7 @@ const cookie = testUtils.buildAccessTokenCookie(token)
 
 beforeAll(async () => {
   await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
+  await librariesDao.init()
 })
 
 afterAll(async () => {
@@ -31,6 +33,22 @@ describe('libraries tests', async () => {
 
     expect(response.status).equals(200)
     expect(body.results.length).equals(2)
+  })
+
+  it('GET /libraries?search=first - should list user libraries using search', async () => {
+    const url = new URL('/libraries?search=first', testUtils.TESTS_BASE_URL)
+    const response = await fetch(url.href, {
+      headers: {
+        cookie,
+        'Content-Type': 'application/json'
+      },
+      method: 'GET'
+    })
+
+    const body = await response.json()
+
+    expect(response.status).equals(200)
+    expect(body.results.length).equals(1)
   })
 
   it('POST /libraries - should create a library', async () => {
