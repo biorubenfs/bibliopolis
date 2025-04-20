@@ -1,30 +1,24 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest'
-import App from '../app.js'
 import testUtils from './utils/utils.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 import { makeJwt } from '../resources/auth/auth.utils.js'
 import { Role } from '../resources/users/users.interfaces.js'
+import mongo from '../mongo.js'
 
-const PORT = testUtils.TESTS_PORTS.BOOKS_PORT
-const app = new App(PORT)
-const baseUrl = new URL(`http://localhost:${PORT}`)
-let token: string
-let cookie: string
+const baseUrl = new URL(testUtils.TESTS_BASE_URL)
+const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
+const cookie = testUtils.buildAccessTokenCookie(token)
 
 beforeAll(async () => {
-  await app.start()
-  await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users)
-
-  token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
-  cookie = testUtils.buildAccessTokenCookie(token)
+  await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
 })
 
 afterAll(async () => {
-  await app.stop()
+  await mongo.clean()
 })
 
 describe('books tests', async () => {
-  it('should get a book', async () => {
+  it('GET /books/:id - should get a book', async () => {
     const url = new URL('/books/01J9KKFT64VX47TEDXMBBFRHTV', baseUrl)
     const response = await fetch(url, { method: 'GET', headers: { cookie } })
     const body = await response.json()
@@ -39,7 +33,7 @@ describe('books tests', async () => {
     expect(attributes.title).to.be.a('string').equals('Underground : Life and Survival in the Russian Black Market')
   })
 
-  it('should get a list of books paginated', async () => {
+  it('GET /books - should get a list of books paginated', async () => {
     const url = new URL('/books', baseUrl)
     const skip = 1
     const limit = 8
@@ -61,4 +55,4 @@ describe('books tests', async () => {
     const firstBook = body.results.at(0).attributes
     expect(firstBook).to.have.property('title').equals('My Voice Betrays Me (EEM)')
   })
-}, 15_000)
+})

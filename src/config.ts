@@ -13,7 +13,7 @@ function parseUrl (value?: string, dflt = ''): URL {
 }
 
 export default {
-  environment: parseString(process.env.ENVIRONMENT, 'dev'),
+  environment: parseString(process.env.ENVIRONMENT, 'local'),
   port: parseNumber(process.env.PORT, 3000),
   mongo: {
     uri: parseString(process.env.MONGO_URI)
