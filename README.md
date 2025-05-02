@@ -10,7 +10,7 @@ Create a `docker-compose.yml` with:
 services:
   mongo1:
     image: mongo:7.0
-    container_name: "mongo-single-rs"
+    container_name: "mongors-single-node"
     command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
     ports:
       - 27018:27017
@@ -37,6 +37,6 @@ And add in your `/etc/hosts` file something like:
 XXX.XXX.XXX.XXX   host.docker.internal
 ```
 
-where X are your local IP.
+where first column is your local IP address.
 
-Your connection string should be: `mongodb://localhost:27018/bibliopolis".
+Your connection string should be: `mongodb://localhost:27018/bibliopolis`.
