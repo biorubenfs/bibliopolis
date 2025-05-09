@@ -67,6 +67,15 @@ class UsersDao extends Dao<DBUser> {
     const total = await this.collection.countDocuments()
     return total
   }
+
+  async validate (id: string, validationCode: string): Promise<void> {
+    await this.collection.findOneAndUpdate(
+      { _id: id, validationCode },
+      {
+        $unset: { validationCode: true }
+      }
+    )
+  }
 }
 
 export default new UsersDao()
