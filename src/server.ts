@@ -11,6 +11,7 @@ import expressWinston from 'express-winston'
 import config from './config.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import { logRequest } from './middlewares/request-logger.js'
 
 export default class Server {
   private readonly express: express.Express
@@ -46,6 +47,8 @@ export default class Server {
         time: new Date().toISOString()
       })
     })
+
+    this.express.use(logRequest)
 
     // add routers here
     this.express.use('/auth', authRouter)
