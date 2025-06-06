@@ -11,6 +11,7 @@ import expressWinston from 'express-winston'
 import config from './config.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import { logRequest } from './middlewares/request-logger.js'
 
 export default class Server {
   private readonly express: express.Express
@@ -38,6 +39,9 @@ export default class Server {
         expressFormat: false,
         colorize: false
       }))
+
+      /* this should be here provisionally -> this must be out of the if */
+      this.express.use(logRequest)
     }
 
     this.express.get('/', (req, res) => {
