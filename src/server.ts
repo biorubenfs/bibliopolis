@@ -39,6 +39,9 @@ export default class Server {
         expressFormat: false,
         colorize: false
       }))
+
+      /* this should be here provisionally -> this must be out of the if */
+      this.express.use(logRequest)
     }
 
     this.express.get('/', (req, res) => {
@@ -47,8 +50,6 @@ export default class Server {
         time: new Date().toISOString()
       })
     })
-
-    this.express.use(logRequest)
 
     // add routers here
     this.express.use('/auth', authRouter)
