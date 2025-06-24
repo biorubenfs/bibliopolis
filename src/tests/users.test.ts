@@ -126,4 +126,25 @@ describe('users tests', async () => {
   })
 
   it.todo('PATCH /users/me/password - should fail update user password with wrong current password')
+
+  it('PATCH /users/me should update a user', async () => {
+    const updateUser = new URL('/users/me', usersURL)
+
+    console.log(await usersDao.findById('01J9BHWZ8N4B1JBSAFCBKQGERS'))
+
+    const body = {
+      name: 'user01updated'
+    }
+
+    const response = await fetch(updateUser, {
+      headers: {
+        'Content-Type': 'application/json',
+        cookie
+      },
+      method: 'PATCH',
+      body: JSON.stringify(body)
+    })
+
+    expect(response.status).equals(200)
+  })
 })

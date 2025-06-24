@@ -1,6 +1,6 @@
 import usersDao from './users.dao.js'
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
-import { CreateUser, Role } from './users.interfaces.js'
+import { CreateUser, Role, UpdateUser } from './users.interfaces.js'
 import bcrypt from 'bcryptjs'
 import config from '../../config.js'
 import { InvalidCurrentPassword, UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
@@ -66,6 +66,15 @@ class UsersService {
 
     const hashedPassword = hashPasswordSync(newPassword)
     const updUser = await usersDao.updatePassword(userId, hashedPassword)
+    if (updUser == null) {
+      throw new UserNotFoundError('user not found')
+    }
+
+    return new SingleResultObject(updUser)
+  }
+
+  async updateUser (userId: string, data: UpdateUser): Promise<SingleResultObject<UserEntity>> {
+    const updUser = await usersDao.updateUser(userId, data)
     if (updUser == null) {
       throw new UserNotFoundError('user not found')
     }
