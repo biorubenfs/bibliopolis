@@ -41,7 +41,7 @@ function tryCatch<TBody> (controller: CustomController<TBody>): RequestHandler<a
         case data instanceof SetCookieResultObject:
           res.cookie(data.name, data.value, data.options)
             .status(status)
-            .json(data.entity.toResult())
+            .json({ results: data.entity.toResult() })
           return
 
         case data instanceof ClearCookieResultObject:
