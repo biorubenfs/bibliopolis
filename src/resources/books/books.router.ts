@@ -16,7 +16,7 @@ booksRouter.post('/', bodyValidator(newBookSchema), tryCatch(async (req) => {
   return { status: HttpStatusCode.Created, data: result }
 }))
 
-booksRouter.get('/:id', checkJwt, tryCatch(async (req) => {
+booksRouter.get('/:id', tryCatch(async (req) => {
   const result = await booksService.getById(req.params.id)
 
   return { status: HttpStatusCode.OK, data: result }
