@@ -21,7 +21,7 @@ afterAll(async () => {
   await mongo.clean()
 })
 
-describe.only('users tests', async () => {
+describe('users tests', async () => {
   it('default user admin should have been created', async () => {
     const response = await usersDao.collection.findOne(
       {
