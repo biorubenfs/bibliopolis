@@ -5,3 +5,8 @@ export const createUserSchema = z.object({
   email: z.string().email(),
   password: z.string()
 })
+
+export const updatePasswordSchema = z.object({
+  currentPassword: z.string().max(20),
+  newPassword: z.string().max(20)
+})

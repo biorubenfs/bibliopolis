@@ -3,9 +3,13 @@ import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { CreateUser, Role } from './users.interfaces.js'
 import bcrypt from 'bcryptjs'
 import config from '../../config.js'
-import { UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
+import { InvalidCurrentPassword, UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
 import { UserEntity } from './users.entity.js'
 import { Page } from '../../types.js'
+
+export function hashPasswordSync (password: string): string {
+  return bcrypt.hashSync(password, config.hashRounds)
+}
 
 class UsersService {
   async signup (body: CreateUser): Promise<SingleResultObject<UserEntity>> {
@@ -15,7 +19,7 @@ class UsersService {
     }
     const userData: CreateUser = {
       ...body,
-      password: bcrypt.hashSync(body.password, config.hashRounds)
+      password: hashPasswordSync(body.password)
     }
 
     const newUser = await usersDao.create(userData, Role.Regular)
@@ -49,6 +53,24 @@ class UsersService {
     ])
 
     return new CollectionResultObject(users, { ...page, total })
+  }
+
+  async updatePassword (userId: string, currentPassword: string, newPassword: string): Promise<SingleResultObject<UserEntity>> {
+    const user = await this.getById(userId)
+
+    const isPasswordValid = bcrypt.compareSync(currentPassword, user.entity.password)
+
+    if (!isPasswordValid) {
+      throw new InvalidCurrentPassword('invalid current password')
+    }
+
+    const hashedPassword = hashPasswordSync(newPassword)
+    const updUser = await usersDao.updatePassword(userId, hashedPassword)
+    if (updUser == null) {
+      throw new UserNotFoundError('user not found')
+    }
+
+    return new SingleResultObject(updUser)
   }
 }
 
