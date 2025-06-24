@@ -1,7 +1,7 @@
 import { ulid } from 'ulid'
 import Dao from '../../dao.js'
 import { UserEntity } from './users.entity.js'
-import { CreateUser, DBUser, Role } from './users.interfaces.js'
+import { CreateUser, DBUser, Role, UpdateUser } from './users.interfaces.js'
 import config from '../../config.js'
 import bcrypt from 'bcryptjs'
 import { isNotNull } from '../../utils.js'
@@ -73,9 +73,24 @@ class UsersDao extends Dao<DBUser> {
       { _id: userId },
       {
         $set: {
-          password: newPassword,
-          updatedAt: new Date()
-        }
+          password: newPassword
+        },
+        $currentDate: { updatedAt: true }
+      },
+      { returnDocument: 'after' }
+    )
+
+    return dbUserToEntity(user)
+  }
+
+  async updateUser (userId: string, data: UpdateUser): Promise<UserEntity | null> {
+    const user = await this.collection.findOneAndUpdate(
+      { _id: userId },
+      {
+        $set: {
+          ...data
+        },
+        $currentDate: { updatedAt: true }
       },
       { returnDocument: 'after' }
     )
