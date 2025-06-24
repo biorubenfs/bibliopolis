@@ -24,3 +24,9 @@ export class LibraryPermissionsError extends ApiError {
     super(ApiRestErrorCode.PermissionError, 403, message)
   }
 }
+
+export class BookAlreadyExistingInLibrary extends ApiError {
+  constructor (message: string) {
+    super(ApiRestErrorCode.ConflictError, 409, message)
+  }
+}

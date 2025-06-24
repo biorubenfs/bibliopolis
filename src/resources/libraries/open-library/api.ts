@@ -1,4 +1,5 @@
 import config from '../../../config.js'
+import { BookNotFoundError } from '../../books/books.error.js'
 import { Author, OpenLibraryBook } from './types.js'
 
 class OpenLibraryApi {
@@ -11,6 +12,11 @@ class OpenLibraryApi {
   async fetchBookByIsbn (isbn: string): Promise<OpenLibraryBook> {
     const url = new URL(`/isbn/${isbn}.json`, this.domain)
     const response = await fetch(url)
+
+    if (response.status === 404) {
+      throw new BookNotFoundError('not found in open library')
+    }
+
     const data: OpenLibraryBook = await response.json()
     return data
   }

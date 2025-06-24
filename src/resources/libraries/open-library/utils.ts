@@ -21,11 +21,12 @@ async function buildBook (openLibraryBook: OpenLibraryBook): Promise<NewBook> {
 }
 
 export async function ensureBookExistsInBooks (isbn: string): Promise<BookEntity> {
-  const book = await booksService.getByIsbn(isbn)
+  const book = await booksService.fetchByIsbn(isbn)
 
-  if (book != null) return book.entity
+  if (book != null) return book
 
   const openLibraryBook = await openLibraryApi.fetchBookByIsbn(isbn)
+
   const newBook = await buildBook(openLibraryBook)
 
   const createdBook = await booksService.create(newBook)

@@ -107,7 +107,7 @@ describe('libraries tests', async () => {
 
   it('POST /libraries/:id/books - should add a book to owned library', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
-    const body = { id: '01J9KKFWF45DMVVGRS502SG83D' }
+    const body = { id: '9781595581662' }
     const response = await fetch(url, {
       headers: {
         cookie,
