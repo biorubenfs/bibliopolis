@@ -136,8 +136,6 @@ describe('libraries tests', async () => {
       body: JSON.stringify(body)
     })
 
-    const responseBody = await response.json()
-
     expect(response.status).equals(409)
   })
 
