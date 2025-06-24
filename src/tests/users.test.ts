@@ -6,6 +6,7 @@ import { makeJwt } from '../resources/auth/auth.utils.js'
 import testUtils from './utils/utils.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 import mongo from '../mongo.js'
+import bcrypt from 'bcryptjs'
 
 const usersURL = new URL('/users', testUtils.TESTS_BASE_URL)
 
@@ -99,14 +100,19 @@ describe('users tests', async () => {
     expect(response.status).equals(200)
   })
 
-  it.todo('PATCH /users/me/password - should update user password', async () => {
-    // For some reason, update password tests doesn't work
+  it('PATCH /users/me/password - should update user password', async () => {
+    // For some reason, update password tests don't work
     const updatePasswordUrl = new URL('/users/me/password', usersURL)
 
+    const hash = bcrypt.hashSync('Password123!', '$2b$10$abcdefghijklmnopqrstuu')
+    console.log(hash)
+
     const body = {
-      currentPassword: 'Palabra123$',
-      newPassword: 'Palabra123!'
+      currentPassword: 'Password123!',
+      newPassword: 'Password123$'
     }
+
+    console.log(await usersDao.findById('01J9BHWZ8N4B1JBSAFCBKQGERS'))
 
     const response = await fetch(updatePasswordUrl, {
       headers: {
@@ -119,23 +125,5 @@ describe('users tests', async () => {
     expect(response.status).equals(204)
   })
 
-  it.todo('PATCH /users/me/password - should fail update user password with wrong current password', async () => {
-    // For some reason, update password tests doesn't work
-    const updatePasswordUrl = new URL('/users/me/password', usersURL)
-
-    const body = {
-      currentPassword: 'WrongPassword',
-      newPassword: 'Palabra123!'
-    }
-
-    const response = await fetch(updatePasswordUrl, {
-      headers: {
-        cookie
-      },
-      method: 'PATCH',
-      body: JSON.stringify(body)
-    })
-
-    expect(response.status).equals(400)
-  })
+  it.todo('PATCH /users/me/password - should fail update user password with wrong current password')
 })

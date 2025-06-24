@@ -7,7 +7,7 @@ import { InvalidCurrentPassword, UserEmailAlreadyExists, UserNotFoundError } fro
 import { UserEntity } from './users.entity.js'
 import { Page } from '../../types.js'
 
-export function hashPassword (password: string): string {
+export function hashPasswordSync (password: string): string {
   return bcrypt.hashSync(password, config.hashRounds)
 }
 
@@ -19,7 +19,7 @@ class UsersService {
     }
     const userData: CreateUser = {
       ...body,
-      password: hashPassword(body.password)
+      password: hashPasswordSync(body.password)
     }
 
     const newUser = await usersDao.create(userData, Role.Regular)
@@ -64,7 +64,7 @@ class UsersService {
       throw new InvalidCurrentPassword('invalid current password')
     }
 
-    const hashedPassword = hashPassword(newPassword)
+    const hashedPassword = hashPasswordSync(newPassword)
     const updUser = await usersDao.updatePassword(userId, hashedPassword)
     if (updUser == null) {
       throw new UserNotFoundError('user not found')
