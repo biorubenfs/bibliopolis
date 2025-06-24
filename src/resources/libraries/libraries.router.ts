@@ -3,7 +3,7 @@ import tryCatch from '../../try-catch.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 import { checkJwt } from '../../middlewares/jwt.middleware.js'
 
-import { bookdIdSchema, newLibrarySchema } from './libraries.schemas.js'
+import { bookIdSchema, bookIsbnSchema, newLibrarySchema } from './libraries.schemas.js'
 import librariesService from './libraries.service.js'
 import { Role } from '../users/users.interfaces.js'
 import userBooksService from '../user-books/user-books.service.js'
@@ -34,12 +34,12 @@ librariesRouter.delete('/:id', checkJwt, tryCatch(async (req) => {
   return { status: HttpStatusCode.NoContent, data: null }
 }))
 
-librariesRouter.post('/:id/books', bodyValidator(bookdIdSchema), tryCatch(async (req) => {
-  const result = await librariesService.addBook(req.params.id, req.body.id, req.userId ?? '')
+librariesRouter.post('/:id/books', bodyValidator(bookIsbnSchema), tryCatch(async (req) => {
+  const result = await librariesService.addBook(req.params.id, req.body.isbn, req.userId ?? '')
   return { status: HttpStatusCode.Created, data: result }
 }))
 
-librariesRouter.delete('/:id/books', bodyValidator(bookdIdSchema), tryCatch(async (req) => {
+librariesRouter.delete('/:id/books', bodyValidator(bookIdSchema), tryCatch(async (req) => {
   const result = await librariesService.removeBook(req.params.id, req.body.id, req.userId ?? '')
   return { status: HttpStatusCode.NoContent, data: result }
 }))

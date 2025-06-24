@@ -5,4 +5,5 @@ export const newLibrarySchema = z.object({
   description: z.string()
 })
 
-export const bookdIdSchema = z.object({ id: z.string() }) // id is a isbn. TODO change in future
+export const bookIdSchema = z.object({ id: z.string() })
+export const bookIsbnSchema = z.object({ isbn: z.string() })
