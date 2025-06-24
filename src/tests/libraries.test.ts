@@ -124,6 +124,23 @@ describe('libraries tests', async () => {
     expect(books).to.be.an('array').includes('01J9KKFWF45DMVVGRS502SG83D')
   })
 
+  it('POST /libraries/:id/books - should fail to add a existing book in a library', async () => {
+    const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
+    const body = { id: '9781595581662' }
+    const response = await fetch(url, {
+      headers: {
+        cookie,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(body)
+    })
+
+    const responseBody = await response.json()
+
+    expect(response.status).equals(409)
+  })
+
   it('POST /libraries/:id/books - should fail to add a non existing book to owned library', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX', librariesUrl)
     const body = { id: '01J9KKFWF45DMVVGRS502SFAKE' }
