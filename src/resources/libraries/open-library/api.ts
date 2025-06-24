@@ -8,8 +8,8 @@ class OpenLibraryApi {
     this.domain = domain
   }
 
-  async fetchBookByEdition (editionId: string): Promise<OpenLibraryBook> {
-    const url = new URL(`/books/${editionId}.json`, this.domain)
+  async fetchBookByIsbn (isbn: string): Promise<OpenLibraryBook> {
+    const url = new URL(`/isbn/${isbn}.json`, this.domain)
     const response = await fetch(url)
     const data: OpenLibraryBook = await response.json()
     return data
