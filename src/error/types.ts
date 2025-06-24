@@ -6,5 +6,6 @@ export enum ApiRestErrorCode {
   TokenNotProvidedError = 'TOKEN NOT PROVIDED ERROR',
   ValidationError = 'BODY VALIDATION ERROR',
   ConflictError = 'CONFLICT ERROR',
-  PermissionError = 'PERMISSION ERROR'
+  PermissionError = 'PERMISSION ERROR',
+  InvalidPassword = 'INVALID PASSWORD'
 }

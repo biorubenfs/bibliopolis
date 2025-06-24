@@ -19,7 +19,7 @@ describe('login tests', () => {
     const response = await fetch(loginUrl, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
-      body: JSON.stringify({ email: 'user01@email.com', password: 'Palabra123$' })
+      body: JSON.stringify({ email: 'user01@email.com', password: 'Password123!' })
     })
 
     const cookies = response.headers.getSetCookie()

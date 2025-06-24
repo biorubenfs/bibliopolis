@@ -2,7 +2,7 @@ import { Router } from 'express'
 import usersService from './users.service.js'
 import tryCatch from '../../try-catch.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
-import { createUserSchema } from './users.schemas.js'
+import { createUserSchema, updatePasswordSchema } from './users.schemas.js'
 import { checkAdmin, checkJwt } from '../../middlewares/jwt.middleware.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
 import { parseSkipLimitQP } from '../../utils.js'
@@ -22,6 +22,11 @@ usersRouter.get('/me', checkJwt, tryCatch(async (req) => {
 
 usersRouter.get('/', checkJwt, checkAdmin, queryPaginationValidator, tryCatch(async (req) => {
   const result = await usersService.list(parseSkipLimitQP(req))
+  return { status: HttpStatusCode.OK, data: result }
+}))
+
+usersRouter.patch('/me/password', bodyValidator(updatePasswordSchema), checkJwt, tryCatch(async (req) => {
+  const result = await usersService.updatePassword(req.userId ?? '', req.body.currentPassword, req.body.newPassword)
   return { status: HttpStatusCode.OK, data: result }
 }))
 
