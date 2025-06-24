@@ -107,7 +107,7 @@ describe('libraries tests', async () => {
 
   it('POST /libraries/:id/books - should add a book to owned library', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
-    const body = { id: '9781595581662' }
+    const body = { isbn: '9781595581662' }
     const response = await fetch(url, {
       headers: {
         cookie,
@@ -126,7 +126,7 @@ describe('libraries tests', async () => {
 
   it('POST /libraries/:id/books - should fail to add a existing book in a library', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
-    const body = { id: '9781595581662' }
+    const body = { isbn: '9781595581662' }
     const response = await fetch(url, {
       headers: {
         cookie,
@@ -175,7 +175,7 @@ describe('libraries tests', async () => {
 
   it('POST /libraries/:id/books - should fail to add a book in a not owned library', async () => {
     const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X/books', librariesUrl)
-    const body = { id: '01J9KKFWF45DMVVGRS502SG83D' }
+    const body = { isbn: '01J9KKFWF45DMVVGRS502SG83D' }
     const response = await fetch(url, {
       headers: {
         cookie,
