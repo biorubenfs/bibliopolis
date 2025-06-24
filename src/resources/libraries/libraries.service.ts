@@ -7,7 +7,7 @@ import librariesDao from './libraries.dao.js'
 import { LibraryEntity } from './libraries.entity.js'
 import { BookNotFoundInLibraryError, LibraryAlreadyExistsError, LibraryNotFoundError, LibraryPermissionsError } from './libraries.error.js'
 import { NewLibrary } from './libraries.interfaces.js'
-import { ensureBookInBooks } from './open-library/utils.js'
+import { ensureBookExistsInBooks } from './open-library/utils.js'
 
 class LibrariesService {
   async create (body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {
@@ -49,10 +49,10 @@ class LibrariesService {
     return new CollectionResultObject(libraries, mockPaginationObject)
   }
 
-  async addBook (libraryId: string, bookId: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+  async addBook (libraryId: string, isbn_13: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
     const library = await this.get(libraryId, userId, Role.Regular)
 
-    const book = await ensureBookInBooks(bookId)
+    const book = await ensureBookExistsInBooks(isbn_13)
 
     const updatedLibrary = await runInTransaction<LibraryEntity>(async (session) => {
       const updated = await librariesDao.addBookIdToLibrary(library.entity.id, book.id, session)

@@ -20,12 +20,12 @@ async function buildBook (openLibraryBook: OpenLibraryBook): Promise<NewBook> {
   }
 }
 
-export async function ensureBookInBooks (bookId: string): Promise<BookEntity> {
-  const book = await booksService.fetchById(bookId)
+export async function ensureBookExistsInBooks (isbn: string): Promise<BookEntity> {
+  const book = await booksService.getByIsbn(isbn)
 
-  if (book != null) return book
+  if (book != null) return book.entity
 
-  const openLibraryBook = await openLibraryApi.fetchBookByEdition(bookId)
+  const openLibraryBook = await openLibraryApi.fetchBookByIsbn(isbn)
   const newBook = await buildBook(openLibraryBook)
 
   const createdBook = await booksService.create(newBook)
@@ -34,6 +34,8 @@ export async function ensureBookInBooks (bookId: string): Promise<BookEntity> {
 }
 
 export async function getAuthorsFromKey (authorsKeys: readonly string[]): Promise<string[]> {
-  const authors = await Promise.all(authorsKeys.map(async authorKey => await openLibraryApi.fetchAuthorById(authorKey)))
+  const authors = await Promise.all(
+    authorsKeys.map(async authorKey => await openLibraryApi.fetchAuthorById(authorKey))
+  )
   return authors.map(author => author.personal_name)
 }
