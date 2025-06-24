@@ -68,16 +68,19 @@ class UsersDao extends Dao<DBUser> {
     return total
   }
 
-  async updatePassword (userId: string, newPassword: string): Promise<void> {
-    await this.collection.updateOne(
+  async updatePassword (userId: string, newPassword: string): Promise<UserEntity | null> {
+    const user = await this.collection.findOneAndUpdate(
       { _id: userId },
       {
         $set: {
           password: newPassword,
           updatedAt: new Date()
         }
-      }
+      },
+      { returnDocument: 'after' }
     )
+
+    return dbUserToEntity(user)
   }
 }
 

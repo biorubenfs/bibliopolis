@@ -26,8 +26,8 @@ usersRouter.get('/', checkJwt, checkAdmin, queryPaginationValidator, tryCatch(as
 }))
 
 usersRouter.patch('/me/password', bodyValidator(updatePasswordSchema), checkJwt, tryCatch(async (req) => {
-  await usersService.updatePassword(req.userId ?? '', req.body.currentPassword, req.body.newPassword)
-  return { status: HttpStatusCode.NoContent, data: null }
+  const result = await usersService.updatePassword(req.userId ?? '', req.body.currentPassword, req.body.newPassword)
+  return { status: HttpStatusCode.OK, data: result }
 }))
 
 export default usersRouter

@@ -55,21 +55,22 @@ class UsersService {
     return new CollectionResultObject(users, { ...page, total })
   }
 
-  async updatePassword (userId: string, currentPassword: string, newPassword: string): Promise<void> {
+  async updatePassword (userId: string, currentPassword: string, newPassword: string): Promise<SingleResultObject<UserEntity>> {
     const user = await this.getById(userId)
 
     const isPasswordValid = bcrypt.compareSync(currentPassword, user.entity.password)
-
-    const foo = hashPassword(newPassword)
-    const foo_ = hashPassword(currentPassword)
-    console.log(foo, foo_)
 
     if (!isPasswordValid) {
       throw new InvalidCurrentPassword('invalid current password')
     }
 
     const hashedPassword = hashPassword(newPassword)
-    await usersDao.updatePassword(userId, hashedPassword)
+    const updUser = await usersDao.updatePassword(userId, hashedPassword)
+    if (updUser == null) {
+      throw new UserNotFoundError('user not found')
+    }
+
+    return new SingleResultObject(updUser)
   }
 }
 
