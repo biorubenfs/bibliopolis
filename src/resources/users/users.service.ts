@@ -3,9 +3,13 @@ import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { CreateUser, Role } from './users.interfaces.js'
 import bcrypt from 'bcryptjs'
 import config from '../../config.js'
-import { UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
+import { InvalidCurrentPassword, UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
 import { UserEntity } from './users.entity.js'
 import { Page } from '../../types.js'
+
+export function hashPassword (password: string): string {
+  return bcrypt.hashSync(password, config.hashRounds)
+}
 
 class UsersService {
   async signup (body: CreateUser): Promise<SingleResultObject<UserEntity>> {
@@ -15,7 +19,7 @@ class UsersService {
     }
     const userData: CreateUser = {
       ...body,
-      password: bcrypt.hashSync(body.password, config.hashRounds)
+      password: hashPassword(body.password)
     }
 
     const newUser = await usersDao.create(userData, Role.Regular)
@@ -49,6 +53,23 @@ class UsersService {
     ])
 
     return new CollectionResultObject(users, { ...page, total })
+  }
+
+  async updatePassword (userId: string, currentPassword: string, newPassword: string): Promise<void> {
+    const user = await this.getById(userId)
+
+    const isPasswordValid = bcrypt.compareSync(currentPassword, user.entity.password)
+
+    const foo = hashPassword(newPassword)
+    const foo_ = hashPassword(currentPassword)
+    console.log(foo, foo_)
+
+    if (!isPasswordValid) {
+      throw new InvalidCurrentPassword('invalid current password')
+    }
+
+    const hashedPassword = hashPassword(newPassword)
+    await usersDao.updatePassword(userId, hashedPassword)
   }
 }
 

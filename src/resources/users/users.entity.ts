@@ -25,7 +25,8 @@ export class UserEntity extends Entity<EntityType.Users> {
       email: this.email,
       role: this.role,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
+      password: this.password
     }
   }
 }

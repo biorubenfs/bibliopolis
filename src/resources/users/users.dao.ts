@@ -67,6 +67,18 @@ class UsersDao extends Dao<DBUser> {
     const total = await this.collection.countDocuments()
     return total
   }
+
+  async updatePassword (userId: string, newPassword: string): Promise<void> {
+    await this.collection.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          password: newPassword,
+          updatedAt: new Date()
+        }
+      }
+    )
+  }
 }
 
 export default new UsersDao()

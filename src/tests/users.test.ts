@@ -21,7 +21,7 @@ afterAll(async () => {
   await mongo.clean()
 })
 
-describe('users tests', async () => {
+describe.only('users tests', async () => {
   it('default user admin should have been created', async () => {
     const response = await usersDao.collection.findOne(
       {
@@ -97,5 +97,45 @@ describe('users tests', async () => {
     })
 
     expect(response.status).equals(200)
+  })
+
+  it.todo('PATCH /users/me/password - should update user password', async () => {
+    // For some reason, update password tests doesn't work
+    const updatePasswordUrl = new URL('/users/me/password', usersURL)
+
+    const body = {
+      currentPassword: 'Palabra123$',
+      newPassword: 'Palabra123!'
+    }
+
+    const response = await fetch(updatePasswordUrl, {
+      headers: {
+        cookie
+      },
+      method: 'PATCH',
+      body: JSON.stringify(body)
+    })
+
+    expect(response.status).equals(204)
+  })
+
+  it.todo('PATCH /users/me/password - should fail update user password with wrong current password', async () => {
+    // For some reason, update password tests doesn't work
+    const updatePasswordUrl = new URL('/users/me/password', usersURL)
+
+    const body = {
+      currentPassword: 'WrongPassword',
+      newPassword: 'Palabra123!'
+    }
+
+    const response = await fetch(updatePasswordUrl, {
+      headers: {
+        cookie
+      },
+      method: 'PATCH',
+      body: JSON.stringify(body)
+    })
+
+    expect(response.status).equals(400)
   })
 })

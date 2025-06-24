@@ -12,3 +12,9 @@ export class UserEmailAlreadyExists extends ApiError {
     super(ApiRestErrorCode.ConflictError, 409, message)
   }
 }
+
+export class InvalidCurrentPassword extends ApiError {
+  constructor (message: string) {
+    super(ApiRestErrorCode.InvalidPassword, 400, message)
+  }
+}
