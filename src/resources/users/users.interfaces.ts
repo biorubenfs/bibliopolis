@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { createUserSchema } from './users.schemas.js'
+import { createUserSchema, updateUserSchema } from './users.schemas.js'
 import { UserEntity } from './users.entity.js'
 
 export type CreateUser = z.infer<typeof createUserSchema>
@@ -8,3 +8,5 @@ export enum Role {
   Regular = 'regular',
   Admin = 'admin'
 }
+
+export type UpdateUser = z.infer<typeof updateUserSchema>

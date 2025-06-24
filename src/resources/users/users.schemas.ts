@@ -10,3 +10,5 @@ export const updatePasswordSchema = z.object({
   currentPassword: z.string().max(20),
   newPassword: z.string().max(20)
 })
+
+export const updateUserSchema = createUserSchema.pick({ name: true })
