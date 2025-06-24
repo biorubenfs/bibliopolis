@@ -29,7 +29,7 @@ librariesRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-librariesRouter.delete('/:id', tryCatch(async (req) => {
+librariesRouter.delete('/:id', checkJwt, tryCatch(async (req) => {
   await librariesService.delete(req.params.id, req.userId ?? '', req.role ?? Role.Regular)
   return { status: HttpStatusCode.NoContent, data: null }
 }))

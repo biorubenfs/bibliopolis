@@ -28,6 +28,12 @@ class BooksService {
     return new SingleResultObject(book)
   }
 
+  async fetchByIsbn (isbn: string): Promise<BookEntity | null> {
+    const book = await booksDao.findByIsbn(isbn)
+
+    return book
+  }
+
   async getByIsbn (isbn: string): Promise<SingleResultObject<BookEntity>> {
     const book = await booksDao.findByIsbn(isbn)
     if (book == null) {

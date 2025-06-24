@@ -30,8 +30,8 @@ describe('login tests', () => {
 
     expect(response.status).toBe(200)
 
-    expect(body).toHaveProperty('id')
-    expect(body).property('id').equals('01J9BHWZ8N4B1JBSAFCBKQGERS')
+    expect(body.results).toHaveProperty('id')
+    expect(body.results).property('id').equals('01J9BHWZ8N4B1JBSAFCBKQGERS')
   })
 
   it('POST /auth/login - should fail to do login with wrong password', async () => {
