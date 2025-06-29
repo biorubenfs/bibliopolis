@@ -42,5 +42,10 @@ export default {
   openLibrary: {
     domain: parseUrl(process.env.OPEN_LIBRARY_DOMAIN, 'https://openlibrary.org'),
     coverUrlPattern: parseString(process.env.OPEN_LIBRARY_COVER_URL_PATH)
+  },
+  cookieOptions: {
+    httpOnly: true,
+    secure: typeof process.env.ACCESS_TOKEN_COOKIE_SECURE === 'boolean' ? process.env.ACCESS_TOKEN_COOKIE_SECURE : false,
+    sameSite: parseString(process.env.ACCESS_TOKEN_COOKIE_SAME_SITE, 'none')
   }
 }
