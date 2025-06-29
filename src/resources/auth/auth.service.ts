@@ -33,7 +33,7 @@ class AuthService {
     }
 
     const token = makeJwt(user.id, user.role)
-    return new SetCookieResultObject('access_token', token, {}, user)
+    return new SetCookieResultObject('access_token', token, { httpOnly: true, secure: false, sameSite: 'lax' }, user)
   }
 }
 
