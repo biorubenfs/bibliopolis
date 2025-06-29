@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import tryCatch from '../../try-catch.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
-import { checkJwt } from '../../middlewares/jwt.middleware.js'
 
 import { bookIdSchema, bookIsbnSchema, newLibrarySchema } from './libraries.schemas.js'
 import librariesService from './libraries.service.js'
@@ -13,7 +12,7 @@ import { HttpStatusCode } from '../../types.js'
 
 const librariesRouter = Router()
 
-librariesRouter.post('/', bodyValidator(newLibrarySchema), checkJwt, tryCatch(async (req) => {
+librariesRouter.post('/', bodyValidator(newLibrarySchema), tryCatch(async (req) => {
   const result = await librariesService.create(req.body, req.userId ?? '')
   return { status: HttpStatusCode.Created, data: result }
 }))
@@ -29,7 +28,7 @@ librariesRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-librariesRouter.delete('/:id', checkJwt, tryCatch(async (req) => {
+librariesRouter.delete('/:id', tryCatch(async (req) => {
   await librariesService.delete(req.params.id, req.userId ?? '', req.role ?? Role.Regular)
   return { status: HttpStatusCode.NoContent, data: null }
 }))
