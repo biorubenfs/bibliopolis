@@ -5,6 +5,8 @@ import usersDao from '../users/users.dao.js'
 import { InvalidLoginError } from './auth.error.js'
 import { makeJwt } from './auth.utils.js'
 import { UserEntity } from '../users/users.entity.js'
+import config from '../../config.js'
+import { CookieOptions } from 'express'
 
 class AuthService {
   // constructor() {
@@ -33,7 +35,9 @@ class AuthService {
     }
 
     const token = makeJwt(user.id, user.role)
-    return new SetCookieResultObject('access_token', token, { httpOnly: true, secure: false, sameSite: 'lax' }, user)
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const cookieOptions = { ...config.cookieOptions } as CookieOptions
+    return new SetCookieResultObject('access_token', token, cookieOptions, user)
   }
 }
 
