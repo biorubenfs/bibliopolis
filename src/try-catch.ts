@@ -46,7 +46,7 @@ function tryCatch<TBody> (controller: CustomController<TBody>): RequestHandler<a
 
         case data instanceof ClearCookieResultObject:
           res.clearCookie(data.name, data.options)
-            .status(status)
+            .sendStatus(status)
           return
 
         case data == null:
