@@ -62,9 +62,7 @@ class LibrariesService {
       const updated = await librariesDao.addBookIdToLibrary(library.entity.id, book.id, session)
       if (updated == null) throw new Error('should not happen')
 
-      const bookData = { id: book.id, title: book.title, authors: book.authors, cover: book.cover }
-
-      await userBooksDao.upsert(libraryId, userId, bookData)
+      await userBooksDao.upsert(libraryId, userId, book)
 
       return updated
     })
