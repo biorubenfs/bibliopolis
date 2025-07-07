@@ -10,7 +10,7 @@ import { NewLibrary } from './libraries.interfaces.js'
 import { ensureBookExistsInBooks } from './open-library/utils.js'
 
 class LibrariesService {
-  async create (body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+  async create(body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {
     const existingLibraries = await librariesDao.findByUserAndName(body.name, userId)
     if (existingLibraries != null) {
       throw new LibraryAlreadyExistsError(`user has already a library with name ${body.name}`)
@@ -19,7 +19,7 @@ class LibrariesService {
     return new SingleResultObject(newLibrary)
   }
 
-  async get (id: string, userId: string, role: Role): Promise<SingleResultObject<LibraryEntity>> {
+  async get(id: string, userId: string, role: Role): Promise<SingleResultObject<LibraryEntity>> {
     const library = await librariesDao.findById(id)
 
     if (library == null) {
@@ -33,13 +33,14 @@ class LibrariesService {
     return new SingleResultObject(library)
   }
 
-  async delete (id: string, userId: string, role: Role): Promise<void> {
+  async delete(id: string, userId: string, role: Role): Promise<void> {
     const library = await this.get(id, userId, role)
 
     await librariesDao.delete(library.entity.id)
+    await userBooksDao.deleteAll(id, userId)
   }
 
-  async list (userId: string, role: Role, page: Page, search?: string): Promise<CollectionResultObject<LibraryEntity>> {
+  async list(userId: string, role: Role, page: Page, search?: string): Promise<CollectionResultObject<LibraryEntity>> {
     const [libraries, total] = await Promise.all([
       await librariesDao.list(userId, role, page.skip, page.limit, search),
       await librariesDao.count(userId, role, search)
@@ -49,7 +50,7 @@ class LibrariesService {
     return new CollectionResultObject(libraries, mockPaginationObject)
   }
 
-  async addBook (libraryId: string, isbn13: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+  async addBook(libraryId: string, isbn13: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
     const library = await this.get(libraryId, userId, Role.Regular)
     const book = await ensureBookExistsInBooks(isbn13)
 
@@ -61,16 +62,9 @@ class LibrariesService {
       const updated = await librariesDao.addBookIdToLibrary(library.entity.id, book.id, session)
       if (updated == null) throw new Error('should not happen')
 
-      await userBooksDao.create({
-        libraryId,
-        userId,
-        bookId: book.id,
-        bookTitle: book.title,
-        bookAuthors: book.authors,
-        bookCover: book.cover,
-        rating: null,
-        notes: null
-      }, session)
+      const bookData = {id: book.id, title: book.title, authors: book.authors, cover: book.cover}
+
+      await userBooksDao.upsert(libraryId, userId, bookData)
 
       return updated
     })
@@ -78,7 +72,7 @@ class LibrariesService {
     return new SingleResultObject(updatedLibrary)
   }
 
-  async removeBook (libraryId: string, bookId: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+  async removeBook(libraryId: string, bookId: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
     const library = await this.get(libraryId, userId, Role.Regular)
 
     if (!library.entity.books.includes(bookId)) {

@@ -5,9 +5,11 @@ import { Role } from '../resources/users/users.interfaces.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
 import mongo from '../mongo.js'
 import librariesDao from '../resources/libraries/libraries.dao.js'
+import userBooksDao from '../resources/user-books/user-books.dao.js'
 
 const librariesUrl = new URL('/libraries', testUtils.TESTS_BASE_URL)
-const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
+const userId = '01J9BHWZ8N4B1JBSAFCBKQGERS'
+const token = makeJwt(userId, Role.Regular)
 const cookie = testUtils.buildAccessTokenCookie(token)
 
 beforeAll(async () => {
@@ -32,7 +34,7 @@ describe('libraries tests', async () => {
     const body = await response.json()
 
     expect(response.status).equals(200)
-    expect(body.results.length).equals(2)
+    expect(body.results.length).equals(3)
   })
 
   it('GET /libraries?search=first - should list user libraries using search', async () => {
@@ -122,6 +124,50 @@ describe('libraries tests', async () => {
     expect(response.status).equals(201)
     const books = responseBody.results.attributes.books
     expect(books).to.be.an('array').includes('01J9KKFWF45DMVVGRS502SG83D')
+  })
+
+  it('POST /libraries/:id/books - adding book to owned library should not increase user books counter', async () => {
+    const isbn = '9780974326450'
+    const bookId = '01J9KKFTWAKVR1HGHCER50JJMQ'
+    
+    /* maybe we should avoid to use direct database queries here */
+    const counterBeforeAddingBook = await userBooksDao.collection.countDocuments({ userId, bookId })
+
+    const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WFA/books', librariesUrl)
+    const body = { isbn }
+    await fetch(url, {
+      headers: {
+        cookie,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(body)
+    })
+
+    const counterAfterAddingBook = await userBooksDao.collection.countDocuments({ userId, bookId })
+    expect(counterBeforeAddingBook).equals(counterAfterAddingBook)
+  })
+
+  it('POST /libraries/:id/books - adding book to owned library should increase user books counter', async () => {
+    const isbn = '9780380708956'
+    const bookId = '01J9KKG3X20MDEXAMYSSQZJ21Y'
+    
+    /* maybe we should avoid to use direct database queries here */
+    const counterBeforeAddingBook = await userBooksDao.collection.countDocuments({ userId, bookId })
+
+    const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WFA/books', librariesUrl)
+    const body = { isbn }
+    await fetch(url, {
+      headers: {
+        cookie,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(body)
+    })
+
+    const counterAfterAddingBook = await userBooksDao.collection.countDocuments({ userId, bookId })
+    expect(counterBeforeAddingBook + 1).equals(counterAfterAddingBook)
   })
 
   it('POST /libraries/:id/books - should fail to add a existing book in a library', async () => {

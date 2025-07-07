@@ -3,7 +3,7 @@ import { getCoverUrl } from '../../utils.js'
 import { DBUserBook, UserBooksRating } from './user-books.interfaces.js'
 
 export class UserBookEntity extends Entity<EntityType.UserBooks> {
-  readonly libraryId: string
+  readonly libraries: readonly string[]
   readonly bookId: string
   readonly bookTitle: string
   readonly bookAuthors: readonly string[]
@@ -16,7 +16,7 @@ export class UserBookEntity extends Entity<EntityType.UserBooks> {
 
   constructor (data: DBUserBook) {
     super(EntityType.UserBooks, data._id)
-    this.libraryId = data.libraryId
+    this.libraries = data.libraries
     this.bookId = data.bookId
     this.bookTitle = data.bookTitle
     this.bookAuthors = data.bookAuthors
@@ -30,7 +30,7 @@ export class UserBookEntity extends Entity<EntityType.UserBooks> {
 
   attributes (): Object {
     return {
-      libraryId: this.libraryId,
+      libraries: this.libraries,
       bookId: this.bookId,
       bookTitle: this.bookTitle,
       bookAuthors: this.bookAuthors,

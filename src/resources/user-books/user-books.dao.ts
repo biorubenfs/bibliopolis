@@ -5,33 +5,39 @@ import { DBUserBook, NewUserBook } from './user-books.interfaces.js'
 import { UserBookEntity } from './user-books.entity.js'
 import { ClientSession } from 'mongodb'
 
-function dbUserBookToEntity (dbUserBook: DBUserBook | null): UserBookEntity | null {
+function dbUserBookToEntity(dbUserBook: DBUserBook | null): UserBookEntity | null {
   return dbUserBook == null ? null : new UserBookEntity(dbUserBook)
 }
 
 class UserBooksDao extends Dao<DBUserBook> {
-  constructor () {
+  constructor() {
     super('user_books')
   }
 
-  async create (newUserBook: NewUserBook, session: ClientSession): Promise<void> {
-    const now = new Date()
-    const dbUserBook: DBUserBook = {
-      ...newUserBook,
-      _id: ulid(),
-      createdAt: now,
-      updatedAt: now
-    }
-
-    await this.collection.insertOne(dbUserBook, { session })
+  async upsert(libraryId: string, userId: string, book: { id: string, title: string, authors: ReadonlyArray<string>, cover: number | null }) {
+    await this.collection.updateOne(
+      { userId, bookId: book.id },
+      {
+        $setOnInsert: {
+          _id: ulid(),
+          bookTitle: book.title,
+          bookAuthors: book.authors,
+          bookCover: book.cover,
+          rating: null,
+          notes: null
+        },
+        $push: { libraries: libraryId } // or $addToSet if we want to avoid duplicates, although we control this situation on libraries service)
+      },
+      { upsert: true } // options
+    );
   }
 
-  async delete (libraryId: string, bookId: string, userId: string, session: ClientSession): Promise<void> {
-    await this.collection.deleteOne({ libraryId, bookId, userId }, { session })
+  async delete(libraryId: string, bookId: string, userId: string, session: ClientSession): Promise<void> {
+    await this.collection.updateOne({ libraries: libraryId, bookId, userId }, { $pull: { libraries: libraryId } }, { session })
   }
 
-  async list (libraryId: string, userId: string, skip: number, limit: number): Promise<readonly UserBookEntity[]> {
-    const dbUserBooks = await this.collection.find({ libraryId, userId })
+  async list(libraryId: string, userId: string, skip: number, limit: number): Promise<readonly UserBookEntity[]> {
+    const dbUserBooks = await this.collection.find({ libraries: libraryId, userId })
       .skip(skip)
       .limit(limit)
       .toArray()
@@ -39,9 +45,15 @@ class UserBooksDao extends Dao<DBUserBook> {
     return dbUserBooks.map(dbUserBookToEntity).filter(isNotNull)
   }
 
-  async count (libraryId: string, userId: string): Promise<number> {
-    const total = await this.collection.countDocuments({ libraryId, userId })
+  async count(libraryId: string, userId: string): Promise<number> {
+    const total = await this.collection.countDocuments({ libraries: libraryId, userId })
     return total
+  }
+
+  async deleteAll(libraryId: string, userId: string): Promise<void> {
+    /* add session to use in a transaction */
+    await this.collection.updateMany({ libraries: libraryId, userId }, { $pull: { libraries: libraryId } })
+
   }
 }
 

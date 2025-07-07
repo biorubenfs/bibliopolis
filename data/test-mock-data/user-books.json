@@ -1,7 +1,7 @@
 [
   {
     "_id": "01J9W9P6M5S0VRKVSRX3Q9T3W7",
-    "libraryId": "01J9W8VR2CFZW8PJ1Q8Y4Y5WEX",
+    "libraries": ["01J9W8VR2CFZW8PJ1Q8Y4Y5WEX"],
     "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
     "bookTitle": "Rossiya",
     "bookAuthors": [
@@ -16,7 +16,7 @@
   },
   {
     "_id": "01J9W9PGE06ANTMG3Y24KGCAFF",
-    "libraryId": "01J9W8VR2CFZW8PJ1Q8Y4Y5WEX",
+    "libraries": ["01J9W8VR2CFZW8PJ1Q8Y4Y5WEX"],
     "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
     "bookTitle": "Lightning and Ashes",
     "bookAuthors": [
@@ -31,7 +31,7 @@
   },
   {
     "_id": "01J9WA3W9TE5NG1H21PTK9VS4Q",
-    "libraryId": "01J9W8VR2CFZW8PJ1Q8Y4Y5WEX",
+    "libraries": ["01J9W8VR2CFZW8PJ1Q8Y4Y5WEX"],
     "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
     "bookTitle": "It Never Happened",
     "bookAuthors": [],
@@ -44,7 +44,7 @@
   },
   {
     "_id": "01J9XDEJZ1ZQZ71X46ESEJHQ5D",
-    "libraryId": "01J9XDD1NAFHP0159FYT245D8X",
+    "libraries": ["01J9XDD1NAFHP0159FYT245D8X"],
     "userId": "01J9XDBGCX8QM0GW67T7QGKS41",
     "bookTitle": "Secondhand Time",
     "bookAuthors": [
@@ -60,7 +60,7 @@
   },
   {
     "_id": "01J9XDF6YJWYZ7EC2MDR8R58MW",
-    "libraryId": "01J9XDD1NAFHP0159FYT245D8X",
+    "libraries": ["01J9XDD1NAFHP0159FYT245D8X"],
     "userId": "01J9XDBGCX8QM0GW67T7QGKS41",
     "bookTitle": "It Never Happened",
     "bookAuthors": [],
