@@ -37,6 +37,7 @@ class LibrariesService {
     const library = await this.get(id, userId, role)
 
     await librariesDao.delete(library.entity.id)
+    await userBooksDao.deleteAll(id, userId)
   }
 
   async list (userId: string, role: Role, page: Page, search?: string): Promise<CollectionResultObject<LibraryEntity>> {
@@ -61,16 +62,7 @@ class LibrariesService {
       const updated = await librariesDao.addBookIdToLibrary(library.entity.id, book.id, session)
       if (updated == null) throw new Error('should not happen')
 
-      await userBooksDao.create({
-        libraryId,
-        userId,
-        bookId: book.id,
-        bookTitle: book.title,
-        bookAuthors: book.authors,
-        bookCover: book.cover,
-        rating: null,
-        notes: null
-      }, session)
+      await userBooksDao.upsert(libraryId, userId, book)
 
       return updated
     })

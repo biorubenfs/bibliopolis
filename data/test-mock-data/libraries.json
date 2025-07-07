@@ -26,6 +26,15 @@
     "updatedAt": "2000-01-01T00:00:00.000Z"
   },
   {
+    "_id": "01J9W8VR2CFZW8PJ1Q8Y4Y5WFA",
+    "name": "sample third library",
+    "description": "description of the sample third library",
+    "books": [],
+    "userId": "01J9BHWZ8N4B1JBSAFCBKQGERS",
+    "createdAt": "2000-01-01T00:00:00.000Z",
+    "updatedAt": "2000-01-01T00:00:00.000Z"
+  },
+  {
     "_id": "01J9XDD1NAFHP0159FYT245D8X",
     "name": "sample first library user02",
     "description": "description of the sample first library user02",
