@@ -21,7 +21,7 @@ export function logRequest (req: Request, res: Response, next: NextFunction): vo
   res.on('finish', () => {
     const end = new Date()
 
-    const timeDiff = end.getTime() - start.getTime()
+    const timeDiffms = end.getTime() - start.getTime()
 
     void collection.insertOne({
       ip: req.ip ?? '',
@@ -29,7 +29,7 @@ export function logRequest (req: Request, res: Response, next: NextFunction): vo
       path: req.path,
       startedAt: start,
       endAt: end,
-      time: timeDiff,
+      time: timeDiffms,
       statusCode: res.statusCode
     })
   })
