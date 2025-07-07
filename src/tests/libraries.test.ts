@@ -129,7 +129,7 @@ describe('libraries tests', async () => {
   it('POST /libraries/:id/books - adding book to owned library should not increase user books counter', async () => {
     const isbn = '9780974326450'
     const bookId = '01J9KKFTWAKVR1HGHCER50JJMQ'
-    
+
     /* maybe we should avoid to use direct database queries here */
     const counterBeforeAddingBook = await userBooksDao.collection.countDocuments({ userId, bookId })
 
@@ -151,7 +151,7 @@ describe('libraries tests', async () => {
   it('POST /libraries/:id/books - adding book to owned library should increase user books counter', async () => {
     const isbn = '9780380708956'
     const bookId = '01J9KKG3X20MDEXAMYSSQZJ21Y'
-    
+
     /* maybe we should avoid to use direct database queries here */
     const counterBeforeAddingBook = await userBooksDao.collection.countDocuments({ userId, bookId })
 
