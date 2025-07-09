@@ -19,7 +19,7 @@ export default class App {
     this.server = new Server(this.port)
     this.server.listen()
 
-    await mongo.db().createCollection('requests', { capped: true, size: 10000 })
+    await mongo.db().createCollection('requests', { capped: true, size: 100_000 })
     await usersDao.init()
     await librariesDao.init()
 

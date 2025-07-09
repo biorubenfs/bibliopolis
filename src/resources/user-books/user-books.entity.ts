@@ -1,6 +1,6 @@
 import { EntityType, Entity } from '../../entity.js'
 import { getCoverUrl } from '../../utils.js'
-import { DBUserBook, UserBooksRating } from './user-books.interfaces.js'
+import { DBUserBook, UserBookRating } from './user-books.interfaces.js'
 
 export class UserBookEntity extends Entity<EntityType.UserBooks> {
   readonly libraries: readonly string[]
@@ -8,7 +8,7 @@ export class UserBookEntity extends Entity<EntityType.UserBooks> {
   readonly bookTitle: string
   readonly bookAuthors: readonly string[]
   readonly bookCover: null | number
-  readonly rating: null | UserBooksRating
+  readonly rating: null | UserBookRating
   readonly notes: null | string
   readonly userId: string
   readonly createdAt: Date
