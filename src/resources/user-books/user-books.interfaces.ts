@@ -1,5 +1,5 @@
-import { userBookUpdateSchema } from '../libraries/libraries.schemas'
-import { UserBookEntity } from './user-books.entity'
+import { userBookUpdateSchema } from '../libraries/libraries.schemas.js'
+import { UserBookEntity } from './user-books.entity.js'
 import z from 'zod'
 
 // export type UserBookRating = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
