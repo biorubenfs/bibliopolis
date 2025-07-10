@@ -37,11 +37,17 @@ jobs:
       run: pnpm run build
 
     # Uploads dist folder in order to be used in tests job
-    - name: Upload build artifacts
+    - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: dist-artifacts
+        name: dist-artifact
         path: dist
+
+    - name: Upload install artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: node-modules-artifact
+        path: node_modules
 
   eslint:
     runs-on: ubuntu-latest
@@ -81,15 +87,21 @@ jobs:
         node-version: '22.x'
         cache: 'pnpm'
 
-    # Download dist folder in the appropiate plae to run tests below
-    - name: Download build artifacts
+    # Download dist folder in the appropiate place to run tests below
+    - name: Download build artifact
       uses: actions/download-artifact@v4
       with:
-        name: dist-artifacts
+        name: dist-artifact
         path: dist
 
-    - name: Install dependencies
-      run: pnpm install
+    # - name: Install dependencies
+    #   run: pnpm install
+
+    - name: Download install artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: node-modules-artifact
+        path: node_modules
 
     - name: Run tests
       run: pnpm run test
