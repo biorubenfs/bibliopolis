@@ -10,6 +10,7 @@
     "notes": "Lorem ipsum",
     "rating": 5,
     "bookCover": 1304487,
+    "bookIsbn": "9780595385294",
     "bookId": "01J9KKFS6CKTSVY0ETH9A7PHXW",
     "createdAt": "2000-01-01T00:00:00.000Z",
     "updatedAt": "2000-01-01T00:00:00.000Z"
@@ -26,6 +27,7 @@
     "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis libero id sem egestas, ut scelerisque nisi mattis. Maecenas auctor. ",
     "rating": null,
     "bookCover": 1715106,
+    "bookIsbn": "9780974326450",
     "createdAt": "2000-01-01T00:00:00.000Z",
     "updatedAt": "2000-01-01T00:00:00.000Z"
   },
@@ -39,6 +41,7 @@
     "notes": null,
     "rating": 10,
     "bookCover": 12861662,
+    "bookIsbn": "9781732539419",
     "createdAt": "2000-01-01T00:00:00.000Z",
     "updatedAt": "2000-01-01T00:00:00.000Z"
   }
