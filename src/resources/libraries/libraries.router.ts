@@ -50,7 +50,7 @@ librariesRouter.get('/:id/books', queryPaginationValidator, tryCatch(async (req)
 }))
 
 librariesRouter.patch('/:libraryId/books/:bookId', bodyValidator(userBookUpdateSchema), tryCatch(async (req) => {
-  const result = await userBooksService.update(req.params.bookId, req.body)
+  const result = await userBooksService.update(req.params.bookId, req.userId ?? '', req.body)
   return { status: HttpStatusCode.OK, data: result }
 }))
 

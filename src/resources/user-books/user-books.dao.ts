@@ -61,9 +61,9 @@ class UserBooksDao extends Dao<DBUserBook> {
     await this.collection.updateMany({ libraries: libraryId, userId }, { $pull: { libraries: libraryId } })
   }
 
-  async update (id: string, data: UpdateUserBook): Promise<UserBookEntity | null> {
+  async update (id: string, userId: string, data: UpdateUserBook): Promise<UserBookEntity | null> {
     const upd = await this.collection.findOneAndUpdate(
-      { _id: id },
+      { _id: id, userId },
       {
         $set: { ...data }
       },

@@ -1,4 +1,4 @@
-import { CollectionResultObject } from '../../results.js'
+import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { Page } from '../../types.js'
 import librariesDao from '../libraries/libraries.dao.js'
 import { LibraryPermissionsError } from '../libraries/libraries.error.js'
@@ -24,12 +24,12 @@ class UserBooksService {
     return new CollectionResultObject(userBooks, mockPaginationObject)
   }
 
-  async update (id: string, data: UpdateUserBook): Promise<UserBookEntity> {
-    const updUserBookEntity = await userBooksDao.update(id, data)
+  async update (id: string, userId: string, data: UpdateUserBook): Promise<SingleResultObject<UserBookEntity>> {
+    const updUserBookEntity = await userBooksDao.update(id, userId, data)
     if (updUserBookEntity == null) {
       throw new UserBookNotFoundError('user book not found')
     }
-    return updUserBookEntity
+    return new SingleResultObject(updUserBookEntity)
   }
 }
 
