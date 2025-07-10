@@ -275,4 +275,51 @@ describe('libraries tests', async () => {
 
     expect(response.status).equals(403)
   })
+
+  it('PATCH /libraries/:libraryId/books/:bookId - should update a user book with rating and notes', async () => {
+    const libraryId = "01J9W8VR2CFZW8PJ1Q8Y4Y5WEX"
+    const userBookId = "01J9W9P6M5S0VRKVSRX3Q9T3W7"
+
+    const url = new URL(`libraries/${libraryId}/books/${userBookId}`, testUtils.TESTS_BASE_URL)
+
+    const body = {rating: 6, notes: 'loremipsum'}
+    
+    const response = await fetch(url, {
+      headers: {
+        cookie,
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify(body)
+    })
+
+    const responseBody = await response.json()
+    const userBook = responseBody.results
+
+    expect(response.status).equals(200)
+    expect(userBook.id).equals('01J9W9P6M5S0VRKVSRX3Q9T3W7')
+    expect(userBook.type).equals('user-books')
+    expect(userBook.attributes.rating).equals(body.rating)
+    expect(userBook.attributes.notes).equals(body.notes)
+  })
+
+  it('PATCH /libraries/:libraryId/books/:bookId - should fail to update a user book from not owner library', async () => {
+    const libraryId = "01J9XDD1NAFHP0159FYT245D8X"
+    const userBookId = "01J9XDBGCX8QM0GW67T7QGKS41"
+
+    const url = new URL(`libraries/${libraryId}/books/${userBookId}`, testUtils.TESTS_BASE_URL)
+
+    const body = {rating: 6, notes: 'loremipsum'}
+    
+    const response = await fetch(url, {
+      headers: {
+        cookie,
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify(body)
+    })
+
+    expect(response.status).equals(404)
+  })
 })
