@@ -1,7 +1,7 @@
 import { ulid } from 'ulid'
 import Dao from '../../dao.js'
 import { isNotNull } from '../../utils.js'
-import { DBUserBook } from './user-books.interfaces.js'
+import { DBUserBook, UpdateUserBook } from './user-books.interfaces.js'
 import { UserBookEntity } from './user-books.entity.js'
 import { ClientSession } from 'mongodb'
 import { BookEntity } from '../books/books.entity.js'
@@ -24,6 +24,7 @@ class UserBooksDao extends Dao<DBUserBook> {
           bookTitle: book.title,
           bookAuthors: book.authors,
           bookCover: book.cover,
+          bookIsbn: book.isbn_13,
           rating: null,
           notes: null
         },
@@ -58,6 +59,19 @@ class UserBooksDao extends Dao<DBUserBook> {
   async deleteAll (libraryId: string, userId: string): Promise<void> {
     /* add session to use in a transaction */
     await this.collection.updateMany({ libraries: libraryId, userId }, { $pull: { libraries: libraryId } })
+  }
+
+  async update (id: string, userId: string, data: UpdateUserBook): Promise<UserBookEntity | null> {
+    const upd = await this.collection.findOneAndUpdate(
+      { _id: id, userId },
+      {
+        $set: { ...data }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
+    return dbUserBookToEntity(upd)
   }
 }
 
