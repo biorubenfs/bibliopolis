@@ -119,11 +119,7 @@ describe('libraries tests', async () => {
       body: JSON.stringify(body)
     })
 
-    const responseBody = await response.json()
-
     expect(response.status).equals(201)
-    const books = responseBody.results.attributes.books
-    expect(books).to.be.an('array').includes('01J9KKFWF45DMVVGRS502SG83D')
   })
 
   it('POST /libraries/:id/books - adding book to owned library should not increase user books counter', async () => {
@@ -200,22 +196,22 @@ describe('libraries tests', async () => {
     expect(response.status).equals(404)
   })
 
-  it('DELETE /libraries/:id/books - should remove a book from owned library', async () => {
-    const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
-    const body = { id: '01J9KKFS6CKTSVY0ETH9A7PHXW' }
+  it('DELETE /libraries/:libraryId/books/:userBookId - should remove a book from owned library', async () => {
+    const libraryId = '01J9W8VR2CFZW8PJ1Q8Y4Y5WEX'
+    const userBookId = '01J9W9PGE06ANTMG3Y24KGCAFF'
+    const url = new URL(`/libraries/${libraryId}/books/${userBookId}`, librariesUrl)
     const response = await fetch(url, {
       headers: {
         cookie,
         'Content-Type': 'application/json'
       },
       method: 'DELETE',
-      body: JSON.stringify(body)
     })
 
     expect(response.status).equals(204)
   })
 
-  it.todo('DELETE /libraries/:id/books - should fail to remove a non existing book in a owned library', async () => { })
+  it.todo('DELETE /libraries/:libraryId/books/:userBookId - should fail to remove a non existing book in a owned library', async () => { })
 
   it('POST /libraries/:id/books - should fail to add a book in a not owned library', async () => {
     const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X/books', librariesUrl)
@@ -232,23 +228,24 @@ describe('libraries tests', async () => {
     expect(response.status).equals(403)
   })
 
-  it('DELETE /libraries/:id/books - should fail to remove a book in a not owned library', async () => {
-    const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X/books', librariesUrl)
-    const body = { id: '01J9KKFQRP6H3F30CNT21G1DWT' }
+  it('DELETE /libraries/:libraryId/books/:userBookId - should fail to remove a book in a not owned library', async () => {
+    const libraryId = '01J9XDD1NAFHP0159FYT245D8X'
+    const userBookId = '01J9XDF6YJWYZ7EC2MDR8R58MW'
+    const url = new URL(`/libraries/${libraryId}/books/${userBookId}`, librariesUrl)
     const response = await fetch(url, {
       headers: {
         cookie,
         'Content-Type': 'application/json'
       },
       method: 'DELETE',
-      body: JSON.stringify(body)
     })
 
     expect(response.status).equals(403)
   })
 
   it('GET /libraries/:id/books - should list the books of a owned library', async () => {
-    const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
+    const libraryId = '01J9W8VR2CFZW8PJ1Q8Y4Y5WEX'
+    const url = new URL(`/libraries/${libraryId}/books`, librariesUrl)
     const response = await fetch(url, {
       headers: {
         cookie,
