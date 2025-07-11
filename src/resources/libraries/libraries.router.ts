@@ -38,8 +38,8 @@ librariesRouter.post('/:id/books', bodyValidator(bookIsbnSchema), tryCatch(async
   return { status: HttpStatusCode.Created, data: result }
 }))
 
-librariesRouter.delete('/:id/books', bodyValidator(bookIdSchema), tryCatch(async (req) => {
-  const result = await librariesService.removeBook(req.params.id, req.body.id, req.userId ?? '')
+librariesRouter.delete('/:libraryId/books/:userBookId', tryCatch(async (req) => {
+  const result = await librariesService.removeBook(req.params.libraryId, req.params.userBookId, req.userId ?? '')
   return { status: HttpStatusCode.NoContent, data: result }
 }))
 

@@ -15,8 +15,8 @@ class UserBooksDao extends Dao<DBUserBook> {
     super('user_books')
   }
 
-  async upsert (libraryId: string, userId: string, book: BookEntity): Promise<void> {
-    await this.collection.updateOne(
+  async upsert (libraryId: string, userId: string, book: BookEntity, session: ClientSession): Promise<UserBookEntity | null> {
+    const userBook = await this.collection.findOneAndUpdate(
       { userId, bookId: book.id },
       {
         $setOnInsert: {
@@ -30,13 +30,19 @@ class UserBooksDao extends Dao<DBUserBook> {
         },
         $push: { libraries: libraryId } // or $addToSet if we want to avoid duplicates, although we control this situation on libraries service)
       },
-      { upsert: true } // options
+      { upsert: true, session, returnDocument: 'after' } // options
     )
+
+    return dbUserBookToEntity(userBook)
   }
 
-  async delete (libraryId: string, bookId: string, userId: string, session: ClientSession): Promise<void> {
+  async delete (libraryId: string, userBookId: string, userId: string, session: ClientSession): Promise<void> {
     await this.collection.updateOne(
-      { libraries: libraryId, bookId, userId },
+      {
+        _id: userBookId,
+        libraries: libraryId,
+        userId
+      },
       { $pull: { libraries: libraryId } },
       { session })
   }
