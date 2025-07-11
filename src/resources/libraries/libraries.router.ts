@@ -2,7 +2,7 @@ import { Router } from 'express'
 import tryCatch from '../../try-catch.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 
-import { bookIdSchema, bookIsbnSchema, newLibrarySchema, userBookUpdateSchema } from './libraries.schemas.js'
+import { bookIsbnSchema, newLibrarySchema, userBookUpdateSchema } from './libraries.schemas.js'
 import librariesService from './libraries.service.js'
 import { Role } from '../users/users.interfaces.js'
 import userBooksService from '../user-books/user-books.service.js'
@@ -38,8 +38,8 @@ librariesRouter.post('/:id/books', bodyValidator(bookIsbnSchema), tryCatch(async
   return { status: HttpStatusCode.Created, data: result }
 }))
 
-librariesRouter.delete('/:id/books', bodyValidator(bookIdSchema), tryCatch(async (req) => {
-  const result = await librariesService.removeBook(req.params.id, req.body.id, req.userId ?? '')
+librariesRouter.delete('/:libraryId/books/:userBookId', tryCatch(async (req) => {
+  const result = await librariesService.removeBook(req.params.libraryId, req.params.userBookId, req.userId ?? '')
   return { status: HttpStatusCode.NoContent, data: result }
 }))
 

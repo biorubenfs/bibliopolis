@@ -2,6 +2,7 @@ import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { runInTransaction } from '../../transaction-helper.js'
 import { Page } from '../../types.js'
 import userBooksDao from '../user-books/user-books.dao.js'
+import { UserBookNotFoundError } from '../user-books/user-books.error.js'
 import { Role } from '../users/users.interfaces.js'
 import librariesDao from './libraries.dao.js'
 import { LibraryEntity } from './libraries.entity.js'
@@ -54,15 +55,18 @@ class LibrariesService {
     const library = await this.get(libraryId, userId, Role.Regular)
     const book = await ensureBookExistsInBooks(isbn13)
 
-    if (library.entity.books.includes(book.id)) {
-      throw new BookAlreadyExistingInLibrary(`book with id ${book.id} already exists in library ${libraryId}`)
-    }
-
     const updatedLibrary = await runInTransaction<LibraryEntity>(async (session) => {
-      const updated = await librariesDao.addBookIdToLibrary(library.entity.id, book.id, session)
-      if (updated == null) throw new Error('should not happen')
+      const userBook = await userBooksDao.upsert(libraryId, userId, book, session)
+      if (userBook == null) throw new UserBookNotFoundError('user book not found')
 
-      await userBooksDao.upsert(libraryId, userId, book)
+      if (library.entity.books.includes(userBook.id)) {
+        // do nothing else
+        // return library.entity
+        throw new BookAlreadyExistingInLibrary(`book with id ${book.id} already exists in library ${libraryId}`)
+      }
+
+      const updated = await librariesDao.addBookIdToLibrary(library.entity.id, userBook.id, session)
+      if (updated == null) throw new Error('should not happen')
 
       return updated
     })
@@ -70,20 +74,22 @@ class LibrariesService {
     return new SingleResultObject(updatedLibrary)
   }
 
-  async removeBook (libraryId: string, bookId: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+  async removeBook (libraryId: string, userBookId: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
     const library = await this.get(libraryId, userId, Role.Regular)
 
-    if (!library.entity.books.includes(bookId)) {
-      throw new BookNotFoundInLibraryError(`book with id ${bookId} not found in library ${libraryId}`)
+    if (!library.entity.books.includes(userBookId)) {
+      throw new BookNotFoundInLibraryError(`book with id ${userBookId} not found in library ${libraryId}`)
     }
 
     const updatedLibrary = await runInTransaction(async (session) => {
-      const updatedLibrary = await librariesDao.removeBookIdFromLibrary(library.entity.id, bookId)
+      const updatedLibrary = await librariesDao.removeBookIdFromLibrary(library.entity.id, userBookId)
       if (updatedLibrary == null) {
         throw new Error('should not happen')
       }
 
-      await userBooksDao.delete(libraryId, bookId, userId, session)
+      console.log(updatedLibrary.books)
+
+      await userBooksDao.delete(libraryId, userBookId, userId, session)
 
       return updatedLibrary
     })

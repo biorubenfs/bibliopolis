@@ -6,7 +6,6 @@ export const newLibrarySchema = z.object({
   description: z.string()
 })
 
-export const bookIdSchema = z.object({ id: z.string() })
 export const bookIsbnSchema = z.object({ isbn: z.string() })
 
 export const userBookUpdateSchema = z.object({
