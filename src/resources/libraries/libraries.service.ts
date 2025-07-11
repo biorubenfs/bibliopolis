@@ -58,13 +58,13 @@ class LibrariesService {
     const updatedLibrary = await runInTransaction<LibraryEntity>(async (session) => {
       const userBook = await userBooksDao.upsert(libraryId, userId, book, session)
       if (userBook == null) throw new UserBookNotFoundError('user book not found')
-      
-      if (library.entity.books.includes(userBook.id)) { 
+
+      if (library.entity.books.includes(userBook.id)) {
         // do nothing else
         // return library.entity
         throw new BookAlreadyExistingInLibrary(`book with id ${book.id} already exists in library ${libraryId}`)
       }
-      
+
       const updated = await librariesDao.addBookIdToLibrary(library.entity.id, userBook.id, session)
       if (updated == null) throw new Error('should not happen')
 
