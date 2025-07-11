@@ -2,7 +2,7 @@ import { Router } from 'express'
 import tryCatch from '../../try-catch.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 
-import { bookIdSchema, bookIsbnSchema, newLibrarySchema, userBookUpdateSchema } from './libraries.schemas.js'
+import { bookIsbnSchema, newLibrarySchema, userBookUpdateSchema } from './libraries.schemas.js'
 import librariesService from './libraries.service.js'
 import { Role } from '../users/users.interfaces.js'
 import userBooksService from '../user-books/user-books.service.js'
