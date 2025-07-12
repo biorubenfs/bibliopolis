@@ -11,7 +11,6 @@ class OpenLibraryApi {
 
   async fetchBookByIsbn (isbn: string): Promise<OpenLibraryBook> {
     const url = new URL(`/isbn/${isbn}.json`, this.domain)
-    console.log(url.href)
     const response = await fetch(url)
 
     if (response.status === 404) {
@@ -23,7 +22,6 @@ class OpenLibraryApi {
 
   async fetchWorkById (workKey: string): Promise<OpenLibraryWork> {
     const url = new URL(`${workKey}.json`, this.domain)
-    console.log(url.href)
     const response = await fetch(url)
 
     if (response.status === 404) {
@@ -35,7 +33,6 @@ class OpenLibraryApi {
 
   async fetchAuthorById (identifierKey: string): Promise<OpenLibraryAuthor> {
     const url = new URL(`${identifierKey}.json`, this.domain)
-    console.log(url.href)
     const response = await fetch(url)
     return await response.json()
   }
