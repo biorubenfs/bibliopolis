@@ -8,13 +8,13 @@ import { OpenLibraryBook } from './types.js'
 //   return value != null // filter null and undefined
 // }
 
-async function buildBook(openLibraryBook: OpenLibraryBook): Promise<NewBook> {
+async function buildBook (openLibraryBook: OpenLibraryBook): Promise<NewBook> {
   const workKey = openLibraryBook.works[0].key
   if (workKey == null) {
     throw new Error('say something util')
   }
   const work = await openLibraryApi.fetchWorkById(workKey)
-  const authors = await Promise.all(work.authors.map(author => openLibraryApi.fetchAuthorById(author.author.key)))
+  const authors = await Promise.all(work.authors.map(async author => await openLibraryApi.fetchAuthorById(author.author.key)))
 
   return {
     title: openLibraryBook.title,

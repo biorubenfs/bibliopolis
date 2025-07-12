@@ -21,7 +21,7 @@ class OpenLibraryApi {
     return await response.json()
   }
 
-  async fetchWorkById(workKey: string): Promise<OpenLibraryWork> {
+  async fetchWorkById (workKey: string): Promise<OpenLibraryWork> {
     const url = new URL(`${workKey}.json`, this.domain)
     console.log(url.href)
     const response = await fetch(url)
@@ -35,7 +35,7 @@ class OpenLibraryApi {
 
   async fetchAuthorById (identifierKey: string): Promise<OpenLibraryAuthor> {
     const url = new URL(`${identifierKey}.json`, this.domain)
-        console.log(url.href)
+    console.log(url.href)
     const response = await fetch(url)
     return await response.json()
   }
