@@ -41,7 +41,7 @@ class BooksDao extends Dao<DBBook> {
   }
 
   async list (skip: number, limit: number): Promise<readonly BookEntity[]> {
-    const dbBooks = await this.collection.find().skip(skip).limit(limit).toArray()
+    const dbBooks = await this.collection.find().sort({ createdAt: -1 }).skip(skip).limit(limit).toArray()
 
     return dbBooks.map(dbBookToEntity).filter(isNotNull)
   }

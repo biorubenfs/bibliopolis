@@ -9,13 +9,17 @@ import { OpenLibraryBook } from './types.js'
 // }
 
 async function buildBook (openLibraryBook: OpenLibraryBook): Promise<NewBook> {
-  const authorsKeys = openLibraryBook.authors.map(author => author.key)
-  const authors = await getAuthorsFromKey(authorsKeys)
+  const workKey = openLibraryBook.works[0].key
+  if (workKey == null) {
+    throw new Error('say something util')
+  }
+  const work = await openLibraryApi.fetchWorkById(workKey)
+  const authors = await Promise.all(work.authors.map(async author => await openLibraryApi.fetchAuthorById(author.author.key)))
 
   return {
     title: openLibraryBook.title,
     isbn_13: openLibraryBook.isbn_13?.at(0) ?? 'N/A',
-    authors,
+    authors: authors.map(author => author.personal_name),
     cover: openLibraryBook.covers?.at(0) ?? null
   }
 }
