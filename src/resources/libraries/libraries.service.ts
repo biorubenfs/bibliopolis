@@ -87,8 +87,6 @@ class LibrariesService {
         throw new Error('should not happen')
       }
 
-      console.log(updatedLibrary.books)
-
       await userBooksDao.delete(libraryId, userBookId, userId, session)
 
       return updatedLibrary
