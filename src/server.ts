@@ -12,6 +12,7 @@ import config from './config.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { logRequest } from './middlewares/request-logger.js'
+import userBooksRouter from './resources/user-books/user-books.router.js'
 
 export default class Server {
   private readonly express: express.Express
@@ -56,6 +57,7 @@ export default class Server {
     this.express.use('/users', usersRouter)
     this.express.use('/books', booksRouter)
     this.express.use('/libraries', checkJwt, librariesRouter)
+    this.express.use('/user-books', checkJwt, userBooksRouter)
 
     // error handling
     this.express.use(errorHandler)

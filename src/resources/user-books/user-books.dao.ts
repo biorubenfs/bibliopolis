@@ -15,6 +15,12 @@ class UserBooksDao extends Dao<DBUserBook> {
     super('user_books')
   }
 
+  async findById(id: string): Promise<UserBookEntity | null> {
+    const userBook = await this.collection.findOne({ _id: id })
+    
+    return dbUserBookToEntity(userBook)
+  } 
+
   async upsert (libraryId: string, userId: string, book: BookEntity, session: ClientSession): Promise<UserBookEntity | null> {
     const userBook = await this.collection.findOneAndUpdate(
       { userId, bookId: book.id },
