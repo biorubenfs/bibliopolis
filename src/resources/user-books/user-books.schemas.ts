@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { UserBookRating } from "./user-books.interfaces";
+import { z } from 'zod'
+import { UserBookRating } from './user-books.interfaces.js'
 
 export const userBookUpdateSchema = z.object({
   // rating: z.union([

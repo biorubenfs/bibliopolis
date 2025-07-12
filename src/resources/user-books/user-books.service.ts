@@ -24,7 +24,7 @@ class UserBooksService {
     return new CollectionResultObject(userBooks, mockPaginationObject)
   }
 
-  async get(id: string, userId: string): Promise<SingleResultObject<UserBookEntity>> {
+  async get (id: string, userId: string): Promise<SingleResultObject<UserBookEntity>> {
     const userBook = await userBooksDao.findById(id)
 
     if (userBook == null || userBook.userId !== userId) {
@@ -32,7 +32,6 @@ class UserBooksService {
     }
 
     return new SingleResultObject(userBook)
-
   }
 
   async update (id: string, userId: string, data: UpdateUserBook): Promise<SingleResultObject<UserBookEntity>> {

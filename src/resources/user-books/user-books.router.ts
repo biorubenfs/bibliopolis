@@ -1,9 +1,9 @@
-import { Router } from "express"
-import userBooksService from "./user-books.service.js"
-import bodyValidator from "../../middlewares/body-validator.middleware.js"
-import tryCatch from "../../try-catch.js"
-import { HttpStatusCode } from "../../types.js"
-import { userBookUpdateSchema } from "./user-books.schemas.js"
+import { Router } from 'express'
+import userBooksService from './user-books.service.js'
+import bodyValidator from '../../middlewares/body-validator.middleware.js'
+import tryCatch from '../../try-catch.js'
+import { HttpStatusCode } from '../../types.js'
+import { userBookUpdateSchema } from './user-books.schemas.js'
 
 const userBooksRouter = Router()
 
