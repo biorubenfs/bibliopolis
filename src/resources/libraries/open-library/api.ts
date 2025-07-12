@@ -1,6 +1,6 @@
 import config from '../../../config.js'
 import { BookNotFoundError } from '../../books/books.error.js'
-import { Author, OpenLibraryBook } from './types.js'
+import { OpenLibraryAuthor, OpenLibraryBook, OpenLibraryWork } from './types.js'
 
 class OpenLibraryApi {
   private readonly domain: URL
@@ -11,21 +11,33 @@ class OpenLibraryApi {
 
   async fetchBookByIsbn (isbn: string): Promise<OpenLibraryBook> {
     const url = new URL(`/isbn/${isbn}.json`, this.domain)
+    console.log(url.href)
     const response = await fetch(url)
 
     if (response.status === 404) {
       throw new BookNotFoundError('not found in open library')
     }
 
-    const data: OpenLibraryBook = await response.json()
-    return data
+    return await response.json()
   }
 
-  async fetchAuthorById (identifierKey: string): Promise<Author> {
-    const url = new URL(`${identifierKey}.json`, this.domain)
+  async fetchWorkById(workKey: string): Promise<OpenLibraryWork> {
+    const url = new URL(`${workKey}.json`, this.domain)
+    console.log(url.href)
     const response = await fetch(url)
-    const data: Author = await response.json()
-    return data
+
+    if (response.status === 404) {
+      throw new BookNotFoundError('work not found in open library')
+    }
+
+    return await response.json()
+  }
+
+  async fetchAuthorById (identifierKey: string): Promise<OpenLibraryAuthor> {
+    const url = new URL(`${identifierKey}.json`, this.domain)
+        console.log(url.href)
+    const response = await fetch(url)
+    return await response.json()
   }
 }
 
