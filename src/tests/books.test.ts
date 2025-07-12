@@ -53,6 +53,6 @@ describe('books tests', async () => {
     expect(body.paginationInfo.total).to.be.a('number').equals(12)
 
     const firstBook = body.results.at(0).attributes
-    expect(firstBook).to.have.property('title').equals('My Voice Betrays Me (EEM)')
+    expect(firstBook).to.have.property('title').equals('Rossiya')
   })
 })
