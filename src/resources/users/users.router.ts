@@ -45,6 +45,8 @@ usersRouter.get('/:id', tryCatch(async (req) => {
   }
   await usersService.validate(userId, code)
 
+  // Redirect to the login page after successful validation
+  // TODO: replace with a proper URL
   const result = new RedirectResultObject('')
 
   return { status: HttpStatusCode.Redirect, data: result }
