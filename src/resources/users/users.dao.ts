@@ -83,7 +83,7 @@ class UsersDao extends Dao<DBUser> {
     return dbUserToEntity(user)
   }
 
-  async updateUser(userId: string, data: UpdateUser): Promise<UserEntity | null> {
+  async updateUser (userId: string, data: UpdateUser): Promise<UserEntity | null> {
     const user = await this.collection.findOneAndUpdate(
       { _id: userId },
       {
@@ -97,7 +97,7 @@ class UsersDao extends Dao<DBUser> {
 
     return dbUserToEntity(user)
   }
-  
+
   async validate (id: string, validationCode: string): Promise<void> {
     await this.collection.findOneAndUpdate(
       { _id: id, validationCode },

@@ -25,7 +25,7 @@ class UsersService {
     const userData: CreateUser = {
       ...body,
       password: hashPasswordSync(body.password),
-      validationCode,
+      validationCode
     }
 
     const newUser = await usersDao.create(userData, Role.Regular)
@@ -79,7 +79,7 @@ class UsersService {
     return new SingleResultObject(updUser)
   }
 
-  async updateUser(userId: string, data: UpdateUser): Promise<SingleResultObject<UserEntity>> {
+  async updateUser (userId: string, data: UpdateUser): Promise<SingleResultObject<UserEntity>> {
     const updUser = await usersDao.updateUser(userId, data)
     if (updUser == null) {
       throw new UserNotFoundError('user not found')
@@ -87,7 +87,7 @@ class UsersService {
 
     return new SingleResultObject(updUser)
   }
-  
+
   async validate (id: string, validationCode: string): Promise<void> {
     await usersDao.validate(id, validationCode)
   }
