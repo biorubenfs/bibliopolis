@@ -10,5 +10,6 @@ export interface PaginationObject extends Page {
 export enum HttpStatusCode {
   Created = 201,
   OK = 200,
-  NoContent = 204
+  NoContent = 204,
+  Redirect = 302
 }

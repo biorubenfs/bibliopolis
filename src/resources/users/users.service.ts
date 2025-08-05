@@ -6,25 +6,31 @@ import config from '../../config.js'
 import { InvalidCurrentPassword, UserEmailAlreadyExists, UserNotFoundError } from './users.error.js'
 import { UserEntity } from './users.entity.js'
 import { Page } from '../../types.js'
+import crypto from 'crypto'
+
+const VALIDATION_CODE_LIMIT = 9999
 
 export function hashPasswordSync (password: string): string {
   return bcrypt.hashSync(password, config.hashRounds)
 }
 
 class UsersService {
-  async signup (body: CreateUser): Promise<SingleResultObject<UserEntity>> {
+  async signup (body: CreateUser): Promise<UserEntity> {
     const existingUser = await usersDao.findByEmail(body.email)
     if (existingUser != null) {
       throw new UserEmailAlreadyExists(`there is already a user registered with email ${body.email}`)
     }
+
+    const validationCode = crypto.randomInt(VALIDATION_CODE_LIMIT).toString()
     const userData: CreateUser = {
       ...body,
-      password: hashPasswordSync(body.password)
+      password: hashPasswordSync(body.password),
+      validationCode
     }
 
     const newUser = await usersDao.create(userData, Role.Regular)
 
-    return new SingleResultObject(newUser)
+    return newUser
   }
 
   async getById (id: string): Promise<SingleResultObject<UserEntity>> {
@@ -36,14 +42,14 @@ class UsersService {
     return new SingleResultObject(user)
   }
 
-  async getByEmail (email: string): Promise<SingleResultObject<UserEntity>> {
+  async getByEmail (email: string): Promise<UserEntity> {
     const user = await usersDao.findByEmail(email)
 
     if (user == null) {
       throw new UserNotFoundError('user not found')
     }
 
-    return new SingleResultObject(user)
+    return user
   }
 
   async list (page: Page): Promise<CollectionResultObject<UserEntity>> {
@@ -80,6 +86,10 @@ class UsersService {
     }
 
     return new SingleResultObject(updUser)
+  }
+
+  async validate (id: string, validationCode: string): Promise<void> {
+    await usersDao.validate(id, validationCode)
   }
 }
 

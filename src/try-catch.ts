@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express'
-import { CollectionResultObject, SingleResultObject, MiscResultObject, SetCookieResultObject, ClearCookieResultObject } from './results.js'
+import { CollectionResultObject, SingleResultObject, MiscResultObject, SetCookieResultObject, ClearCookieResultObject, RedirectResultObject } from './results.js'
 import { Entity, EntityType } from './entity.js'
 import { HttpStatusCode } from './types.js'
 
@@ -10,6 +10,7 @@ type DataCustomController =
   MiscResultObject |
   SetCookieResultObject<Entity<EntityType>> |
   ClearCookieResultObject |
+  RedirectResultObject |
   null
 
 type CustomController<TBody> = (req: Request<any, any, TBody>) => Promise<{ status: StatusCustomController, data: DataCustomController }>
@@ -47,6 +48,10 @@ function tryCatch<TBody> (controller: CustomController<TBody>): RequestHandler<a
         case data instanceof ClearCookieResultObject:
           res.clearCookie(data.name, data.options)
             .sendStatus(status)
+          return
+
+        case data instanceof RedirectResultObject:
+          res.redirect(status, data.url.href)
           return
 
         case data == null:
