@@ -16,9 +16,9 @@ const envSchema = z.object({
   OPEN_LIBRARY_DOMAIN: z.string().optional().default('https://openlibrary.org').transform(value => new URL(value)),
   OL_COVER_URL_PATH: z.string().default('none'),
   // Cookie options
-  COOKIE_OPTIONS_HTTP_ONLY: z.boolean().optional().default(true).transform(value => value === true),
-  COOKIE_OPTIONS_SECURE: z.boolean().optional().default(false).transform(value => value === true),
-  COOKIE_OPTIONS_SAME_SITE: z.string().optional().default('none'),
+  COOKIE_OPTIONS_HTTP_ONLY: z.boolean().optional().default(true).transform(value => value),
+  COOKIE_OPTIONS_SECURE: z.boolean().optional().default(false).transform(value => value),
+  COOKIE_OPTIONS_SAME_SITE: z.string().optional().default('none')
 })
 
 const { data, error, success } = envSchema.safeParse(process.env)
@@ -51,6 +51,6 @@ export default {
   cookieOptions: {
     httpOnly: data.COOKIE_OPTIONS_HTTP_ONLY,
     secure: data.COOKIE_OPTIONS_SECURE,
-    sameSite:  data.COOKIE_OPTIONS_SAME_SITE
+    sameSite: data.COOKIE_OPTIONS_SAME_SITE
   }
 }
