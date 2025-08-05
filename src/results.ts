@@ -58,3 +58,11 @@ export class ClearCookieResultObject {
     this.options = options
   }
 }
+
+export class RedirectResultObject {
+  readonly url: URL
+
+  constructor (url: string) {
+    this.url = new URL(url)
+  }
+}

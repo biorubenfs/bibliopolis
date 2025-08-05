@@ -25,7 +25,7 @@ export default {
   },
   jwt: {
     secret: parseString(process.env.JWT_SECRET, 'foo'),
-    expiration: parseNumber(process.env.JWT_EXPIRATION_TIME, 60000)
+    expirationTime: parseNumber(process.env.JWT_EXPIRATION_TIME, 60000)
   },
   hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
   openLibrary: {
