@@ -12,6 +12,9 @@ const usersURL = new URL('/users', testUtils.TESTS_BASE_URL)
 const adminToken = makeJwt('01J9BK7YX0D5NHHBN70Q4N7P69', Role.Admin)
 const adminCookie = testUtils.buildAccessTokenCookie(adminToken)
 
+const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
+const cookie = testUtils.buildAccessTokenCookie(token)
+
 beforeAll(async () => {
   await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
   await usersDao.init()
