@@ -9,10 +9,9 @@
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
     "seed": "node ./dist/scripts/seed.js",
-    "test:dev": "pnpm run --silent build && ENVIRONMENT='test' node --env-file=.env --test ./dist/tests/*.test.js",
-    "test:only": "pnpm run --silent build && ENVIRONMENT='test' node --env-file=.env --test --test-only ./dist/tests/*.test.js",
-    "test": "ENVIRONMENT='test' node --test --env-file=.env ./dist/tests/*.test.js",
-    "test:coverage": "ENVIRONMENT='test' node --env-file=.env --test --experimental-test-coverage"
+    "test": "ENVIRONMENT='test' vitest run --pool=forks --reporter=verbose",
+    "test:dev": "pnpm run --silent build && ENVIRONMENT='test' vitest run --pool=forks --reporter=verbose",
+    "test:coverage": "ENVIRONMENT='test' vitest run --coverage"
   },
   "type": "module",
   "keywords": [],

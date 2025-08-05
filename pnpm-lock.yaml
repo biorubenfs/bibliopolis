@@ -17,12 +17,6 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
-<<<<<<< HEAD
-      dotenv:
-        specifier: 16.4.5
-        version: 16.4.5
-=======
->>>>>>> 4d53c90 (chore: remove dotenv lib)
       express:
         specifier: ^4.21.0
         version: 4.21.0
@@ -968,16 +962,9 @@ packages:
     resolution: {integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==}
     engines: {node: '>=6.0.0'}
 
-<<<<<<< HEAD
-  dotenv@16.4.5:
-    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
-    engines: {node: '>=12'}
-
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-=======
->>>>>>> 4d53c90 (chore: remove dotenv lib)
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
@@ -3472,13 +3459,8 @@ snapshots:
     dependencies:
       esutils: 2.0.3
 
-<<<<<<< HEAD
-  dotenv@16.4.5: {}
-
   eastasianwidth@0.2.0: {}
 
-=======
->>>>>>> 4d53c90 (chore: remove dotenv lib)
   ecdsa-sig-formatter@1.0.11:
     dependencies:
       safe-buffer: 5.2.1
