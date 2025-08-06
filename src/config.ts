@@ -1,40 +1,56 @@
-import 'dotenv/config'
+import { z } from 'zod'
 
-function parseString (value?: string, dflt = ''): string {
-  return value ?? dflt
-}
+const envSchema = z.object({
+  ENVIRONMENT: z.string().default('dev'),
+  PORT: z.string().default('3000').transform(value => parseInt(value)),
+  MONGO_URI: z.string().default('mongodb://localhost:27017/bibliopolis'),
+  // Default admin user
+  DEFAULT_ADMIN_NAME: z.string().default('admin01'),
+  DEFAULT_ADMIN_EMAIL: z.string().email().default('admin01@email.com'),
+  DEFAULT_ADMIN_PASSWORD: z.string().default('Password123$'),
+  // JWT configuration
+  JWT_SECRET: z.string().default('supersecretkey'),
+  EXPIRATION_TIME: z.string().optional().default('60000'),
+  HASH_ROUNDS: z.string().optional().default('10').transform(value => parseInt(value)),
+  // Open Library config
+  OPEN_LIBRARY_DOMAIN: z.string().optional().default('https://openlibrary.org').transform(value => new URL(value)),
+  OL_COVER_URL_PATH: z.string().default('none'),
+  // Cookie options
+  COOKIE_OPTIONS_HTTP_ONLY: z.boolean().optional().default(true),
+  COOKIE_OPTIONS_SECURE: z.boolean().optional().default(false),
+  COOKIE_OPTIONS_SAME_SITE: z.string().optional().default('none')
+})
 
-function parseNumber (value?: string, dflt = 0): number {
-  return value != null ? parseInt(value) : dflt
-}
+const { data, error, success } = envSchema.safeParse(process.env)
 
-function parseUrl (value?: string, dflt = ''): URL {
-  return new URL(value ?? dflt)
+if (!success) {
+  console.log(error.issues)
+  throw new Error('invalid environment config')
 }
 
 export default {
-  environment: parseString(process.env.ENVIRONMENT, 'local'),
-  port: parseNumber(process.env.PORT, 3000),
+  environment: data.ENVIRONMENT,
+  port: data.PORT,
   mongo: {
-    uri: parseString(process.env.MONGO_URI)
+    uri: data.MONGO_URI
   },
   defaultAdmin: {
-    name: parseString(process.env.DEFAULT_ADMIN_NAME),
-    email: parseString(process.env.DEFAULT_ADMIN_EMAIL),
-    password: parseString(process.env.DEFAULT_ADMIN_PASSWORD)
+    name: data.DEFAULT_ADMIN_NAME,
+    email: data.DEFAULT_ADMIN_EMAIL,
+    password: data.DEFAULT_ADMIN_PASSWORD
   },
   jwt: {
-    secret: parseString(process.env.JWT_SECRET, 'foo'),
-    expirationTime: parseNumber(process.env.JWT_EXPIRATION_TIME, 60000)
+    expirationTime: data.EXPIRATION_TIME,
+    secret: data.JWT_SECRET
   },
-  hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
+  hashRounds: data.HASH_ROUNDS,
   openLibrary: {
-    domain: parseUrl(process.env.OPEN_LIBRARY_DOMAIN, 'https://openlibrary.org'),
-    coverUrlPattern: parseString(process.env.OPEN_LIBRARY_COVER_URL_PATH)
+    domain: data.OPEN_LIBRARY_DOMAIN,
+    coverUrlPattern: data.OL_COVER_URL_PATH
   },
   cookieOptions: {
-    httpOnly: true,
-    secure: typeof process.env.ACCESS_TOKEN_COOKIE_SECURE === 'boolean' ? process.env.ACCESS_TOKEN_COOKIE_SECURE : false,
-    sameSite: parseString(process.env.ACCESS_TOKEN_COOKIE_SAME_SITE, 'none')
+    httpOnly: data.COOKIE_OPTIONS_HTTP_ONLY,
+    secure: data.COOKIE_OPTIONS_SECURE,
+    sameSite: data.COOKIE_OPTIONS_SAME_SITE
   }
 }
