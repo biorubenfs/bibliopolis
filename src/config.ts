@@ -16,8 +16,8 @@ const envSchema = z.object({
   OPEN_LIBRARY_DOMAIN: z.string().optional().default('https://openlibrary.org').transform(value => new URL(value)),
   OL_COVER_URL_PATH: z.string().default('none'),
   // Cookie options
-  COOKIE_OPTIONS_HTTP_ONLY: z.boolean().optional().default(true).transform(value => value),
-  COOKIE_OPTIONS_SECURE: z.boolean().optional().default(false).transform(value => value),
+  COOKIE_OPTIONS_HTTP_ONLY: z.boolean().optional().default(true),
+  COOKIE_OPTIONS_SECURE: z.boolean().optional().default(false),
   COOKIE_OPTIONS_SAME_SITE: z.string().optional().default('none')
 })
 
