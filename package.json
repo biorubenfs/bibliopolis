@@ -10,7 +10,7 @@
     "lint:fix": "ts-standard --fix",
     "seed": "node ./dist/scripts/seed.js",
     "test": "ENVIRONMENT='test' vitest run --pool=forks --reporter=verbose",
-    "test:dev": "pnpm run --silent build && ENVIRONMENT='test' vitest run --pool=forks --reporter=verbose",
+    "test:dev": "ENVIRONMENT='test' vitest run --pool=forks --reporter=verbose",
     "test:coverage": "ENVIRONMENT='test' vitest run --coverage"
   },
   "type": "module",

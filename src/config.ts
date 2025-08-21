@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 function parseString (value?: string, dflt = ''): string {
   return value ?? dflt
 }
@@ -10,6 +8,15 @@ function parseNumber (value?: string, dflt = 0): number {
 
 function parseUrl (value?: string, dflt = ''): URL {
   return new URL(value ?? dflt)
+}
+
+if (process.env.ENVIRONMENT !== 'test') {
+  try {
+    // Usamos require aquí para evitar problemas con ESM en Vitest
+    require('dotenv').config()
+  } catch (err) {
+    // Si dotenv no está instalado, seguimos sin él
+  }
 }
 
 export default {
