@@ -12,6 +12,10 @@ function parseUrl (value?: string, dflt = ''): URL {
   return new URL(value ?? dflt)
 }
 
+function parseBoolean(value?: string, dflt = false): boolean {
+  return value != null ? value.toLowerCase() === 'true' : dflt
+}
+
 export default {
   environment: parseString(process.env.ENVIRONMENT, 'local'),
   port: parseNumber(process.env.PORT, 3000),
@@ -34,7 +38,10 @@ export default {
   },
   cookieOptions: {
     httpOnly: true,
-    secure: typeof process.env.ACCESS_TOKEN_COOKIE_SECURE === 'boolean' ? process.env.ACCESS_TOKEN_COOKIE_SECURE : false,
+    secure: parseBoolean(process.env.ACCESS_TOKEN_COOKIE_SECURE, false),
     sameSite: parseString(process.env.ACCESS_TOKEN_COOKIE_SAME_SITE, 'none')
+  },
+  debug: {
+    stackTrace: parseBoolean(process.env.DEBUG_STACK_TRACE, false)
   }
 }
