@@ -25,7 +25,7 @@ export default {
   },
   jwt: {
     secret: parseString(process.env.JWT_SECRET, 'foo'),
-    expirationTime: parseNumber(process.env.JWT_EXPIRATION_TIME, 60000)
+    expirationTime: parseString(process.env.JWT_EXPIRATION_TIME, '60000')
   },
   hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
   openLibrary: {
@@ -34,7 +34,7 @@ export default {
   },
   cookieOptions: {
     httpOnly: true,
-    secure: typeof process.env.ACCESS_TOKEN_COOKIE_SECURE === 'boolean' ? process.env.ACCESS_TOKEN_COOKIE_SECURE : false,
+    secure: process.env.ACCESS_TOKEN_COOKIE_SECURE === 'true',
     sameSite: parseString(process.env.ACCESS_TOKEN_COOKIE_SAME_SITE, 'none')
   }
 }
