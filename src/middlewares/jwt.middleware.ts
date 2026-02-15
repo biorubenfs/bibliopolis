@@ -24,38 +24,45 @@ import { ExpiredTokenError, InvalidTokenError, TokenNotProvidedError } from '../
 //   }
 // }
 
-export function checkJwt (req: Request, res: Response, next: NextFunction): void {
-  const token = req.cookies.access_token
-
-  if (token == null) {
-    throw new TokenNotProvidedError('token not provided')
-  }
-
+export function checkJwt(req: Request, res: Response, next: NextFunction) {
   try {
+    const token = extractToken(req)
     const payload = jwt.verify(token, config.jwt.secret) as JwtPayload
 
-    if (payload.id == null || payload.role == null || payload.exp == null) {
-      throw new InvalidTokenError('invalid token')
-    }
+    assertPayload(payload)
 
     req.userId = payload.id
     req.role = payload.role
 
-    const now = new Date()
-
-    if (payload.exp < now.getTime() / 1000) {
-      throw new ExpiredTokenError('token expired')
+    return next()
+  } catch (error: any) {
+    if (error.name === 'TokenExpiredError') {
+      return next(new ExpiredTokenError('token expired'))
     }
 
-    next()
-  } catch (error) {
+    if (error instanceof TokenNotProvidedError) {
+      return next(error)
+    }
+
+    return next(new InvalidTokenError('invalid token'))
+  }
+}
+
+function extractToken(req: Request): string {
+  const token = req.cookies?.access_token
+  if (!token) throw new TokenNotProvidedError('token not provided')
+  return token
+}
+
+function assertPayload(payload: JwtPayload) {
+  if (!payload.id || !payload.role) {
     throw new InvalidTokenError('invalid token')
   }
 }
 
 export function checkAdmin (req: Request, res: Response, next: NextFunction): void {
   if (req.role !== Role.Admin) {
-    throw new InvalidTokenError('must be admin')
+    return next(new InvalidTokenError('must be admin'))
   }
   next()
 }
