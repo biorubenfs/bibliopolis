@@ -24,7 +24,7 @@ import { ExpiredTokenError, InvalidTokenError, TokenNotProvidedError } from '../
 //   }
 // }
 
-export function checkJwt(req: Request, res: Response, next: NextFunction) {
+export function checkJwt (req: Request, res: Response, next: NextFunction): void {
   try {
     const token = extractToken(req)
     const payload = jwt.verify(token, config.jwt.secret) as JwtPayload
@@ -48,14 +48,14 @@ export function checkJwt(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-function extractToken(req: Request): string {
+function extractToken (req: Request): string {
   const token = req.cookies?.access_token
-  if (!token) throw new TokenNotProvidedError('token not provided')
+  if (token == null) throw new TokenNotProvidedError('token not provided')
   return token
 }
 
-function assertPayload(payload: JwtPayload) {
-  if (!payload.id || !payload.role) {
+function assertPayload (payload: JwtPayload): void {
+  if (payload.id == null || payload.role == null) {
     throw new InvalidTokenError('invalid token')
   }
 }
