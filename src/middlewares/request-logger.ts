@@ -16,12 +16,10 @@ interface _Request {
 export function requestLogger (req: Request, res: Response, next: NextFunction): void {
   const start = new Date()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { path, method, userId } = req
+  const { path, method } = req
 
   const requestId = ulid()
 
-  // TODO: add userId to logger context
   logger.info(`${requestId} - ${method} ${path}`)
 
   const collection = mongo.db().collection<_Request>('requests')
@@ -31,12 +29,12 @@ export function requestLogger (req: Request, res: Response, next: NextFunction):
   res.on('finish', () => {
     const end = new Date()
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const userId = req.userId
+    const { userId, role } = req
+
     const timeDiffms = end.getTime() - start.getTime()
 
-    // TODO: add userId to logger context
-    logger.info(`${requestId} - ${method} ${path} - ${res.statusCode} - ${timeDiffms}ms`)
+    const userInfo = userId != null ? `userId: ${userId}${role != null ? `, role: ${role}` : ''}` : 'userId: anonymous'
+    logger.info(`${requestId} - ${method} ${path} - ${res.statusCode} - ${timeDiffms}ms - ${userInfo}`)
 
     void collection.insertOne({
       ip: req.ip ?? '',

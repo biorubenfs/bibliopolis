@@ -26,10 +26,6 @@ export default class Server {
     this.express.use(cors())
     this.express.use(cookieParser())
 
-    if (config.environment !== 'test') {
-      this.express.use(requestLogger)
-    }
-
     this.express.get('/', (req, res) => {
       res.json({
         success: true,
@@ -37,12 +33,26 @@ export default class Server {
       })
     })
 
-    // add routers here
+    if (config.environment !== 'test') {
+      this.express.use(requestLogger)
+    }
+
+    // Public route: /auth (no JWT required)
     this.express.use('/auth', authRouter)
+
+    // JWT validation for all other routes
+    this.express.use((req, res, next) => {
+      if (req.path.startsWith('/auth')) {
+        return next()
+      }
+      return checkJwt(req, res, next)
+    })
+
+    // Protected routers
     this.express.use('/users', usersRouter)
     this.express.use('/books', booksRouter)
-    this.express.use('/libraries', checkJwt, librariesRouter)
-    this.express.use('/user-books', checkJwt, userBooksRouter)
+    this.express.use('/libraries', librariesRouter)
+    this.express.use('/user-books', userBooksRouter)
 
     // error handling
     this.express.use(errorHandler)
