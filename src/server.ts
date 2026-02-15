@@ -7,12 +7,11 @@ import booksRouter from './resources/books/books.router.js'
 import librariesRouter from './resources/libraries/libraries.router.js'
 import { checkJwt } from './middlewares/jwt.middleware.js'
 import logger from './logger.js'
-import expressWinston from 'express-winston'
 import config from './config.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import { logRequest } from './middlewares/request-logger.js'
 import userBooksRouter from './resources/user-books/user-books.router.js'
+import { requestLogger } from './middlewares/request-logger.js'
 
 export default class Server {
   private readonly express: express.Express
@@ -28,21 +27,7 @@ export default class Server {
     this.express.use(cookieParser())
 
     if (config.environment !== 'test') {
-      this.express.use(expressWinston.logger({
-        winstonInstance: logger,
-        statusLevels: true,
-        meta: false,
-        msg: (req, res) => {
-          const { method, path, userId, role } = req
-          const { statusCode } = res
-          return `${method} ${path}, userId: ${userId ?? 'N/A'}, role: ${role ?? 'N/A'}, status: ${statusCode}}`
-        },
-        expressFormat: false,
-        colorize: false
-      }))
-
-      /* this should be here provisionally -> this must be out of the if */
-      this.express.use(logRequest)
+      this.express.use(requestLogger)
     }
 
     this.express.get('/', (req, res) => {

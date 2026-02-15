@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import mongo from '../mongo.js'
+import { ulid } from 'ulid'
+import logger from '../logger.js'
 
 interface _Request {
   ip: string
@@ -11,8 +13,15 @@ interface _Request {
   statusCode: number
 }
 
-export function logRequest (req: Request, res: Response, next: NextFunction): void {
+export function requestLogger (req: Request, res: Response, next: NextFunction): void {
   const start = new Date()
+
+  const { path, method, userId } = req
+
+  const requestId = ulid()
+
+  // TODO: add userId to logger context
+  logger.info(`${requestId} - ${method} ${path}`)
 
   const collection = mongo.db().collection<_Request>('requests')
 
@@ -21,12 +30,16 @@ export function logRequest (req: Request, res: Response, next: NextFunction): vo
   res.on('finish', () => {
     const end = new Date()
 
+    const userId = req.userId
     const timeDiffms = end.getTime() - start.getTime()
+
+    // TODO: add userId to logger context
+    logger.info(`${requestId} - ${method} ${path} - ${res.statusCode} - ${timeDiffms}ms`)
 
     void collection.insertOne({
       ip: req.ip ?? '',
-      method: req.method,
-      path: req.path,
+      method,
+      path,
       startedAt: start,
       endAt: end,
       time: timeDiffms,
