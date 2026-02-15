@@ -16,6 +16,7 @@ interface _Request {
 export function requestLogger (req: Request, res: Response, next: NextFunction): void {
   const start = new Date()
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { path, method, userId } = req
 
   const requestId = ulid()
@@ -30,6 +31,7 @@ export function requestLogger (req: Request, res: Response, next: NextFunction):
   res.on('finish', () => {
     const end = new Date()
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const userId = req.userId
     const timeDiffms = end.getTime() - start.getTime()
 
