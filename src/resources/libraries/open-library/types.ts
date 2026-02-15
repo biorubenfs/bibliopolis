@@ -11,6 +11,7 @@ export interface OpenLibraryBook {
   title: string
   works: Array<{ key: string }>
   isbn_13?: string[]
+  isbn_10?: string[]
   covers?: number[]
 }
 

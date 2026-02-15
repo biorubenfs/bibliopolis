@@ -7,10 +7,24 @@ import { BookAlreadyExistsError, BookNotFoundError } from './books.error.js'
 
 class BooksService {
   async create (body: NewBook): Promise<SingleResultObject<BookEntity>> {
-    const existingBook = await booksDao.findByIsbn(body.isbn_13)
-    if (existingBook != null) {
-      throw new BookAlreadyExistsError(`there is already a book with isbn ${body.isbn_13}`)
+    if (body.isbn_13 == null && body.isbn_10 == null) {
+      throw new Error('at least one between isbn_13 and isbn_10 must be provided')
     }
+
+    if (body.isbn_13 != null) {
+      const existingBookByIsbn13 = await booksDao.findByIsbn13(body.isbn_13)
+      if (existingBookByIsbn13 != null) {
+        throw new BookAlreadyExistsError(`there is already a book with isbn ${body.isbn_13}`)
+      }
+    }
+
+    if (body.isbn_10 != null) {
+      const existingBookByIsbn10 = await booksDao.findByIsbn10(body.isbn_10)
+      if (existingBookByIsbn10 != null) {
+        throw new BookAlreadyExistsError(`there is already a book with isbn ${body.isbn_10}`)
+      }
+    }
+
     const newBook = await booksDao.create(body)
     return new SingleResultObject(newBook)
   }
@@ -28,19 +42,16 @@ class BooksService {
     return new SingleResultObject(book)
   }
 
-  async fetchByIsbn (isbn: string): Promise<BookEntity | null> {
-    const book = await booksDao.findByIsbn(isbn)
+  async fetchByIsbn13 (isbn: string): Promise<BookEntity | null> {
+    const book = await booksDao.findByIsbn13(isbn)
 
     return book
   }
 
-  async getByIsbn (isbn: string): Promise<SingleResultObject<BookEntity>> {
-    const book = await booksDao.findByIsbn(isbn)
-    if (book == null) {
-      throw new BookNotFoundError(`book with isbn ${isbn} not found`)
-    }
+  async fetchByIsbn10 (isbn: string): Promise<BookEntity | null> {
+    const book = await booksDao.findByIsbn10(isbn)
 
-    return new SingleResultObject(book)
+    return book
   }
 
   async list (page: Page): Promise<CollectionResultObject<BookEntity>> {

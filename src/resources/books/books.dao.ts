@@ -34,8 +34,14 @@ class BooksDao extends Dao<DBBook> {
     return dbBookToEntity(dbBook)
   }
 
-  async findByIsbn (isbn: string): Promise<BookEntity | null> {
+  async findByIsbn13 (isbn: string): Promise<BookEntity | null> {
     const dbBook = await this.collection.findOne({ isbn_13: isbn })
+
+    return dbBookToEntity(dbBook)
+  }
+
+  async findByIsbn10 (isbn: string): Promise<BookEntity | null> {
+    const dbBook = await this.collection.findOne({ isbn_10: isbn })
 
     return dbBookToEntity(dbBook)
   }

@@ -51,9 +51,9 @@ class LibrariesService {
     return new CollectionResultObject(libraries, mockPaginationObject)
   }
 
-  async addBook (libraryId: string, isbn13: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+  async addBook (libraryId: string, isbn: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
     const library = await this.get(libraryId, userId, Role.Regular)
-    const book = await ensureBookExistsInBooks(isbn13)
+    const book = await ensureBookExistsInBooks(isbn)
 
     const updatedLibrary = await runInTransaction<LibraryEntity>(async (session) => {
       const userBook = await userBooksDao.upsert(libraryId, userId, book, session)

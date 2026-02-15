@@ -6,7 +6,8 @@
         "cover": 12861662,
         "isbn_13": "9781732539419",
         "createdAt": "2024-10-07T13:42:47.831Z",
-        "updatedAt": "2024-10-07T13:42:47.831Z"
+        "updatedAt": "2024-10-07T13:42:47.831Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKFRGTNGPM5GZ9AVWRR7PN",
@@ -17,7 +18,8 @@
         "cover": 5373009,
         "isbn_13": "9780880336062",
         "createdAt": "2024-10-07T13:42:48.602Z",
-        "updatedAt": "2024-10-07T13:42:48.602Z"
+        "updatedAt": "2024-10-07T13:42:48.602Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKFS6CKTSVY0ETH9A7PHXW",
@@ -28,7 +30,8 @@
         "cover": 1304487,
         "isbn_13": "9780595385294",
         "createdAt": "2024-10-07T13:42:49.292Z",
-        "updatedAt": "2024-10-07T13:42:49.292Z"
+        "updatedAt": "2024-10-07T13:42:49.292Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKFT64VX47TEDXMBBFRHTV",
@@ -39,7 +42,8 @@
         "cover": 10870756,
         "isbn_13": "9780595491896",
         "createdAt": "2024-10-07T13:42:50.308Z",
-        "updatedAt": "2024-10-07T13:42:50.308Z"
+        "updatedAt": "2024-10-07T13:42:50.308Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKFTWAKVR1HGHCER50JJMQ",
@@ -50,7 +54,8 @@
         "cover": 1715106,
         "isbn_13": "9780974326450",
         "createdAt": "2024-10-07T13:42:51.018Z",
-        "updatedAt": "2024-10-07T13:42:51.018Z"
+        "updatedAt": "2024-10-07T13:42:51.018Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKFVKNSRGS40VRJ5B683FF",
@@ -61,7 +66,8 @@
         "cover": 13261329,
         "isbn_13": "9781782437352",
         "createdAt": "2024-10-07T13:42:51.765Z",
-        "updatedAt": "2024-10-07T13:42:51.765Z"
+        "updatedAt": "2024-10-07T13:42:51.765Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKFWF45DMVVGRS502SG83D",
@@ -72,7 +78,8 @@
         "cover": 11492093,
         "isbn_13": "9781595581662",
         "createdAt": "2024-10-07T13:42:52.644Z",
-        "updatedAt": "2024-10-07T13:42:52.644Z"
+        "updatedAt": "2024-10-07T13:42:52.644Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKFXMBJM45AJ2X12JGHRVK",
@@ -83,7 +90,8 @@
         "cover": 12186045,
         "isbn_13": "9780231156929",
         "createdAt": "2024-10-07T13:42:53.835Z",
-        "updatedAt": "2024-10-07T13:42:53.835Z"
+        "updatedAt": "2024-10-07T13:42:53.835Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKFYYY0VC2XH0EWC37ER2V",
@@ -94,7 +102,8 @@
         "cover": 14397926,
         "isbn_13": "9781595587039",
         "createdAt": "2024-10-07T13:42:55.198Z",
-        "updatedAt": "2024-10-07T13:42:55.198Z"
+        "updatedAt": "2024-10-07T13:42:55.198Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKG07E2T2X78HYXDRPZMG7",
@@ -105,7 +114,8 @@
         "cover": 9767884,
         "isbn_13": "9780752464619",
         "createdAt": "2024-10-07T13:42:56.494Z",
-        "updatedAt": "2024-10-07T13:42:56.494Z"
+        "updatedAt": "2024-10-07T13:42:56.494Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKG3X20MDEXAMYSSQZJ21Y",
@@ -116,7 +126,8 @@
         "cover": 12545193,
         "isbn_13": "9780380708956",
         "createdAt": "2024-10-07T13:43:00.258Z",
-        "updatedAt": "2024-10-07T13:43:00.258Z"
+        "updatedAt": "2024-10-07T13:43:00.258Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKG5ZN2MMPHV4M3E5JR98V",
@@ -128,7 +139,8 @@
         "cover": 14341214,
         "isbn_13": "9780399588822",
         "createdAt": "2024-10-07T13:43:02.389Z",
-        "updatedAt": "2024-10-07T13:43:02.389Z"
+        "updatedAt": "2024-10-07T13:43:02.389Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKG8RQWNQR4XMTT57TMK4K",
@@ -139,7 +151,8 @@
         "cover": 14341212,
         "isbn_13": "9780393336863",
         "createdAt": "2024-10-07T13:43:05.239Z",
-        "updatedAt": "2024-10-07T13:43:05.239Z"
+        "updatedAt": "2024-10-07T13:43:05.239Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKGFM49X3GMTTAKARBKC7J",
@@ -150,7 +163,8 @@
         "cover": null,
         "isbn_13": "9780872236721",
         "createdAt": "2024-10-07T13:43:12.261Z",
-        "updatedAt": "2024-10-07T13:43:12.261Z"
+        "updatedAt": "2024-10-07T13:43:12.261Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKGMSZDE392HS9N4R2FV27",
@@ -161,7 +175,8 @@
         "cover": 6637711,
         "isbn_13": "9780825305474",
         "createdAt": "2024-10-07T13:43:17.567Z",
-        "updatedAt": "2024-10-07T13:43:17.567Z"
+        "updatedAt": "2024-10-07T13:43:17.567Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKGS6XF8W8P5EWJ35P53MZ",
@@ -170,7 +185,8 @@
         "cover": 568327,
         "isbn_13": "9780802116635",
         "createdAt": "2024-10-07T13:43:22.077Z",
-        "updatedAt": "2024-10-07T13:43:22.077Z"
+        "updatedAt": "2024-10-07T13:43:22.077Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKH1TPD9MP1SBPVXEMG9RC",
@@ -183,7 +199,8 @@
         "cover": 247748,
         "isbn_13": "9780393051674",
         "createdAt": "2024-10-07T13:43:30.902Z",
-        "updatedAt": "2024-10-07T13:43:30.902Z"
+        "updatedAt": "2024-10-07T13:43:30.902Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKH5PZ8YQQ63TQJZQT5464",
@@ -194,7 +211,8 @@
         "cover": 12798620,
         "isbn_13": "9780750935487",
         "createdAt": "2024-10-07T13:43:34.879Z",
-        "updatedAt": "2024-10-07T13:43:34.879Z"
+        "updatedAt": "2024-10-07T13:43:34.879Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKH83PER33FEJC0QJH6TJA",
@@ -205,7 +223,8 @@
         "cover": null,
         "isbn_13": "9780822314578",
         "createdAt": "2024-10-07T13:43:37.334Z",
-        "updatedAt": "2024-10-07T13:43:37.334Z"
+        "updatedAt": "2024-10-07T13:43:37.334Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKH92CQWDEWPYWW1RJB0QX",
@@ -216,7 +235,8 @@
         "cover": 2080481,
         "isbn_13": "9781881515579",
         "createdAt": "2024-10-07T13:43:38.317Z",
-        "updatedAt": "2024-10-07T13:43:38.317Z"
+        "updatedAt": "2024-10-07T13:43:38.317Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKHH6CG0N6MDMTT1ZJE4WN",
@@ -227,7 +247,8 @@
         "cover": 947558,
         "isbn_13": "9781901903232",
         "createdAt": "2024-10-07T13:43:46.637Z",
-        "updatedAt": "2024-10-07T13:43:46.637Z"
+        "updatedAt": "2024-10-07T13:43:46.637Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKHMHZWW57E1P9D0V1AA95",
@@ -238,7 +259,8 @@
         "cover": 734752,
         "isbn_13": "9780970171627",
         "createdAt": "2024-10-07T13:43:50.079Z",
-        "updatedAt": "2024-10-07T13:43:50.079Z"
+        "updatedAt": "2024-10-07T13:43:50.079Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKHP8DG2B8FQVSQW7GQ2ST",
@@ -249,7 +271,8 @@
         "cover": null,
         "isbn_13": "9780896040755",
         "createdAt": "2024-10-07T13:43:51.821Z",
-        "updatedAt": "2024-10-07T13:43:51.821Z"
+        "updatedAt": "2024-10-07T13:43:51.821Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKHQFJ0457309QCY4MV7T7",
@@ -261,7 +284,8 @@
         "cover": null,
         "isbn_13": "9781445658759",
         "createdAt": "2024-10-07T13:43:53.074Z",
-        "updatedAt": "2024-10-07T13:43:53.074Z"
+        "updatedAt": "2024-10-07T13:43:53.074Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKHR4ZV18MX4VMTY3EJPT9",
@@ -272,7 +296,8 @@
         "cover": 5373014,
         "isbn_13": "9780880336086",
         "createdAt": "2024-10-07T13:43:53.759Z",
-        "updatedAt": "2024-10-07T13:43:53.759Z"
+        "updatedAt": "2024-10-07T13:43:53.759Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKHRYT2JD73AP2E131TGCC",
@@ -283,7 +308,8 @@
         "cover": 6255875,
         "isbn_13": "9780896041592",
         "createdAt": "2024-10-07T13:43:54.586Z",
-        "updatedAt": "2024-10-07T13:43:54.586Z"
+        "updatedAt": "2024-10-07T13:43:54.586Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKHZCPRNBGVD96P4KZ3AZN",
@@ -296,7 +322,8 @@
         "cover": null,
         "isbn_13": "9789652294852",
         "createdAt": "2024-10-07T13:44:01.174Z",
-        "updatedAt": "2024-10-07T13:44:01.174Z"
+        "updatedAt": "2024-10-07T13:44:01.174Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJ0V86T1VHKASBS2ZY66F",
@@ -307,7 +334,8 @@
         "cover": 4697629,
         "isbn_13": "9780807059494",
         "createdAt": "2024-10-07T13:44:02.664Z",
-        "updatedAt": "2024-10-07T13:44:02.664Z"
+        "updatedAt": "2024-10-07T13:44:02.664Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJ1T7DP1EWW3903MXH3HM",
@@ -318,7 +346,8 @@
         "cover": null,
         "isbn_13": "9781906702076",
         "createdAt": "2024-10-07T13:44:03.655Z",
-        "updatedAt": "2024-10-07T13:44:03.655Z"
+        "updatedAt": "2024-10-07T13:44:03.655Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJ2GD3Z2NM34V15Y1825F",
@@ -329,7 +358,8 @@
         "cover": 5356067,
         "isbn_13": "9780955572951",
         "createdAt": "2024-10-07T13:44:04.365Z",
-        "updatedAt": "2024-10-07T13:44:04.365Z"
+        "updatedAt": "2024-10-07T13:44:04.365Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJ3J9C876MV07X01AAPRB",
@@ -341,7 +371,8 @@
         "cover": 13069596,
         "isbn_13": "9780300221701",
         "createdAt": "2024-10-07T13:44:05.450Z",
-        "updatedAt": "2024-10-07T13:44:05.450Z"
+        "updatedAt": "2024-10-07T13:44:05.450Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJ4951PSP6HRGSXSJJWJ9",
@@ -352,7 +383,8 @@
         "cover": 12871612,
         "isbn_13": "9780993266508",
         "createdAt": "2024-10-07T13:44:06.181Z",
-        "updatedAt": "2024-10-07T13:44:06.181Z"
+        "updatedAt": "2024-10-07T13:44:06.181Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJ541HJRTDSD9B8S2Y7BT",
@@ -361,7 +393,8 @@
         "cover": 7676467,
         "isbn_13": "9781848841642",
         "createdAt": "2024-10-07T13:44:07.042Z",
-        "updatedAt": "2024-10-07T13:44:07.042Z"
+        "updatedAt": "2024-10-07T13:44:07.042Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJ60C85WEFERCNJ3K8X47",
@@ -372,7 +405,8 @@
         "cover": 8776985,
         "isbn_13": "9780826218506",
         "createdAt": "2024-10-07T13:44:07.948Z",
-        "updatedAt": "2024-10-07T13:44:07.948Z"
+        "updatedAt": "2024-10-07T13:44:07.948Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJ6P25VM48AVRVEKMJWJK",
@@ -383,7 +417,8 @@
         "cover": 6305147,
         "isbn_13": "9780552153751",
         "createdAt": "2024-10-07T13:44:08.643Z",
-        "updatedAt": "2024-10-07T13:44:08.643Z"
+        "updatedAt": "2024-10-07T13:44:08.643Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJ7BRG9R1YMT9G4011WD2",
@@ -394,7 +429,8 @@
         "cover": 5531437,
         "isbn_13": "9780900952418",
         "createdAt": "2024-10-07T13:44:09.336Z",
-        "updatedAt": "2024-10-07T13:44:09.336Z"
+        "updatedAt": "2024-10-07T13:44:09.336Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJAGREW5QPJ6GMXJFQ9JF",
@@ -405,7 +441,8 @@
         "cover": 12162055,
         "isbn_13": "9780956142856",
         "createdAt": "2024-10-07T13:44:12.568Z",
-        "updatedAt": "2024-10-07T13:44:12.568Z"
+        "updatedAt": "2024-10-07T13:44:12.568Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJE32D4Q0B1TVKYXYN5CJ",
@@ -416,7 +453,8 @@
         "cover": 11672873,
         "isbn_13": "9780947860172",
         "createdAt": "2024-10-07T13:44:16.227Z",
-        "updatedAt": "2024-10-07T13:44:16.227Z"
+        "updatedAt": "2024-10-07T13:44:16.227Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJNMYNNRJTV03CS9Q54ZM",
@@ -427,7 +465,8 @@
         "cover": 6621695,
         "isbn_13": "9781844136827",
         "createdAt": "2024-10-07T13:44:23.966Z",
-        "updatedAt": "2024-10-07T13:44:23.966Z"
+        "updatedAt": "2024-10-07T13:44:23.966Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKJYWTMVKQC4K89FA6XSMK",
@@ -438,7 +477,8 @@
         "cover": 10803886,
         "isbn_13": "9781492832270",
         "createdAt": "2024-10-07T13:44:33.434Z",
-        "updatedAt": "2024-10-07T13:44:33.434Z"
+        "updatedAt": "2024-10-07T13:44:33.434Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKK5FX74Q6PJABBMWA3R0Y",
@@ -449,7 +489,8 @@
         "cover": 14313002,
         "isbn_13": "9780918761002",
         "createdAt": "2024-10-07T13:44:40.189Z",
-        "updatedAt": "2024-10-07T13:44:40.189Z"
+        "updatedAt": "2024-10-07T13:44:40.189Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKKEKX347R5W6QJ8GR77ZY",
@@ -460,7 +501,8 @@
         "cover": null,
         "isbn_13": "9781732111714",
         "createdAt": "2024-10-07T13:44:49.533Z",
-        "updatedAt": "2024-10-07T13:44:49.533Z"
+        "updatedAt": "2024-10-07T13:44:49.533Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKN4QGNN1XX0CFKF24KPMM",
@@ -473,7 +515,8 @@
         "cover": 14307704,
         "isbn_13": "9781848327665",
         "createdAt": "2024-10-07T13:45:44.944Z",
-        "updatedAt": "2024-10-07T13:45:44.944Z"
+        "updatedAt": "2024-10-07T13:45:44.944Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNH8JD29ZSV1XTY0CZ80E",
@@ -484,7 +527,8 @@
         "cover": 2075450,
         "isbn_13": "9781877372384",
         "createdAt": "2024-10-07T13:45:57.779Z",
-        "updatedAt": "2024-10-07T13:45:57.779Z"
+        "updatedAt": "2024-10-07T13:45:57.779Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNKR7EG7R4KFYGFP9RWD8",
@@ -495,7 +539,8 @@
         "cover": 12907981,
         "isbn_13": "9781784532666",
         "createdAt": "2024-10-07T13:46:00.327Z",
-        "updatedAt": "2024-10-07T13:46:00.327Z"
+        "updatedAt": "2024-10-07T13:46:00.327Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNPEPE8EQD7FGHYP6QEKQ",
@@ -507,7 +552,8 @@
         "cover": 14491726,
         "isbn_13": "9781445669618",
         "createdAt": "2024-10-07T13:46:03.094Z",
-        "updatedAt": "2024-10-07T13:46:03.094Z"
+        "updatedAt": "2024-10-07T13:46:03.094Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNQA8FH2RMAA1J3NS44SJ",
@@ -518,7 +564,8 @@
         "cover": 1842853,
         "isbn_13": "9781425967550",
         "createdAt": "2024-10-07T13:46:03.977Z",
-        "updatedAt": "2024-10-07T13:46:03.977Z"
+        "updatedAt": "2024-10-07T13:46:03.977Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNR4KCVG0WSDY7NZSZQ34",
@@ -527,7 +574,8 @@
         "cover": 1443791,
         "isbn_13": "9780765606372",
         "createdAt": "2024-10-07T13:46:04.819Z",
-        "updatedAt": "2024-10-07T13:46:04.819Z"
+        "updatedAt": "2024-10-07T13:46:04.819Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNRMQCB5YA38NDTF18JZJ",
@@ -536,7 +584,8 @@
         "cover": 1443790,
         "isbn_13": "9780765606365",
         "createdAt": "2024-10-07T13:46:05.335Z",
-        "updatedAt": "2024-10-07T13:46:05.335Z"
+        "updatedAt": "2024-10-07T13:46:05.335Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNSY66GXW7T6VQC9303BG",
@@ -547,7 +596,8 @@
         "cover": 12560578,
         "isbn_13": "9780062030313",
         "createdAt": "2024-10-07T13:46:06.662Z",
-        "updatedAt": "2024-10-07T13:46:06.662Z"
+        "updatedAt": "2024-10-07T13:46:06.662Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNVRBNXTJZKETN3YWHZ7Z",
@@ -558,7 +608,8 @@
         "cover": 10752013,
         "isbn_13": "9788389782595",
         "createdAt": "2024-10-07T13:46:08.523Z",
-        "updatedAt": "2024-10-07T13:46:08.523Z"
+        "updatedAt": "2024-10-07T13:46:08.523Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNWHG2309PSGSK2MRHGBW",
@@ -569,7 +620,8 @@
         "cover": 2106487,
         "isbn_13": "9781902694115",
         "createdAt": "2024-10-07T13:46:09.329Z",
-        "updatedAt": "2024-10-07T13:46:09.329Z"
+        "updatedAt": "2024-10-07T13:46:09.329Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNY2GRA3FXXQQ8WG8M0R8",
@@ -581,7 +633,8 @@
         "cover": 13144579,
         "isbn_13": "9789774168420",
         "createdAt": "2024-10-07T13:46:10.897Z",
-        "updatedAt": "2024-10-07T13:46:10.897Z"
+        "updatedAt": "2024-10-07T13:46:10.897Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNYSPAG30VVWWN5RS1H9H",
@@ -592,7 +645,8 @@
         "cover": 13736396,
         "isbn_13": "9780253015099",
         "createdAt": "2024-10-07T13:46:11.638Z",
-        "updatedAt": "2024-10-07T13:46:11.638Z"
+        "updatedAt": "2024-10-07T13:46:11.638Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKNZNY6S7X3ZGB6B18066J",
@@ -603,7 +657,8 @@
         "cover": 14382710,
         "isbn_13": "9789652207203",
         "createdAt": "2024-10-07T13:46:12.542Z",
-        "updatedAt": "2024-10-07T13:46:12.542Z"
+        "updatedAt": "2024-10-07T13:46:12.542Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKP0EZPV723SZQZX0KXQEZ",
@@ -614,7 +669,8 @@
         "cover": 12188604,
         "isbn_13": "9781589019836",
         "createdAt": "2024-10-07T13:46:13.343Z",
-        "updatedAt": "2024-10-07T13:46:13.343Z"
+        "updatedAt": "2024-10-07T13:46:13.343Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKP1BB6HP6T183F818NA2V",
@@ -625,7 +681,8 @@
         "cover": null,
         "isbn_13": "9789748496955",
         "createdAt": "2024-10-07T13:46:14.252Z",
-        "updatedAt": "2024-10-07T13:46:14.252Z"
+        "updatedAt": "2024-10-07T13:46:14.252Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKP2CP6WF71JCCE2MS29X5",
@@ -637,7 +694,8 @@
         "cover": null,
         "isbn_13": "9789748434162",
         "createdAt": "2024-10-07T13:46:15.318Z",
-        "updatedAt": "2024-10-07T13:46:15.318Z"
+        "updatedAt": "2024-10-07T13:46:15.318Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKP38CW79S8T9J6P9EZ335",
@@ -649,7 +707,8 @@
         "cover": null,
         "isbn_13": "9781521902240",
         "createdAt": "2024-10-07T13:46:16.205Z",
-        "updatedAt": "2024-10-07T13:46:16.205Z"
+        "updatedAt": "2024-10-07T13:46:16.205Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKP40760V4TBXB7KJ36ME9",
@@ -660,7 +719,8 @@
         "cover": null,
         "isbn_13": "9781621064046",
         "createdAt": "2024-10-07T13:46:16.967Z",
-        "updatedAt": "2024-10-07T13:46:16.967Z"
+        "updatedAt": "2024-10-07T13:46:16.967Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKP59JQHHQ0ZZEAPAR96VE",
@@ -671,7 +731,8 @@
         "cover": null,
         "isbn_13": "9780674971554",
         "createdAt": "2024-10-07T13:46:18.290Z",
-        "updatedAt": "2024-10-07T13:46:18.290Z"
+        "updatedAt": "2024-10-07T13:46:18.290Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKP5T482XN4CV52X651F9P",
@@ -680,7 +741,8 @@
         "cover": 11232347,
         "isbn_13": "9784938239084",
         "createdAt": "2024-10-07T13:46:18.820Z",
-        "updatedAt": "2024-10-07T13:46:18.820Z"
+        "updatedAt": "2024-10-07T13:46:18.820Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKP7ASF98CZWM0709DYQVX",
@@ -689,7 +751,8 @@
         "cover": 605394,
         "isbn_13": "9780812930825",
         "createdAt": "2024-10-07T13:46:20.377Z",
-        "updatedAt": "2024-10-07T13:46:20.377Z"
+        "updatedAt": "2024-10-07T13:46:20.377Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKP8A5KREYF4DQS3VQB1ZP",
@@ -700,7 +763,8 @@
         "cover": null,
         "isbn_13": "9789967235557",
         "createdAt": "2024-10-07T13:46:21.381Z",
-        "updatedAt": "2024-10-07T13:46:21.381Z"
+        "updatedAt": "2024-10-07T13:46:21.381Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPFPR1ASN91DANPVX0TY9",
@@ -712,7 +776,8 @@
         "cover": 1250405,
         "isbn_13": "9780471738350",
         "createdAt": "2024-10-07T13:46:28.952Z",
-        "updatedAt": "2024-10-07T13:46:28.952Z"
+        "updatedAt": "2024-10-07T13:46:28.952Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPGDERFH7HGQ1E40RKEFN",
@@ -723,7 +788,8 @@
         "cover": 2902352,
         "isbn_13": "9781550289312",
         "createdAt": "2024-10-07T13:46:29.678Z",
-        "updatedAt": "2024-10-07T13:46:29.678Z"
+        "updatedAt": "2024-10-07T13:46:29.678Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPHDKCDN3GWKFX6ZNBNQ4",
@@ -734,7 +800,8 @@
         "cover": 14580482,
         "isbn_13": "9781740510912",
         "createdAt": "2024-10-07T13:46:30.707Z",
-        "updatedAt": "2024-10-07T13:46:30.707Z"
+        "updatedAt": "2024-10-07T13:46:30.707Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPJ27V9G2C8QYHP6R6EZY",
@@ -745,7 +812,8 @@
         "cover": 12626712,
         "isbn_13": "9780813543628",
         "createdAt": "2024-10-07T13:46:31.367Z",
-        "updatedAt": "2024-10-07T13:46:31.367Z"
+        "updatedAt": "2024-10-07T13:46:31.367Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPK1T8VAYTA12AR9X6JMD",
@@ -756,7 +824,8 @@
         "cover": 1294804,
         "isbn_13": "9780595202843",
         "createdAt": "2024-10-07T13:46:32.379Z",
-        "updatedAt": "2024-10-07T13:46:32.379Z"
+        "updatedAt": "2024-10-07T13:46:32.379Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPKQ22N6NPDA1SW7PARFD",
@@ -765,7 +834,8 @@
         "cover": null,
         "isbn_13": "9788071066330",
         "createdAt": "2024-10-07T13:46:33.058Z",
-        "updatedAt": "2024-10-07T13:46:33.058Z"
+        "updatedAt": "2024-10-07T13:46:33.058Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPMBY22N2KCS9HK01RM8N",
@@ -776,7 +846,8 @@
         "cover": 9002138,
         "isbn_13": "9780810129511",
         "createdAt": "2024-10-07T13:46:33.726Z",
-        "updatedAt": "2024-10-07T13:46:33.726Z"
+        "updatedAt": "2024-10-07T13:46:33.726Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPN88DS019SPADH15GFVT",
@@ -788,7 +859,8 @@
         "cover": null,
         "isbn_13": "9780810129603",
         "createdAt": "2024-10-07T13:46:34.632Z",
-        "updatedAt": "2024-10-07T13:46:34.632Z"
+        "updatedAt": "2024-10-07T13:46:34.632Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPP98V9SB1N3ZMXRBEEWD",
@@ -799,7 +871,8 @@
         "cover": null,
         "isbn_13": "9780895266514",
         "createdAt": "2024-10-07T13:46:35.689Z",
-        "updatedAt": "2024-10-07T13:46:35.689Z"
+        "updatedAt": "2024-10-07T13:46:35.689Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPQCDM2GQW8AFG9QDDWTM",
@@ -810,7 +883,8 @@
         "cover": 1631074,
         "isbn_13": "9780877972297",
         "createdAt": "2024-10-07T13:46:36.813Z",
-        "updatedAt": "2024-10-07T13:46:36.813Z"
+        "updatedAt": "2024-10-07T13:46:36.813Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPRYVZM903QRTGDSJ85CZ",
@@ -822,7 +896,8 @@
         "cover": 11570369,
         "isbn_13": "9780988917088",
         "createdAt": "2024-10-07T13:46:38.427Z",
-        "updatedAt": "2024-10-07T13:46:38.427Z"
+        "updatedAt": "2024-10-07T13:46:38.427Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPSSDWF68QCZ1KNWYVMKM",
@@ -833,7 +908,8 @@
         "cover": 6298549,
         "isbn_13": "9780230619784",
         "createdAt": "2024-10-07T13:46:39.277Z",
-        "updatedAt": "2024-10-07T13:46:39.277Z"
+        "updatedAt": "2024-10-07T13:46:39.277Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPTG5NZHD47QHCHKYR7TN",
@@ -844,7 +920,8 @@
         "cover": 12684887,
         "isbn_13": "9781908446107",
         "createdAt": "2024-10-07T13:46:40.005Z",
-        "updatedAt": "2024-10-07T13:46:40.005Z"
+        "updatedAt": "2024-10-07T13:46:40.005Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKPWSGWG8E5D4DAMX8BYKY",
@@ -856,7 +933,8 @@
         "cover": 10958855,
         "isbn_13": "9780999472910",
         "createdAt": "2024-10-07T13:46:42.352Z",
-        "updatedAt": "2024-10-07T13:46:42.352Z"
+        "updatedAt": "2024-10-07T13:46:42.352Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQ3325HXB2E8PACG7B811",
@@ -867,7 +945,8 @@
         "cover": 1532570,
         "isbn_13": "9780810118034",
         "createdAt": "2024-10-07T13:46:48.802Z",
-        "updatedAt": "2024-10-07T13:46:48.802Z"
+        "updatedAt": "2024-10-07T13:46:48.802Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQ3KTRM7PJ6A2HRM7A6H2",
@@ -876,7 +955,8 @@
         "cover": 7505604,
         "isbn_13": "9780983878124",
         "createdAt": "2024-10-07T13:46:49.338Z",
-        "updatedAt": "2024-10-07T13:46:49.338Z"
+        "updatedAt": "2024-10-07T13:46:49.338Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQANM2RHQGBQEB1SGPKDM",
@@ -887,7 +967,8 @@
         "cover": 1548260,
         "isbn_13": "9780815608615",
         "createdAt": "2024-10-07T13:46:56.564Z",
-        "updatedAt": "2024-10-07T13:46:56.564Z"
+        "updatedAt": "2024-10-07T13:46:56.564Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQCFKPRGJ9QZ5NT0YKM2X",
@@ -898,7 +979,8 @@
         "cover": 47334,
         "isbn_13": "9780061230974",
         "createdAt": "2024-10-07T13:46:58.420Z",
-        "updatedAt": "2024-10-07T13:46:58.420Z"
+        "updatedAt": "2024-10-07T13:46:58.420Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQDP4M5KWDTP6C3EAPR5N",
@@ -909,7 +991,8 @@
         "cover": 2107997,
         "isbn_13": "9781903392393",
         "createdAt": "2024-10-07T13:46:59.652Z",
-        "updatedAt": "2024-10-07T13:46:59.652Z"
+        "updatedAt": "2024-10-07T13:46:59.652Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQFAH0FHEHNE7SC6VS035",
@@ -920,7 +1003,8 @@
         "cover": null,
         "isbn_13": "9780297767961",
         "createdAt": "2024-10-07T13:47:01.330Z",
-        "updatedAt": "2024-10-07T13:47:01.330Z"
+        "updatedAt": "2024-10-07T13:47:01.330Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQG4DPP8FK3DMGTSASCJX",
@@ -931,7 +1015,8 @@
         "cover": 298429,
         "isbn_13": "9780465017539",
         "createdAt": "2024-10-07T13:47:02.157Z",
-        "updatedAt": "2024-10-07T13:47:02.157Z"
+        "updatedAt": "2024-10-07T13:47:02.157Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQJAEPW9C6DZQ2S9A0HT0",
@@ -942,7 +1027,8 @@
         "cover": null,
         "isbn_13": "9781938603051",
         "createdAt": "2024-10-07T13:47:04.398Z",
-        "updatedAt": "2024-10-07T13:47:04.398Z"
+        "updatedAt": "2024-10-07T13:47:04.398Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQK5GMEMK9BDDBDBWP3P2",
@@ -953,7 +1039,8 @@
         "cover": 9288265,
         "isbn_13": "9780465013555",
         "createdAt": "2024-10-07T13:47:05.264Z",
-        "updatedAt": "2024-10-07T13:47:05.264Z"
+        "updatedAt": "2024-10-07T13:47:05.264Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQMEM5MHSDNJHMGXY7B13",
@@ -964,7 +1051,8 @@
         "cover": 12456276,
         "isbn_13": "9780851193496",
         "createdAt": "2024-10-07T13:47:06.581Z",
-        "updatedAt": "2024-10-07T13:47:06.581Z"
+        "updatedAt": "2024-10-07T13:47:06.581Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQNPQ9RZFP9NMXPSQ2WXQ",
@@ -975,7 +1063,8 @@
         "cover": 9163894,
         "isbn_13": "9781732526525",
         "createdAt": "2024-10-07T13:47:07.864Z",
-        "updatedAt": "2024-10-07T13:47:07.864Z"
+        "updatedAt": "2024-10-07T13:47:07.864Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQQ0MG8T9DXYKD4XNP2BZ",
@@ -986,7 +1075,8 @@
         "cover": 2043503,
         "isbn_13": "9781851588534",
         "createdAt": "2024-10-07T13:47:09.204Z",
-        "updatedAt": "2024-10-07T13:47:09.204Z"
+        "updatedAt": "2024-10-07T13:47:09.204Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKQT97QBD48TE8SQM1Z3F3",
@@ -997,7 +1087,8 @@
         "cover": 631066,
         "isbn_13": "9780826514950",
         "createdAt": "2024-10-07T13:47:12.552Z",
-        "updatedAt": "2024-10-07T13:47:12.552Z"
+        "updatedAt": "2024-10-07T13:47:12.552Z",
+        "isbn_10": null
     },
     {
         "_id": "01J9KKR0ES85QP0D83KA38A7CD",

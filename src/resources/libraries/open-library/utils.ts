@@ -19,13 +19,17 @@ async function buildBook (openLibraryBook: OpenLibraryBook): Promise<NewBook> {
   return {
     title: openLibraryBook.title,
     isbn_13: openLibraryBook.isbn_13?.at(0) ?? 'N/A',
+    isbn_10: openLibraryBook.isbn_10?.at(0) ?? 'N/A',
     authors: authors.map(author => author.personal_name),
     cover: openLibraryBook.covers?.at(0) ?? null
   }
 }
 
 export async function ensureBookExistsInBooks (isbn: string): Promise<BookEntity> {
-  const book = await booksService.fetchByIsbn(isbn)
+  const bookByISBN10 = await booksService.fetchByIsbn10(isbn)
+  const bookByISBN13 = await booksService.fetchByIsbn13(isbn)
+
+  const book = bookByISBN13 ?? bookByISBN10
 
   if (book != null) return book
 
