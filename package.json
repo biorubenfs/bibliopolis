@@ -9,6 +9,7 @@
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
     "seed": "node ./dist/scripts/seed.js",
+    "enrich-isbn10": "node ./dist/scripts/enrich-isbn10.js",
     "test": "ENVIRONMENT='test' vitest run --pool=forks --reporter=verbose",
     "test:dev": "pnpm run --silent build && ENVIRONMENT='test' vitest run --pool=forks --reporter=verbose",
     "test:coverage": "ENVIRONMENT='test' vitest run --coverage"
