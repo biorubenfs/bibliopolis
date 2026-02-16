@@ -11,7 +11,7 @@
     "rating": 5,
     "bookCover": 1304487,
     "bookIsbn_13": "9780595385294",
-    "bookIsbn_10": null,
+    "bookIsbn_10": "059538529X",
     "bookId": "01J9KKFS6CKTSVY0ETH9A7PHXW",
     "createdAt": "2000-01-01T00:00:00.000Z",
     "updatedAt": "2000-01-01T00:00:00.000Z"
@@ -29,7 +29,7 @@
     "rating": null,
     "bookCover": 1715106,
     "bookIsbn_13": "9780974326450",
-    "bookIsbn_10": null,
+    "bookIsbn_10": "0974326453",
     "createdAt": "2000-01-01T00:00:00.000Z",
     "updatedAt": "2000-01-01T00:00:00.000Z"
   },
