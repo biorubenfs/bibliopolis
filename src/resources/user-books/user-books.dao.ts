@@ -30,8 +30,8 @@ class UserBooksDao extends Dao<DBUserBook> {
           bookTitle: book.title,
           bookAuthors: book.authors,
           bookCover: book.cover,
-          bookIsbn_13: book.isbn_13,
-          bookIsbn_10: book.isbn_10,
+          bookIsbn13: book.isbn13,
+          bookIsbn10: book.isbn10,
           rating: null,
           notes: null
         },

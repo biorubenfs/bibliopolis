@@ -8,7 +8,6 @@ function dbBookToEntity (dbBook: DBBook | null): BookEntity | null {
   return dbBook == null ? null : new BookEntity(dbBook)
 }
 
-
 class BooksDao extends Dao<DBBook> {
   constructor () {
     super('books')
@@ -21,8 +20,8 @@ class BooksDao extends Dao<DBBook> {
     const dbBook: DBBook = {
       ...newBook,
       _id: ulid(),
-      isbn_13: newBook.isbn_13,
-      isbn_10: newBook.isbn_10,
+      isbn13: newBook.isbn13,
+      isbn10: newBook.isbn10,
       cover: newBook.cover,
       createdAt: now,
       updatedAt: now
@@ -33,7 +32,7 @@ class BooksDao extends Dao<DBBook> {
   }
 
   async findByIsbn (isbn: string): Promise<BookEntity | null> {
-    const dbBook = await this.collection.findOne({ $or: [{ isbn_13: isbn }, { isbn_10: isbn }] })
+    const dbBook = await this.collection.findOne({ $or: [{ isbn13: isbn }, { isbn10: isbn }] })
 
     return dbBookToEntity(dbBook)
   }
@@ -45,13 +44,13 @@ class BooksDao extends Dao<DBBook> {
   }
 
   async findByIsbn13 (isbn: string): Promise<BookEntity | null> {
-    const dbBook = await this.collection.findOne({ isbn_13: isbn })
+    const dbBook = await this.collection.findOne({ isbn13: isbn })
 
     return dbBookToEntity(dbBook)
   }
 
   async findByIsbn10 (isbn: string): Promise<BookEntity | null> {
-    const dbBook = await this.collection.findOne({ isbn_10: isbn })
+    const dbBook = await this.collection.findOne({ isbn10: isbn })
 
     return dbBookToEntity(dbBook)
   }

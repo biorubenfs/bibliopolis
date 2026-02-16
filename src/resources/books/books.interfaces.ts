@@ -6,8 +6,8 @@ export type NewBook = z.infer<typeof newBookSchema>
 export interface NewBookDao {
   title: string
   authors: readonly string[]
-  isbn_13: string
-  isbn_10: string
+  isbn13: string
+  isbn10: string | null
   cover: number | null
 }
 

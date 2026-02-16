@@ -1,4 +1,4 @@
 export interface IsbnPair {
-  isbn_10: string
-  isbn_13: string
+  isbn10: string | null
+  isbn13: string
 }

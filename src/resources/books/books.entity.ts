@@ -5,8 +5,8 @@ import { DBBook } from './books.interfaces.js'
 export class BookEntity extends Entity<EntityType.Books> {
   readonly title: string
   readonly authors: readonly string[]
-  readonly isbn_13: string
-  readonly isbn_10: string
+  readonly isbn13: string
+  readonly isbn10: string | null
   readonly cover: number | null
   readonly createdAt: Date
   readonly updatedAt: Date
@@ -15,8 +15,8 @@ export class BookEntity extends Entity<EntityType.Books> {
     super(EntityType.Books, data._id)
     this.title = data.title
     this.authors = data.authors
-    this.isbn_13 = data.isbn_13
-    this.isbn_10 = data.isbn_10
+    this.isbn13 = data.isbn13
+    this.isbn10 = data.isbn10
     this.cover = data.cover
     this.createdAt = data.createdAt
     this.updatedAt = data.updatedAt
@@ -26,8 +26,8 @@ export class BookEntity extends Entity<EntityType.Books> {
     return {
       title: this.title,
       authors: this.authors,
-      isbn_13: this.isbn_13,
-      isbn_10: this.isbn_10,
+      isbn13: this.isbn13,
+      isbn10: this.isbn10,
       coverUrl: getCoverUrl(this.cover),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt

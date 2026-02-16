@@ -8,18 +8,27 @@ import { BookAlreadyExistsError, BookNotFoundError } from './books.error.js'
 
 class BooksService {
   async create (body: NewBook): Promise<SingleResultObject<BookEntity>> {
-    const { isbn_10, isbn_13 } = ISBNUtils.calculateIsbns(body.isbn_10, body.isbn_13)
+    const { isbn10, isbn13 } = ISBNUtils.calculateIsbns(body.isbn10, body.isbn13)
 
-    const existingBook = await booksDao.findByIsbn(isbn_13)
-    if (existingBook != null) {
-      throw new BookAlreadyExistsError(`there is already a book with isbn ${isbn_13}`)
+    // Check for duplicates by ISBN-13
+    const existingByIsbn13 = await booksDao.findByIsbn13(isbn13)
+    if (existingByIsbn13 != null) {
+      throw new BookAlreadyExistsError(`there is already a book with isbn13 ${isbn13}`)
+    }
+
+    // Check for duplicates by ISBN-10 (if it exists)
+    if (isbn10 != null) {
+      const existingByIsbn10 = await booksDao.findByIsbn10(isbn10)
+      if (existingByIsbn10 != null) {
+        throw new BookAlreadyExistsError(`there is already a book with isbn10 ${isbn10}`)
+      }
     }
 
     const bookData = {
       title: body.title,
       authors: body.authors,
-      isbn_13,
-      isbn_10,
+      isbn13,
+      isbn10,
       cover: body.cover ?? null
     }
 
