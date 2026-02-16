@@ -21,7 +21,8 @@ export type DBUserBook = Omit<UserBookEntity, 'id' | 'type' | 'attributes' | 'to
 
 export interface NewUserBook {
   libraryId: string
-  bookIsbn: string
+  bookIsbn_13: string
+  bookIsbn_10: string
   bookId: string
   bookTitle: string
   bookAuthors: readonly string[]

@@ -5,8 +5,8 @@ import { DBBook } from './books.interfaces.js'
 export class BookEntity extends Entity<EntityType.Books> {
   readonly title: string
   readonly authors: readonly string[]
-  readonly isbn_13: string | null
-  readonly isbn_10: string | null
+  readonly isbn_13: string
+  readonly isbn_10: string
   readonly cover: number | null
   readonly createdAt: Date
   readonly updatedAt: Date

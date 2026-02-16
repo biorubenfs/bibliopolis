@@ -1,12 +1,13 @@
 import { ulid } from 'ulid'
 import Dao from '../../dao.js'
-import { DBBook, NewBook } from './books.interfaces.js'
+import { DBBook, NewBookDao } from './books.interfaces.js'
 import { BookEntity } from './books.entity.js'
 import { isNotNull } from '../../utils.js'
 
 function dbBookToEntity (dbBook: DBBook | null): BookEntity | null {
   return dbBook == null ? null : new BookEntity(dbBook)
 }
+
 
 class BooksDao extends Dao<DBBook> {
   constructor () {
@@ -15,17 +16,26 @@ class BooksDao extends Dao<DBBook> {
 
   async init (): Promise<void> { }
 
-  async create (newBook: NewBook): Promise<BookEntity> {
+  async create (newBook: NewBookDao): Promise<BookEntity> {
     const now = new Date()
     const dbBook: DBBook = {
       ...newBook,
       _id: ulid(),
+      isbn_13: newBook.isbn_13,
+      isbn_10: newBook.isbn_10,
+      cover: newBook.cover,
       createdAt: now,
       updatedAt: now
     }
     await this.collection.insertOne(dbBook)
 
     return new BookEntity(dbBook)
+  }
+
+  async findByIsbn (isbn: string): Promise<BookEntity | null> {
+    const dbBook = await this.collection.findOne({ $or: [{ isbn_13: isbn }, { isbn_10: isbn }] })
+
+    return dbBookToEntity(dbBook)
   }
 
   async findById (id: string): Promise<BookEntity | null> {

@@ -8,8 +8,8 @@ export class UserBookEntity extends Entity<EntityType.UserBooks> {
   readonly bookTitle: string
   readonly bookAuthors: readonly string[]
   readonly bookCover: null | number
-  readonly bookIsbn_13: string | null
-  readonly bookIsbn_10: string | null
+  readonly bookIsbn_13: string
+  readonly bookIsbn_10: string
   readonly rating: null | UserBookRating
   readonly notes: null | string
   readonly userId: string
