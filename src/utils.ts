@@ -2,6 +2,12 @@ import { Request } from 'express'
 import { Page } from './types'
 import config from './config.js'
 
+enum CoverSize {
+  S = 'S',
+  M = 'M',
+  L = 'L'
+}
+
 export function isNotNull<T> (value: T | null): value is T {
   return value !== null
 }
@@ -16,9 +22,11 @@ export function parseSkipLimitQP (req: Request): Page {
   return { skip: parseInt(skip), limit: parseInt(limit) }
 }
 
-export function getCoverUrl (coverId: number | null): string | null {
+export function getCoverUrl (coverId: number | null, size: CoverSize = CoverSize.M): string | null {
   if (coverId == null) return null
 
-  const coverUrl = config.openLibrary.coverUrlPattern.replace(':id', coverId.toString())
+  const coverUrl = config.openLibrary.coverUrlPattern
+    .replace(':id', coverId.toString())
+    .replace(':size', size)
   return coverUrl
 }
