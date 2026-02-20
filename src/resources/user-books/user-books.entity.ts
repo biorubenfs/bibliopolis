@@ -8,7 +8,8 @@ export class UserBookEntity extends Entity<EntityType.UserBooks> {
   readonly bookTitle: string
   readonly bookAuthors: readonly string[]
   readonly bookCover: null | number
-  readonly bookIsbn: string
+  readonly bookIsbn13: string
+  readonly bookIsbn10: string | null
   readonly rating: null | UserBookRating
   readonly notes: null | string
   readonly userId: string
@@ -22,7 +23,8 @@ export class UserBookEntity extends Entity<EntityType.UserBooks> {
     this.bookTitle = data.bookTitle
     this.bookAuthors = data.bookAuthors
     this.bookCover = data.bookCover
-    this.bookIsbn = data.bookIsbn
+    this.bookIsbn13 = data.bookIsbn13
+    this.bookIsbn10 = data.bookIsbn10
     this.rating = data.rating
     this.notes = data.notes
     this.userId = data.userId
@@ -37,7 +39,8 @@ export class UserBookEntity extends Entity<EntityType.UserBooks> {
       bookTitle: this.bookTitle,
       bookAuthors: this.bookAuthors,
       bookCoverUrl: getCoverUrl(this.bookCover),
-      bookIsbn: this.bookIsbn,
+      bookIsbn13: this.bookIsbn13,
+      bookIsbn10: this.bookIsbn10,
       rating: this.rating,
       notes: this.notes,
       userId: this.userId,

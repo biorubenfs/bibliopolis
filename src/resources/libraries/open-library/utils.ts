@@ -18,7 +18,8 @@ async function buildBook (openLibraryBook: OpenLibraryBook): Promise<NewBook> {
 
   return {
     title: openLibraryBook.title,
-    isbn_13: openLibraryBook.isbn_13?.at(0) ?? 'N/A',
+    isbn13: openLibraryBook.isbn_13?.at(0) ?? null,
+    isbn10: openLibraryBook.isbn_10?.at(0) ?? null,
     authors: authors.map(author => author.personal_name),
     cover: openLibraryBook.covers?.at(0) ?? null
   }

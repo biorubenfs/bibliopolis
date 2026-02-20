@@ -1,5 +1,6 @@
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { Page } from '../../types.js'
+import { ISBNUtils } from '../../utils/isbn.utils.js'
 import { NewBook } from '../books/books.interfaces.js'
 import booksDao from './books.dao.js'
 import { BookEntity } from './books.entity.js'
@@ -7,11 +8,31 @@ import { BookAlreadyExistsError, BookNotFoundError } from './books.error.js'
 
 class BooksService {
   async create (body: NewBook): Promise<SingleResultObject<BookEntity>> {
-    const existingBook = await booksDao.findByIsbn(body.isbn_13)
-    if (existingBook != null) {
-      throw new BookAlreadyExistsError(`there is already a book with isbn ${body.isbn_13}`)
+    const { isbn10, isbn13 } = ISBNUtils.calculateIsbns(body.isbn10, body.isbn13)
+
+    // Check for duplicates by ISBN-13
+    const existingByIsbn13 = await booksDao.findByIsbn13(isbn13)
+    if (existingByIsbn13 != null) {
+      throw new BookAlreadyExistsError(`there is already a book with isbn13 ${isbn13}`)
     }
-    const newBook = await booksDao.create(body)
+
+    // Check for duplicates by ISBN-10 (if it exists)
+    if (isbn10 != null) {
+      const existingByIsbn10 = await booksDao.findByIsbn10(isbn10)
+      if (existingByIsbn10 != null) {
+        throw new BookAlreadyExistsError(`there is already a book with isbn10 ${isbn10}`)
+      }
+    }
+
+    const bookData = {
+      title: body.title,
+      authors: body.authors,
+      isbn13,
+      isbn10,
+      cover: body.cover ?? null
+    }
+
+    const newBook = await booksDao.create(bookData)
     return new SingleResultObject(newBook)
   }
 
@@ -32,15 +53,6 @@ class BooksService {
     const book = await booksDao.findByIsbn(isbn)
 
     return book
-  }
-
-  async getByIsbn (isbn: string): Promise<SingleResultObject<BookEntity>> {
-    const book = await booksDao.findByIsbn(isbn)
-    if (book == null) {
-      throw new BookNotFoundError(`book with isbn ${isbn} not found`)
-    }
-
-    return new SingleResultObject(book)
   }
 
   async list (page: Page): Promise<CollectionResultObject<BookEntity>> {

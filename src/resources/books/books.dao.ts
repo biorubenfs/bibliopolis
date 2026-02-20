@@ -1,6 +1,6 @@
 import { ulid } from 'ulid'
 import Dao from '../../dao.js'
-import { DBBook, NewBook } from './books.interfaces.js'
+import { DBBook, NewBookDao } from './books.interfaces.js'
 import { BookEntity } from './books.entity.js'
 import { isNotNull } from '../../utils.js'
 
@@ -15,11 +15,14 @@ class BooksDao extends Dao<DBBook> {
 
   async init (): Promise<void> { }
 
-  async create (newBook: NewBook): Promise<BookEntity> {
+  async create (newBook: NewBookDao): Promise<BookEntity> {
     const now = new Date()
     const dbBook: DBBook = {
       ...newBook,
       _id: ulid(),
+      isbn13: newBook.isbn13,
+      isbn10: newBook.isbn10,
+      cover: newBook.cover,
       createdAt: now,
       updatedAt: now
     }
@@ -28,14 +31,26 @@ class BooksDao extends Dao<DBBook> {
     return new BookEntity(dbBook)
   }
 
+  async findByIsbn (isbn: string): Promise<BookEntity | null> {
+    const dbBook = await this.collection.findOne({ $or: [{ isbn13: isbn }, { isbn10: isbn }] })
+
+    return dbBookToEntity(dbBook)
+  }
+
   async findById (id: string): Promise<BookEntity | null> {
     const dbBook = await this.collection.findOne({ _id: id })
 
     return dbBookToEntity(dbBook)
   }
 
-  async findByIsbn (isbn: string): Promise<BookEntity | null> {
-    const dbBook = await this.collection.findOne({ isbn_13: isbn })
+  async findByIsbn13 (isbn: string): Promise<BookEntity | null> {
+    const dbBook = await this.collection.findOne({ isbn13: isbn })
+
+    return dbBookToEntity(dbBook)
+  }
+
+  async findByIsbn10 (isbn: string): Promise<BookEntity | null> {
+    const dbBook = await this.collection.findOne({ isbn10: isbn })
 
     return dbBookToEntity(dbBook)
   }

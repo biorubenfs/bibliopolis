@@ -28,11 +28,14 @@ authRouter.post('/logout', tryCatch(async () => {
   return { status: HttpStatusCode.NoContent, data: result }
 }))
 
-authRouter.get('/me', checkJwt,  tryCatch(async (req) => {
-  const user = await usersService.getById(req.userId!)
+authRouter.get('/me', checkJwt, tryCatch(async (req) => {
+  if (req.userId == null) {
+    return { status: HttpStatusCode.NotFound, data: null }
+  }
+
+  const user = await usersService.getById(req.userId)
 
   return { status: HttpStatusCode.OK, data: user }
-}))  
-
+}))
 
 export default authRouter
