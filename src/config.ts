@@ -30,7 +30,7 @@ export default {
   hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
   openLibrary: {
     domain: parseUrl(process.env.OPEN_LIBRARY_DOMAIN, 'https://openlibrary.org'),
-    coverUrlPattern: parseString(process.env.OPEN_LIBRARY_COVER_URL_PATH)
+    coverUrlPattern: parseString(process.env.OPEN_LIBRARY_COVER_URL_PATTERN)
   },
   cookieOptions: {
     httpOnly: true,
