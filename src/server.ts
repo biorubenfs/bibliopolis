@@ -23,7 +23,10 @@ export default class Server {
 
     this.express = express()
     this.express.use(express.json())
-    this.express.use(cors())
+    this.express.use(cors({
+      origin: 'http://localhost:4200',
+      credentials: true
+    }))
     this.express.use(cookieParser())
 
     this.express.get('/', (req, res) => {
