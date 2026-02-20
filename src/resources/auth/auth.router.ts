@@ -5,6 +5,8 @@ import { loginSchema, signupSchema } from './auth.schemas.js'
 import authService from './auth.service.js'
 import { ClearCookieResultObject } from '../../results.js'
 import { HttpStatusCode } from '../../types.js'
+import { checkJwt } from '../../middlewares/jwt.middleware.js'
+import usersService from '../users/users.service.js'
 
 const authRouter = Router()
 
@@ -25,5 +27,12 @@ authRouter.post('/logout', tryCatch(async () => {
 
   return { status: HttpStatusCode.NoContent, data: result }
 }))
+
+authRouter.get('/me', checkJwt,  tryCatch(async (req) => {
+  const user = await usersService.getById(req.userId!)
+
+  return { status: HttpStatusCode.OK, data: user }
+}))  
+
 
 export default authRouter
