@@ -26,12 +26,12 @@ usersRouter.get('/', checkJwt, checkAdmin, queryPaginationValidator, tryCatch(as
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-usersRouter.patch('/me/password', bodyValidator(updatePasswordSchema), checkJwt, tryCatch(async (req) => {
+usersRouter.patch('/me/password', bodyValidator(updatePasswordSchema), tryCatch(async (req) => {
   const result = await usersService.updatePassword(req.userId ?? '', req.body.currentPassword, req.body.newPassword)
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-usersRouter.patch('/me', bodyValidator(updateUserSchema), checkJwt, tryCatch(async (req) => {
+usersRouter.patch('/me', bodyValidator(updateUserSchema), tryCatch(async (req) => {
   const result = await usersService.updateUser(req.userId ?? '', req.body)
   return { status: HttpStatusCode.OK, data: result }
 }))

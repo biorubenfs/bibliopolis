@@ -6,7 +6,6 @@ import booksService from './books.service.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
 import { parseSkipLimitQP } from '../../utils.js'
 import { HttpStatusCode } from '../../types.js'
-import { checkJwt } from '../../middlewares/jwt.middleware.js'
 
 const booksRouter = Router()
 
@@ -16,7 +15,7 @@ booksRouter.post('/', bodyValidator(newBookSchema), tryCatch(async (req) => {
   return { status: HttpStatusCode.Created, data: result }
 }))
 
-booksRouter.get('/:id', checkJwt, tryCatch(async (req) => {
+booksRouter.get('/:id', tryCatch(async (req) => {
   const result = await booksService.getById(req.params.id)
 
   return { status: HttpStatusCode.OK, data: result }
