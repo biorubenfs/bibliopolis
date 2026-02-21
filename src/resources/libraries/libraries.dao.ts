@@ -60,6 +60,22 @@ class LibrariesDao extends Dao<DBLibrary> {
     return new LibraryEntity(dbLibrary)
   }
 
+  async update (id: string, updateData: Partial<NewLibrary>): Promise<LibraryEntity | null> {
+    const now = new Date()
+    const updateDoc: Partial<DBLibrary> = {
+      ...updateData,
+      updatedAt: now
+    }
+
+    const updatedLibrary = await this.collection.findOneAndUpdate(
+      { _id: id },
+      { $set: updateDoc },
+      { returnDocument: 'after' }
+    )
+
+    return dbLibraryToEntity(updatedLibrary)
+  }
+
   async findById (id: string): Promise<LibraryEntity | null> {
     const dbLibrary = await this.collection.findOne({ _id: id })
 

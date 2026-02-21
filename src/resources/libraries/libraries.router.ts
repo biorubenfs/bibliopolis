@@ -43,6 +43,11 @@ librariesRouter.delete('/:libraryId/books/:userBookId', tryCatch(async (req) => 
   return { status: HttpStatusCode.NoContent, data: result }
 }))
 
+librariesRouter.patch('/:id', bodyValidator(newLibrarySchema.partial()), tryCatch(async (req) => {
+  const result = await librariesService.update(req.params.id, req.body, req.userId ?? '', req.role ?? Role.Regular)
+  return { status: HttpStatusCode.OK, data: result }
+}))
+
 // Libraries-books
 librariesRouter.get('/:id/books', queryPaginationValidator, tryCatch(async (req) => {
   const userId = req.userId ?? ''

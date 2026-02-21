@@ -20,6 +20,21 @@ class LibrariesService {
     return new SingleResultObject(newLibrary)
   }
 
+  async update (id: string, body: Partial<NewLibrary>, userId: string, role: Role): Promise<SingleResultObject<LibraryEntity>> {
+    const library = await this.get(id, userId, role)
+
+    if (library == null) {
+      throw new LibraryNotFoundError('library not found')
+    }
+
+    const updatedLibrary = await librariesDao.update(id, body)
+    if (updatedLibrary == null) {
+      throw new LibraryNotFoundError('library not found')
+    }
+
+    return new SingleResultObject(updatedLibrary)
+  }
+
   async get (id: string, userId: string, role: Role): Promise<SingleResultObject<LibraryEntity>> {
     const library = await librariesDao.findById(id)
 
