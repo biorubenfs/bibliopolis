@@ -11,10 +11,10 @@ import { RedirectResultObject, SingleResultObject } from '../../results.js'
 
 const usersRouter = Router()
 
-usersRouter.post('/', checkJwt, checkAdmin, bodyValidator(createUserSchema), tryCatch(async (req) => {
-  const result = await usersService.signup(req.body)
-  return { status: HttpStatusCode.Created, data: new SingleResultObject(result) }
-}))
+// usersRouter.post('/', checkJwt, checkAdmin, bodyValidator(createUserSchema), tryCatch(async (req) => {
+//   const result = await usersService.signup(req.body)
+//   return { status: HttpStatusCode.Created, data: new SingleResultObject(result) }
+// }))
 
 usersRouter.get('/me', checkJwt, tryCatch(async (req) => {
   const result = await usersService.getById(req.userId ?? '')

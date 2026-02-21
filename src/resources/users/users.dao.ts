@@ -20,6 +20,7 @@ class UsersDao extends Dao<DBUser> {
     const defaultAdmin = {
       name: config.defaultAdmin.name,
       email: config.defaultAdmin.email,
+      avatar: '',
       password: bcrypt.hashSync(config.defaultAdmin.password, config.hashRounds),
       createdAt: now,
       updatedAt: now
@@ -48,6 +49,7 @@ class UsersDao extends Dao<DBUser> {
     const dbUser: DBUser = {
       ...newUserData,
       _id: ulid(),
+      avatar: '',
       role,
       createdAt: now,
       updatedAt: now

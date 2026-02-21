@@ -15,17 +15,19 @@ export function hashPasswordSync (password: string): string {
 }
 
 class UsersService {
-  async signup (body: CreateUser): Promise<UserEntity> {
+  async signup (body: Omit<CreateUser, 'avatar'>): Promise<UserEntity> {
     const existingUser = await usersDao.findByEmail(body.email)
     if (existingUser != null) {
       throw new UserEmailAlreadyExists(`there is already a user registered with email ${body.email}`)
     }
 
     const validationCode = crypto.randomInt(VALIDATION_CODE_LIMIT).toString()
+    const avatar = ''
     const userData: CreateUser = {
       ...body,
       password: hashPasswordSync(body.password),
-      validationCode
+      validationCode,
+      avatar
     }
 
     const newUser = await usersDao.create(userData, Role.Regular)
