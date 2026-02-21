@@ -12,7 +12,7 @@ const userBooksRouter = Router()
 
 userBooksRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
   const librariesIds = ensureArray(req.query.libraries as string | string[] | null)
-  const result = await userBooksService.list(parseSkipLimitQP(req), req.userId ?? '', req.role ?? Role.Regular, { userId: req.query.userId as string, librariesIds: librariesIds ?? undefined})
+  const result = await userBooksService.list(parseSkipLimitQP(req), req.userId ?? '', req.role ?? Role.Regular, { userId: req.query.userId as string, librariesIds: librariesIds ?? undefined })
   return { status: HttpStatusCode.OK, data: result }
 }))
 

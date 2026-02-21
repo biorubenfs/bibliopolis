@@ -1,6 +1,5 @@
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { Page } from '../../types.js'
-import librariesDao from '../libraries/libraries.dao.js'
 import { LibraryPermissionsError } from '../libraries/libraries.error.js'
 import librariesService from '../libraries/libraries.service.js'
 import { Role } from '../users/users.interfaces.js'
@@ -11,11 +10,11 @@ import { UserBookPermissionsError, UserBookNotFoundError } from './user-books.er
 import { UpdateUserBook } from './user-books.interfaces.js'
 
 class UserBooksService {
-  async list (page: Page, userId: string, role: Role, filter: {userId?: string, librariesIds?: ReadonlyArray<string>}): Promise<CollectionResultObject<UserBookEntity>> {
+  async list (page: Page, userId: string, role: Role, filter: { userId?: string, librariesIds?: readonly string[] }): Promise<CollectionResultObject<UserBookEntity>> {
     if (filter.userId !== userId && role !== Role.Admin) {
       throw new UserBookPermissionsError('user can only list this own books')
     }
-    
+
     if (role !== Role.Admin) {
       const libraries = await librariesService.list(userId, role, page)
       const userLibIds = libraries.entities.map(lib => lib.id)

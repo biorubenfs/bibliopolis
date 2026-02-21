@@ -54,7 +54,7 @@ class UserBooksDao extends Dao<DBUserBook> {
       { session })
   }
 
-  async list (filters: {librariesIds?: ReadonlyArray<string>, userId?: string}, skip: number, limit: number): Promise<readonly UserBookEntity[]> {
+  async list (filters: { librariesIds?: readonly string[], userId?: string }, skip: number, limit: number): Promise<readonly UserBookEntity[]> {
     const searchFilters: any = {}
     if (filters.librariesIds != null) {
       searchFilters.libraries = { $all: filters.librariesIds }
@@ -71,7 +71,7 @@ class UserBooksDao extends Dao<DBUserBook> {
     return dbUserBooks.map(dbUserBookToEntity).filter(isNotNull)
   }
 
-  async count (filters: {librariesIds?: ReadonlyArray<string>, userId?: string}): Promise<number> {
+  async count (filters: { librariesIds?: readonly string[], userId?: string }): Promise<number> {
     const searchFilters: any = {}
     if (filters.librariesIds != null) {
       searchFilters.libraries = { $all: filters.librariesIds }
