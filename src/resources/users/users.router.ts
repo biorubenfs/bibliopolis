@@ -11,17 +11,18 @@ import { RedirectResultObject, SingleResultObject } from '../../results.js'
 
 const usersRouter = Router()
 
-// usersRouter.post('/', checkJwt, checkAdmin, bodyValidator(createUserSchema), tryCatch(async (req) => {
-//   const result = await usersService.signup(req.body)
-//   return { status: HttpStatusCode.Created, data: new SingleResultObject(result) }
-// }))
+usersRouter.post('/', checkAdmin, bodyValidator(createUserSchema), tryCatch(async (req) => {
+  const result = await usersService.signup(req.body)
+  return { status: HttpStatusCode.Created, data: new SingleResultObject(result) }
+}))
 
-usersRouter.get('/me', checkJwt, tryCatch(async (req) => {
+/* maybe we could remove this service because is redundante with auth/me service */
+usersRouter.get('/me', tryCatch(async (req) => {
   const result = await usersService.getById(req.userId ?? '')
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-usersRouter.get('/', checkJwt, checkAdmin, queryPaginationValidator, tryCatch(async (req) => {
+usersRouter.get('/', checkAdmin, queryPaginationValidator, tryCatch(async (req) => {
   const result = await usersService.list(parseSkipLimitQP(req))
   return { status: HttpStatusCode.OK, data: result }
 }))
