@@ -54,9 +54,16 @@ class UserBooksDao extends Dao<DBUserBook> {
       { session })
   }
 
-  async list (libraryId: string, userId: string, skip: number, limit: number): Promise<readonly UserBookEntity[]> {
+  async list (filters: {librariesIds?: ReadonlyArray<string>, userId?: string}, skip: number, limit: number): Promise<readonly UserBookEntity[]> {
+    const searchFilters: any = {}
+    if (filters.librariesIds != null) {
+      searchFilters.libraries = { $all: filters.librariesIds }
+    }
+    if (filters.userId != null) {
+      searchFilters.userId = filters.userId
+    }
     const dbUserBooks = await this.collection
-      .find({ libraries: libraryId, userId })
+      .find(searchFilters)
       .skip(skip)
       .limit(limit)
       .toArray()
@@ -64,8 +71,15 @@ class UserBooksDao extends Dao<DBUserBook> {
     return dbUserBooks.map(dbUserBookToEntity).filter(isNotNull)
   }
 
-  async count (libraryId: string, userId: string): Promise<number> {
-    const total = await this.collection.countDocuments({ libraries: libraryId, userId })
+  async count (filters: {librariesIds?: ReadonlyArray<string>, userId?: string}): Promise<number> {
+    const searchFilters: any = {}
+    if (filters.librariesIds != null) {
+      searchFilters.libraries = { $all: filters.librariesIds }
+    }
+    if (filters.userId != null) {
+      searchFilters.userId = filters.userId
+    }
+    const total = await this.collection.countDocuments(searchFilters)
     return total
   }
 

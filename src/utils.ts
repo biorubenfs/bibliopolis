@@ -30,3 +30,10 @@ export function getCoverUrl (coverId: number | null, size: CoverSize = CoverSize
     .replace(':size', size)
   return coverUrl
 }
+
+export function ensureArray (value: string | string[] | undefined | null): string[] | null {
+  if (value == null) {
+    return null
+  }
+  return Array.isArray(value) ? value : [value]
+}

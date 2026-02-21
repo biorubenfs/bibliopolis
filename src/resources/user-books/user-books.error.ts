@@ -6,3 +6,9 @@ export class UserBookNotFoundError extends ApiError {
     super(ApiRestErrorCode.NotFoundError, 404, message)
   }
 }
+
+export class UserBookPermissionsError extends ApiError {
+  constructor (message: string) {
+    super(ApiRestErrorCode.PermissionError, 403, message)
+  }
+}

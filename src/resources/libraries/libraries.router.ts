@@ -45,7 +45,9 @@ librariesRouter.delete('/:libraryId/books/:userBookId', tryCatch(async (req) => 
 
 // Libraries-books
 librariesRouter.get('/:id/books', queryPaginationValidator, tryCatch(async (req) => {
-  const result = await userBooksService.list(req.params.id, req.userId ?? '', parseSkipLimitQP(req))
+  const userId = req.userId ?? ''
+  const role = req.role ?? Role.Regular
+  const result = await userBooksService.list(parseSkipLimitQP(req), userId, role, {librariesIds: [req.params.id], userId}) 
   return { status: HttpStatusCode.OK, data: result }
 }))
 
