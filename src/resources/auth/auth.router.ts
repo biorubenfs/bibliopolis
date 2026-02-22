@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import tryCatch from '../../try-catch.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
-import { loginSchema, signupSchema } from './auth.schemas.js'
+import { loginSchema } from './auth.schemas.js'
 import authService from './auth.service.js'
 import { ClearCookieResultObject } from '../../results.js'
 import { HttpStatusCode } from '../../types.js'
