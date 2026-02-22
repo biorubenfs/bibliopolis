@@ -7,6 +7,8 @@ import { InvalidCurrentPassword, UserEmailAlreadyExists, UserNotFoundError } fro
 import { UserEntity } from './users.entity.js'
 import { Page } from '../../types.js'
 import crypto from 'crypto'
+import robohashApi from './robohash/robohash.api.js'
+import { transformImageToBase64 } from '../../utils.js'
 
 const VALIDATION_CODE_LIMIT = 9999
 
@@ -22,12 +24,12 @@ class UsersService {
     }
 
     const validationCode = crypto.randomInt(VALIDATION_CODE_LIMIT).toString()
-    const avatar = ''
+    const avatar = await robohashApi.getImage(body.name)
     const userData: CreateUser = {
       ...body,
       password: hashPasswordSync(body.password),
       validationCode,
-      avatar
+      avatar: transformImageToBase64(avatar)
     }
 
     const newUser = await usersDao.create(userData, Role.Regular)
@@ -81,8 +83,13 @@ class UsersService {
     return new SingleResultObject(updUser)
   }
 
-  async updateUser (userId: string, data: UpdateUser): Promise<SingleResultObject<UserEntity>> {
-    const updUser = await usersDao.updateUser(userId, data)
+  async updateUser (userId: string, data: Omit<UpdateUser, 'avatar'>): Promise<SingleResultObject<UserEntity>> {
+    const recalculatedAvatar = await robohashApi.getImage(data.name)
+    const updData: UpdateUser = {
+      ...data,
+      avatar: transformImageToBase64(recalculatedAvatar)
+    }
+    const updUser = await usersDao.updateUser(userId, updData)
     if (updUser == null) {
       throw new UserNotFoundError('user not found')
     }

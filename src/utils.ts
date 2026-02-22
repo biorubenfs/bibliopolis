@@ -37,3 +37,8 @@ export function ensureArray (value: string | string[] | undefined | null): strin
   }
   return Array.isArray(value) ? value : [value]
 }
+
+export function transformImageToBase64 (imageDate: ArrayBuffer): string {
+  const buffer = Buffer.from(imageDate)
+  return buffer.toString('base64')
+}
