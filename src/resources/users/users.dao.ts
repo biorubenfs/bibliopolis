@@ -20,6 +20,7 @@ class UsersDao extends Dao<DBUser> {
     const defaultAdmin = {
       name: config.defaultAdmin.name,
       email: config.defaultAdmin.email,
+      avatar: '',
       password: bcrypt.hashSync(config.defaultAdmin.password, config.hashRounds),
       createdAt: now,
       updatedAt: now
@@ -58,7 +59,12 @@ class UsersDao extends Dao<DBUser> {
   }
 
   async list (skip: number, limit: number): Promise<readonly UserEntity[]> {
-    const dbUsers = await this.collection.find().skip(skip).limit(limit).toArray()
+    const dbUsers = await this.collection
+      .find()
+      .project<DBUser>({ avatar: 0 })
+      .skip(skip)
+      .limit(limit)
+      .toArray()
 
     return dbUsers.map(dbUserToEntity).filter(isNotNull)
   }

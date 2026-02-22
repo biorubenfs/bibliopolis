@@ -27,7 +27,7 @@ class AuthService {
   //   return new MiscResultObject({ token })
   // }
 
-  async signup (body: CreateUser): Promise<SetCookieResultObject<UserEntity>> {
+  async signup (body: Omit<CreateUser, 'avatar'>): Promise<SetCookieResultObject<UserEntity>> {
     const newUser = await usersService.signup(body)
     const token = makeJwt(newUser.id, newUser.role)
 

@@ -3,7 +3,7 @@ import usersService from './users.service.js'
 import tryCatch from '../../try-catch.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 import { createUserSchema, updatePasswordSchema, updateUserSchema } from './users.schemas.js'
-import { checkAdmin, checkJwt } from '../../middlewares/jwt.middleware.js'
+import { checkAdmin } from '../../middlewares/jwt.middleware.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
 import { parseSkipLimitQP } from '../../utils.js'
 import { HttpStatusCode } from '../../types.js'
@@ -11,17 +11,18 @@ import { RedirectResultObject, SingleResultObject } from '../../results.js'
 
 const usersRouter = Router()
 
-usersRouter.post('/', checkJwt, checkAdmin, bodyValidator(createUserSchema), tryCatch(async (req) => {
+usersRouter.post('/', checkAdmin, bodyValidator(createUserSchema), tryCatch(async (req) => {
   const result = await usersService.signup(req.body)
   return { status: HttpStatusCode.Created, data: new SingleResultObject(result) }
 }))
 
-usersRouter.get('/me', checkJwt, tryCatch(async (req) => {
+/* maybe we could remove this service because is redundante with auth/me service */
+usersRouter.get('/me', tryCatch(async (req) => {
   const result = await usersService.getById(req.userId ?? '')
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-usersRouter.get('/', checkJwt, checkAdmin, queryPaginationValidator, tryCatch(async (req) => {
+usersRouter.get('/', checkAdmin, queryPaginationValidator, tryCatch(async (req) => {
   const result = await usersService.list(parseSkipLimitQP(req))
   return { status: HttpStatusCode.OK, data: result }
 }))

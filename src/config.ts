@@ -36,5 +36,8 @@ export default {
     httpOnly: true,
     secure: typeof process.env.ACCESS_TOKEN_COOKIE_SECURE === 'boolean' ? process.env.ACCESS_TOKEN_COOKIE_SECURE : false,
     sameSite: parseString(process.env.ACCESS_TOKEN_COOKIE_SAME_SITE, 'none')
+  },
+  roboHashApi: {
+    baseUrl: parseUrl(process.env.ROBO_HASH_API_BASE_URL, 'https://robohash.org/')
   }
 }
