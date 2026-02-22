@@ -1,5 +1,5 @@
 export class RoboHashApiError extends Error {
-  constructor(message: string, public readonly status?: number) {
+  constructor (message: string, public readonly status?: number) {
     super(message)
     this.name = 'RoboHashApiError'
   }
