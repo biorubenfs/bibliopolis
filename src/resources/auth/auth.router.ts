@@ -10,11 +10,11 @@ import usersService from '../users/users.service.js'
 
 const authRouter = Router()
 
-authRouter.post('/signup', bodyValidator(signupSchema), tryCatch(async (req) => {
-  const result = await authService.signup(req.body)
+// authRouter.post('/signup', bodyValidator(signupSchema), tryCatch(async (req) => {
+//   const result = await authService.signup(req.body)
 
-  return { status: HttpStatusCode.Created, data: result }
-}))
+//   return { status: HttpStatusCode.Created, data: result }
+// }))
 
 authRouter.post('/login', bodyValidator(loginSchema), tryCatch(async (req) => {
   const result = await authService.login(req.body)

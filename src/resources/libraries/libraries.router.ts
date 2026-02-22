@@ -49,11 +49,11 @@ librariesRouter.patch('/:id', bodyValidator(newLibrarySchema.partial()), tryCatc
 }))
 
 // Libraries-books
-librariesRouter.get('/:id/books', queryPaginationValidator, tryCatch(async (req) => {
-  const userId = req.userId ?? ''
-  const role = req.role ?? Role.Regular
-  const result = await userBooksService.list(parseSkipLimitQP(req), userId, role, { librariesIds: [req.params.id], userId })
-  return { status: HttpStatusCode.OK, data: result }
-}))
+// librariesRouter.get('/:id/books', queryPaginationValidator, tryCatch(async (req) => {
+//   const userId = req.userId ?? ''
+//   const role = req.role ?? Role.Regular
+//   const result = await userBooksService.list(parseSkipLimitQP(req), userId, role, { librariesIds: [req.params.id], userId })
+//   return { status: HttpStatusCode.OK, data: result }
+// }))
 
 export default librariesRouter
