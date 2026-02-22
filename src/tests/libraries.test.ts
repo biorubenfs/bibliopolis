@@ -243,9 +243,13 @@ describe('libraries tests', async () => {
     expect(response.status).equals(403)
   })
 
-  it('GET /libraries/:id/books - should list the books of a owned library', async () => {
+  // TODO: move to user-books tests
+  it('GET /user-books?libraryId= - should list the books of a owned library', async () => {
     const libraryId = '01J9W8VR2CFZW8PJ1Q8Y4Y5WEX'
-    const url = new URL(`/libraries/${libraryId}/books`, librariesUrl)
+    const url = new URL('/user-books', librariesUrl)
+    url.searchParams.set('libraryId', libraryId)
+    // url.searchParams.set('userId', userId) // not needed
+
     const response = await fetch(url, {
       headers: {
         cookie,
@@ -260,8 +264,12 @@ describe('libraries tests', async () => {
     expect(responseBody.results).to.be.an('array').of.length(3)
   })
 
-  it('GET /libraries/:id/books - should fail to list books of a not owned library', async () => {
-    const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X/books', librariesUrl)
+  it('GET /user-books?libraryId= - should fail to list books of a not owned library', async () => {
+    const libraryId = '01J9XDD1NAFHP0159FYT245D8X'
+    const url = new URL('/user-books', librariesUrl)
+    url.searchParams.set('libraryId', libraryId)
+    // url.searchParams.set('userId', userId) // not needed
+
     const response = await fetch(url, {
       headers: {
         cookie,
