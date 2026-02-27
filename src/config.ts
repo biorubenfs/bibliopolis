@@ -15,6 +15,9 @@ function parseUrl (value?: string, dflt = ''): URL {
 export default {
   environment: parseString(process.env.ENVIRONMENT, 'local'),
   port: parseNumber(process.env.PORT, 3000),
+  cors: {
+    origin: parseString(process.env.CORS_ORIGIN, 'http://localhost:4200')
+  },
   mongo: {
     uri: parseString(process.env.MONGO_URI)
   },
