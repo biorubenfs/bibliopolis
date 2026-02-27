@@ -5,7 +5,6 @@ import { DBLibrary, NewLibrary } from './libraries.interfaces.js'
 import { LibraryEntity } from './libraries.entity.js'
 import { Role } from '../users/users.interfaces.js'
 import { ClientSession, Filter } from 'mongodb'
-import config from '../../config.js'
 
 function dbLibraryToEntity (dbLibrary: DBLibrary | null): LibraryEntity | null {
   return dbLibrary == null ? null : new LibraryEntity(dbLibrary)
