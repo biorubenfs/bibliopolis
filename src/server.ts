@@ -57,6 +57,7 @@ export default class Server {
     this.express.use('/books', booksRouter)
     this.express.use('/libraries', librariesRouter)
     this.express.use('/user-books', userBooksRouter)
+    this.express.use('/external', externalRouter)
 
     // error handling
     this.express.use(errorHandler)

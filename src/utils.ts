@@ -2,7 +2,7 @@ import { Request } from 'express'
 import { Page } from './types'
 import config from './config.js'
 
-enum CoverSize {
+export enum CoverSize {
   S = 'S',
   M = 'M',
   L = 'L'

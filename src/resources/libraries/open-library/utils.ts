@@ -8,7 +8,7 @@ import { OpenLibraryBook } from './types.js'
 //   return value != null // filter null and undefined
 // }
 
-async function buildBook (openLibraryBook: OpenLibraryBook): Promise<NewBook> {
+export async function buildBook (openLibraryBook: OpenLibraryBook): Promise<NewBook> {
   const workKey = openLibraryBook.works[0].key
   if (workKey == null) {
     throw new Error('say something util')

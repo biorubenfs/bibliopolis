@@ -22,14 +22,16 @@ export class CollectionResultObject<T extends Entity<EntityType>> {
 
 export class MiscResultObject {
   readonly attributes: object
+  readonly name: string
 
-  constructor (attributes: object) {
+  constructor (name: string = 'misc', attributes: object) {
+    this.name = name
     this.attributes = attributes
   }
 
   toResult (): ResultMiscObject {
     return {
-      type: 'auth-response',
+      type: this.name,
       attributes: this.attributes
     }
   }
