@@ -33,6 +33,13 @@ userBooksRouter.get('/', queryParamsValidator(userBooksQuerySchema), queryPagina
   return { status: HttpStatusCode.OK, data: result }
 }))
 
+userBooksRouter.get('/download', tryCatch(async (req) => {
+  const libraryId = req.query.libraryId as string
+
+  const stream = await userBooksService.download(libraryId, req.userId ?? '', req.role ?? Role.Regular)
+  return { status: HttpStatusCode.OK, data: stream }
+}))
+
 userBooksRouter.get('/:id', tryCatch(async (req) => {
   const result = await userBooksService.get(req.params.id, req.userId ?? '')
   return { status: HttpStatusCode.OK, data: result }

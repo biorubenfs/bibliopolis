@@ -1,3 +1,4 @@
+import { Readable } from 'stream'
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { Page } from '../../types.js'
 import { LibraryPermissionsError } from '../libraries/libraries.error.js'
@@ -8,6 +9,7 @@ import userBooksDao from './user-books.dao.js'
 import { UserBookEntity } from './user-books.entity.js'
 import { UserBookPermissionsError, UserBookNotFoundError } from './user-books.error.js'
 import { UpdateUserBook } from './user-books.interfaces.js'
+import { createLibraryBooksPDF } from '../../utils/pdf-creator.utils.js'
 
 class UserBooksService {
   async list (page: Page, userId: string, role: Role, filter: { userId?: string, librariesIds?: readonly string[], search?: string }): Promise<CollectionResultObject<UserBookEntity>> {
@@ -57,6 +59,17 @@ class UserBooksService {
       throw new UserBookNotFoundError('user book not found')
     }
     return new SingleResultObject(updUserBookEntity)
+  }
+
+  async download (libraryId: string, userId: string, role: Role, output: string = 'pdf'): Promise<Readable> {
+    const library = await librariesService.get(libraryId, userId, role)
+
+    // TODO: if book list is too long, we should create the PDF in a streaming way instead of loading all books in memory and then creating the PDF
+    // OPTIONS: create several tables in the same PDF if there are too many books
+    // OPTIONS: create the PDF in a streaming way, writing each book to the PDF as we fetch it from the DB, instead of fetching all books and then writing them to the PDF
+    const booksInLibrary = await userBooksDao.list({ userId, librariesIds: [libraryId] }, 0, 1000)
+
+    return await createLibraryBooksPDF(library.entity, booksInLibrary)
   }
 }
 
