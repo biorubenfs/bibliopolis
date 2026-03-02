@@ -1,7 +1,44 @@
+import { FindCursor, WithId } from 'mongodb'
+import { DBUserBook } from '../resources/user-books/user-books.interfaces.js'
 import { PassThrough, Readable } from 'stream'
-import { LibraryEntity } from '../resources/libraries/libraries.entity'
-import { UserBookEntity } from '../resources/user-books/user-books.entity'
+import { LibraryEntity } from '../resources/libraries/libraries.entity.js'
+import { UserBookEntity } from '../resources/user-books/user-books.entity.js'
 import PDFDocument from 'pdfkit'
+
+export async function createLibraryBooksPDFStream (
+  library: LibraryEntity,
+  booksCursor: FindCursor<WithId<DBUserBook>>,
+  chunkSize = 100,
+  totalBooks: number
+): Promise<Readable> {
+  const doc = new PDFDocument({ margins: { top: 25, bottom: 25, left: 25, right: 25 }, bufferPages: true })
+  const passThrough = new PassThrough()
+  doc.pipe(passThrough)
+
+  let booksChunk: UserBookEntity[] = []
+
+  setTitleAndDescription(doc, library, totalBooks)
+  addHorizontalRule(doc, 0, 1)
+
+  let isFirstChunk = true
+  
+  for await (const dbUserBook of booksCursor) {
+    booksChunk.push(new UserBookEntity(dbUserBook))
+    if (booksChunk.length === chunkSize) {
+      addTable(doc, booksChunk, isFirstChunk)
+      isFirstChunk = false
+      booksChunk = []
+    }
+  }
+  // Process remaining books that didn't fill a complete chunk
+  if (booksChunk.length > 0) {
+    addTable(doc, booksChunk, isFirstChunk)
+  }
+
+  addPagination(doc)
+  doc.end()
+  return passThrough
+}
 
 function addHorizontalRule (doc: PDFKit.PDFDocument, spaceFromEdge = 0, linesAboveAndBelow = 0.5): void {
   doc.moveDown(linesAboveAndBelow)
@@ -29,7 +66,7 @@ function setTitleAndDescription (doc: PDFKit.PDFDocument, library: LibraryEntity
   doc.moveDown(1)
 }
 
-function addTable (doc: PDFKit.PDFDocument, books: readonly UserBookEntity[]): void {
+function addTable (doc: PDFKit.PDFDocument, books: readonly UserBookEntity[], headers = true): void {
   const columnStylesMap = new Map<number, { header: string, width: number, padding: number }>([
     [0, { header: 'Título', width: 180, padding: 5 }],
     [1, { header: 'Autor/es', width: 180, padding: 5 }],
@@ -37,24 +74,33 @@ function addTable (doc: PDFKit.PDFDocument, books: readonly UserBookEntity[]): v
     [3, { header: 'Isbn-10', width: 80, padding: 5 }]
   ])
 
+  const data = headers
+    ? [
+        Array.from(columnStylesMap.values()).map(col => col.header),
+        ...books.map(book => [
+          book.bookTitle,
+          book.bookAuthors.join(', '),
+          book.bookIsbn13,
+          book.bookIsbn10 ?? '-'
+        ])
+      ]
+    : books.map(book => [
+      book.bookTitle,
+      book.bookAuthors.join(', '),
+      book.bookIsbn13,
+      book.bookIsbn10 ?? '-'
+    ])
+
   doc.table({
     rowStyles: (i) => {
-      return i < 1
+      return headers && i < 1
         ? { border: [0, 0, 2, 0], borderColor: 'black' }
         : { border: [0, 0, 1, 0], borderColor: '#aaa' }
     },
     columnStyles: (i) => {
       return columnStylesMap.get(i) ?? { width: 100, padding: 5 }
     },
-    data: [
-      Array.from(columnStylesMap.values()).map(col => col.header),
-      ...books.map(book => [
-        book.bookTitle,
-        book.bookAuthors.join(', '),
-        book.bookIsbn13,
-        book.bookIsbn10 ?? '-'
-      ])
-    ]
+    data
   })
 }
 
