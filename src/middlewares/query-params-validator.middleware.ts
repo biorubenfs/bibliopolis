@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express"
-import { InvalidBodyError } from "../error/errors"
+import { NextFunction, Request, Response } from 'express'
+import { InvalidBodyError } from '../error/errors'
 
 export function queryParamsValidator (schema: Zod.Schema) {
   return (req: Request, res: Response, next: NextFunction): void => {

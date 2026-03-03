@@ -16,7 +16,7 @@ userBooksRouter.get('/', queryParamsValidator(userBooksQuerySchema), queryPagina
   // req query is alreday validated and typed by queryParamsValidator middleware
   const { userId, libraryId, search } = req.query as z.infer<typeof userBooksQuerySchema>
   // normalize libraryId to array
-  const librariesIds = libraryId
+  const librariesIds = libraryId != null
     ? Array.isArray(libraryId) ? libraryId : [libraryId]
     : undefined
   const filter = {

@@ -11,7 +11,7 @@ function dbUserBookToEntity (dbUserBook: DBUserBook | null): UserBookEntity | nu
   return dbUserBook == null ? null : new UserBookEntity(dbUserBook)
 }
 
-function buildSearchAggregationPipeline (filters: { librariesIds?: readonly string[], userId?: string, search?: string }): Array<Document> {
+function buildSearchAggregationPipeline (filters: { librariesIds?: readonly string[], userId?: string, search?: string }): Document[] {
   const searchFilters: any = {}
   if (filters.librariesIds != null) {
     searchFilters.libraries = { $all: filters.librariesIds }
@@ -24,6 +24,7 @@ function buildSearchAggregationPipeline (filters: { librariesIds?: readonly stri
   ]
 
   if (filters.search != null) {
+    // search in mongo with regex, this is not performant but we don't have Atlas Search in local environment, so we will use it for testing and local development
     if (config.environment === 'local' || config.environment === 'test') {
       aggregate.push({
         $match: {
@@ -35,38 +36,36 @@ function buildSearchAggregationPipeline (filters: { librariesIds?: readonly stri
           ]
         }
       })
-
-      // search in mongo with regex, this is not performant but we don't have Atlas Search in local environment, so we will use it for testing and local development
     } else {
       // use atlas search
       aggregate.push({
-      $search: {
-        index: "user_books_search",
-        compound: {
-          should: [
-            {
-              autocomplete: {
-                query: filters.search,
-                path: "bookIsbn13"
+        $search: {
+          index: 'user_books_search',
+          compound: {
+            should: [
+              {
+                autocomplete: {
+                  query: filters.search,
+                  path: 'bookIsbn13'
+                }
+              },
+              {
+                autocomplete: {
+                  query: filters.search,
+                  path: 'bookIsbn10'
+                }
+              },
+              {
+                text: {
+                  query: filters.search,
+                  path: ['bookTitle', 'bookAuthors']
+                }
               }
-            },
-            {
-              autocomplete: {
-                query: filters.search,
-                path: "bookIsbn10"
-              }
-            },
-            {
-              text: {
-                query: filters.search,
-                path: ["bookTitle", "bookAuthors"]
-              }
-            }
-          ],
-          minimumShouldMatch: 1
+            ],
+            minimumShouldMatch: 1
+          }
         }
-      }
-    })
+      })
     }
   }
 
@@ -121,7 +120,7 @@ class UserBooksDao extends Dao<DBUserBook> {
     const pipeline = buildSearchAggregationPipeline(filters)
 
     pipeline.push({ $skip: skip })
-    pipeline.push({ $limit: limit })    
+    pipeline.push({ $limit: limit })
 
     const dbUserBooks = await this.collection
       .aggregate<DBUserBook>(pipeline)
