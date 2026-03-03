@@ -21,7 +21,7 @@ export async function createLibraryBooksPDFStream (
   addHorizontalRule(doc, 0, 1)
 
   let isFirstChunk = true
-  
+
   for await (const dbUserBook of booksCursor) {
     booksChunk.push(new UserBookEntity(dbUserBook))
     if (booksChunk.length === chunkSize) {
