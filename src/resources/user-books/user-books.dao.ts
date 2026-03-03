@@ -3,7 +3,7 @@ import Dao from '../../dao.js'
 import { isNotNull } from '../../utils.js'
 import { DBUserBook, UpdateUserBook } from './user-books.interfaces.js'
 import { UserBookEntity } from './user-books.entity.js'
-import { AggregationCursor, Document, WithId, ClientSession  } from 'mongodb'
+import { AggregationCursor, Document, WithId, ClientSession } from 'mongodb'
 import { BookEntity } from '../books/books.entity.js'
 import config from '../../config.js'
 
