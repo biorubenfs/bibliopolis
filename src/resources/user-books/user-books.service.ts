@@ -1,3 +1,4 @@
+import { Readable } from 'stream'
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { Page } from '../../types.js'
 import { LibraryPermissionsError } from '../libraries/libraries.error.js'
@@ -8,6 +9,7 @@ import userBooksDao from './user-books.dao.js'
 import { UserBookEntity } from './user-books.entity.js'
 import { UserBookPermissionsError, UserBookNotFoundError } from './user-books.error.js'
 import { UpdateUserBook } from './user-books.interfaces.js'
+import { createLibraryBooksPDFStream } from '../../utils/pdf-creator.utils.js'
 
 class UserBooksService {
   async list (page: Page, userId: string, role: Role, filter: { userId?: string, librariesIds?: readonly string[], search?: string }): Promise<CollectionResultObject<UserBookEntity>> {
@@ -57,6 +59,15 @@ class UserBooksService {
       throw new UserBookNotFoundError('user book not found')
     }
     return new SingleResultObject(updUserBookEntity)
+  }
+
+  async download (libraryId: string, userId: string, role: Role, output: string = 'pdf'): Promise<Readable> {
+    const library = await librariesService.get(libraryId, userId, role)
+
+    const booksCursor = await userBooksDao.listCursor({ userId, librariesIds: [libraryId] })
+    const total = await userBooksDao.count({ userId, librariesIds: [libraryId] })
+
+    return await createLibraryBooksPDFStream(library.entity, booksCursor, total)
   }
 }
 
