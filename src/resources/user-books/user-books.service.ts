@@ -10,7 +10,7 @@ import { UserBookPermissionsError, UserBookNotFoundError } from './user-books.er
 import { UpdateUserBook } from './user-books.interfaces.js'
 
 class UserBooksService {
-  async list (page: Page, userId: string, role: Role, filter: { userId?: string, librariesIds?: readonly string[] }): Promise<CollectionResultObject<UserBookEntity>> {
+  async list (page: Page, userId: string, role: Role, filter: { userId?: string, librariesIds?: readonly string[], search?: string }): Promise<CollectionResultObject<UserBookEntity>> {
     if (filter.userId != null && filter.userId !== userId && role !== Role.Admin) {
       throw new UserBookPermissionsError('user can only list this own books')
     }

@@ -9,3 +9,9 @@ export const userBookUpdateSchema = z.object({
   rating: z.nativeEnum(UserBookRating).nullable(),
   notes: z.string().nullable()
 })
+
+export const userBooksQuerySchema = z.object({
+  userId: z.string().optional(),
+  libraryId: z.union([z.string(), z.array(z.string())]).optional(),
+  search: z.string().optional()
+})

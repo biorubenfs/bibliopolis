@@ -3,16 +3,33 @@ import userBooksService from './user-books.service.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 import tryCatch from '../../try-catch.js'
 import { HttpStatusCode } from '../../types.js'
-import { userBookUpdateSchema } from './user-books.schemas.js'
+import { userBooksQuerySchema, userBookUpdateSchema } from './user-books.schemas.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
-import { ensureArray, parseSkipLimitQP } from '../../utils.js'
+import { parseSkipLimitQP } from '../../utils.js'
 import { Role } from '../users/users.interfaces.js'
+import { queryParamsValidator } from '../../middlewares/query-params-validator.middleware.js'
+import { z } from 'zod'
 
 const userBooksRouter = Router()
 
-userBooksRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
-  const librariesIds = ensureArray(req.query.libraryId as string | string[] | null)
-  const result = await userBooksService.list(parseSkipLimitQP(req), req.userId ?? '', req.role ?? Role.Regular, { userId: req.query.userId as string, librariesIds: librariesIds ?? undefined })
+userBooksRouter.get('/', queryParamsValidator(userBooksQuerySchema), queryPaginationValidator, tryCatch(async (req) => {
+  // req query is alreday validated and typed by queryParamsValidator middleware
+  const { userId, libraryId, search } = req.query as z.infer<typeof userBooksQuerySchema>
+  // normalize libraryId to array
+  const librariesIds = libraryId != null
+    ? Array.isArray(libraryId) ? libraryId : [libraryId]
+    : undefined
+  const filter = {
+    userId,
+    librariesIds,
+    search
+  }
+  const result = await userBooksService.list(
+    parseSkipLimitQP(req),
+    req.userId ?? '',
+    req.role ?? Role.Regular,
+    filter
+  )
   return { status: HttpStatusCode.OK, data: result }
 }))
 

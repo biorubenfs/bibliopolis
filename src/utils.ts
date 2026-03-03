@@ -33,7 +33,7 @@ export function getCoverUrl (coverId: number | null, size: CoverSize = CoverSize
 
 export function ensureArray (value: string | string[] | undefined | null): string[] | null {
   if (value == null) {
-    return null
+    return []
   }
   return Array.isArray(value) ? value : [value]
 }
