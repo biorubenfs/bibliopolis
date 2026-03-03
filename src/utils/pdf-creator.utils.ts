@@ -1,4 +1,4 @@
-import { FindCursor, WithId } from 'mongodb'
+import { AggregationCursor, WithId } from 'mongodb'
 import { DBUserBook } from '../resources/user-books/user-books.interfaces.js'
 import { PassThrough, Readable } from 'stream'
 import { LibraryEntity } from '../resources/libraries/libraries.entity.js'
@@ -7,9 +7,9 @@ import PDFDocument from 'pdfkit'
 
 export async function createLibraryBooksPDFStream (
   library: LibraryEntity,
-  booksCursor: FindCursor<WithId<DBUserBook>>,
-  chunkSize = 100,
-  totalBooks: number
+  booksCursor: AggregationCursor<WithId<DBUserBook>>,
+  totalBooks: number,
+  chunkSize = 100
 ): Promise<Readable> {
   const doc = new PDFDocument({ margins: { top: 25, bottom: 25, left: 25, right: 25 }, bufferPages: true })
   const passThrough = new PassThrough()

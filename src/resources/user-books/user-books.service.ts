@@ -67,7 +67,7 @@ class UserBooksService {
     const booksCursor = await userBooksDao.listCursor({ userId, librariesIds: [libraryId] })
     const total = await userBooksDao.count({ userId, librariesIds: [libraryId] })
 
-    return await createLibraryBooksPDFStream(library.entity, booksCursor, 100, total)
+    return await createLibraryBooksPDFStream(library.entity, booksCursor, total)
   }
 }
 
