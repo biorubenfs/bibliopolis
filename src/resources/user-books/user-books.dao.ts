@@ -3,11 +3,74 @@ import Dao from '../../dao.js'
 import { isNotNull } from '../../utils.js'
 import { DBUserBook, UpdateUserBook } from './user-books.interfaces.js'
 import { UserBookEntity } from './user-books.entity.js'
-import { ClientSession } from 'mongodb'
+import { AggregationCursor, ClientSession, Document, WithId } from 'mongodb'
 import { BookEntity } from '../books/books.entity.js'
+import config from '../../config.js'
 
 function dbUserBookToEntity (dbUserBook: DBUserBook | null): UserBookEntity | null {
   return dbUserBook == null ? null : new UserBookEntity(dbUserBook)
+}
+
+function buildSearchAggregationPipeline (filters: { librariesIds?: readonly string[], userId?: string, search?: string }): Array<Document> {
+  const searchFilters: any = {}
+  if (filters.librariesIds != null) {
+    searchFilters.libraries = { $all: filters.librariesIds }
+  }
+  if (filters.userId != null) {
+    searchFilters.userId = filters.userId
+  }
+  const aggregate: Document[] = [
+    { $match: searchFilters }
+  ]
+
+  if (filters.search != null) {
+    if (config.environment === 'local' || config.environment === 'test') {
+      aggregate.push({
+        $match: {
+          $or: [
+            { bookIsbn13: { $regex: filters.search, $options: 'i' } },
+            { bookIsbn10: { $regex: filters.search, $options: 'i' } },
+            { bookTitle: { $regex: filters.search, $options: 'i' } },
+            { bookAuthors: { $regex: filters.search, $options: 'i' } }
+          ]
+        }
+      })
+
+      // search in mongo with regex, this is not performant but we don't have Atlas Search in local environment, so we will use it for testing and local development
+    } else {
+      // use atlas search
+      aggregate.push({
+      $search: {
+        index: "user_books_search",
+        compound: {
+          should: [
+            {
+              autocomplete: {
+                query: filters.search,
+                path: "bookIsbn13"
+              }
+            },
+            {
+              autocomplete: {
+                query: filters.search,
+                path: "bookIsbn10"
+              }
+            },
+            {
+              text: {
+                query: filters.search,
+                path: ["bookTitle", "bookAuthors"]
+              }
+            }
+          ],
+          minimumShouldMatch: 1
+        }
+      }
+    })
+    }
+  }
+
+  return aggregate
 }
 
 class UserBooksDao extends Dao<DBUserBook> {
@@ -54,32 +117,34 @@ class UserBooksDao extends Dao<DBUserBook> {
       { session })
   }
 
-  async list (filters: { librariesIds?: readonly string[], userId?: string }, skip: number, limit: number): Promise<readonly UserBookEntity[]> {
-    const searchFilters: any = {}
-    if (filters.librariesIds != null) {
-      searchFilters.libraries = { $all: filters.librariesIds }
-    }
-    if (filters.userId != null) {
-      searchFilters.userId = filters.userId
-    }
+  async list (filters: { librariesIds?: readonly string[], userId?: string, search?: string }, skip: number, limit: number): Promise<readonly UserBookEntity[]> {
+    const pipeline = buildSearchAggregationPipeline(filters)
+
+    pipeline.push({ $skip: skip })
+    pipeline.push({ $limit: limit })    
+
     const dbUserBooks = await this.collection
-      .find(searchFilters)
-      .skip(skip)
-      .limit(limit)
+      .aggregate<DBUserBook>(pipeline)
       .toArray()
 
     return dbUserBooks.map(dbUserBookToEntity).filter(isNotNull)
   }
 
-  async count (filters: { librariesIds?: readonly string[], userId?: string }): Promise<number> {
-    const searchFilters: any = {}
-    if (filters.librariesIds != null) {
-      searchFilters.libraries = { $all: filters.librariesIds }
-    }
-    if (filters.userId != null) {
-      searchFilters.userId = filters.userId
-    }
-    const total = await this.collection.countDocuments(searchFilters)
+  async listCursor (filters: { librariesIds?: readonly string[], userId?: string }): Promise<AggregationCursor<WithId<DBUserBook>>> {
+    const pipeline = buildSearchAggregationPipeline(filters)
+    const dbUserBooksCursor = this.collection.aggregate<DBUserBook>(pipeline)
+
+    return dbUserBooksCursor
+  }
+
+  async count (filters: { librariesIds?: readonly string[], userId?: string, search?: string }): Promise<number> {
+    const pipeline = buildSearchAggregationPipeline(filters)
+
+    pipeline.push({ $count: 'total' })
+
+    const countResult = await this.collection.aggregate<{ total: number }>(pipeline).toArray()
+    const total = countResult.length > 0 ? countResult[0].total : 0
+
     return total
   }
 
