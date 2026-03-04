@@ -14,7 +14,9 @@ import userBooksRouter from './resources/user-books/user-books.router.js'
 import { requestLogger } from './middlewares/request-logger.js'
 import externalRouter from './resources/external/external.router.js'
 
-const {version} = require('../package.json')
+import { readFile } from 'fs/promises'
+const pkg = JSON.parse(await readFile('./package.json', 'utf-8'))
+const { version } = pkg
 export default class Server {
   private readonly express: express.Express
   private readonly port: number
