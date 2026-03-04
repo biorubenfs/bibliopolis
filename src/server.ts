@@ -13,8 +13,8 @@ import cookieParser from 'cookie-parser'
 import userBooksRouter from './resources/user-books/user-books.router.js'
 import { requestLogger } from './middlewares/request-logger.js'
 import externalRouter from './resources/external/external.router.js'
-import { version } from '../package.json'
 
+const {version} = require('../package.json')
 export default class Server {
   private readonly express: express.Express
   private readonly port: number
