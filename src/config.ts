@@ -12,7 +12,7 @@ function parseUrl (value?: string, dflt = ''): URL {
   return new URL(value ?? dflt)
 }
 
-function parseBoolean(value?: string, dflt = false): boolean {
+function parseBoolean (value?: string, dflt = false): boolean {
   return value != null ? value.toLowerCase() === 'true' : dflt
 }
 
