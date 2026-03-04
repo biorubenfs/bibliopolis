@@ -13,6 +13,7 @@ import cookieParser from 'cookie-parser'
 import userBooksRouter from './resources/user-books/user-books.router.js'
 import { requestLogger } from './middlewares/request-logger.js'
 import externalRouter from './resources/external/external.router.js'
+import { version } from '../package.json'
 
 export default class Server {
   private readonly express: express.Express
@@ -33,7 +34,8 @@ export default class Server {
     this.express.get('/', (req, res) => {
       res.json({
         success: true,
-        time: new Date().toISOString()
+        time: new Date().toISOString(),
+        version
       })
     })
 
