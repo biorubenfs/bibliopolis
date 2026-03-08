@@ -7,5 +7,6 @@ export enum ApiRestErrorCode {
   ValidationError = 'VALIDATION ERROR',
   ConflictError = 'CONFLICT ERROR',
   PermissionError = 'PERMISSION ERROR',
-  InvalidPassword = 'INVALID PASSWORD'
+  InvalidPassword = 'INVALID PASSWORD',
+  ApiBooksError = 'BOOKS API ERROR'
 }

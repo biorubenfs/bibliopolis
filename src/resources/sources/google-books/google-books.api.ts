@@ -18,8 +18,8 @@ class GoogleBooksApi {
 
     const response = await fetch(url)
 
-    if (response.status === 404) {
-      throw new BookNotFoundError('not found in google books')
+    if (!response.ok) {
+      throw new Error(`Failed to fetch book by ISBN: ${response.statusText}`)
     }
 
     const responseData = await response.json()

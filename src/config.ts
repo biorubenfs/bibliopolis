@@ -56,7 +56,3 @@ export default {
     stackTrace: parseBoolean(process.env.DEBUG_STACK_TRACE, false)
   }
 }
-
-// console.log(process.env.GOOGLE_BOOKS_API_KEY)
-// console.log(process.env.GOOGLE_BOOKS_DOMAIN)
-// console.log(process.env.GOOGLE_BOOKS_COVER_URL_PATTERN)

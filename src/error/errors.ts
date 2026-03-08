@@ -25,3 +25,9 @@ export class ExpiredTokenError extends ApiError {
     super(ApiRestErrorCode.InvalidTokenError, 403, message)
   }
 }
+
+export class BooksApiError extends ApiError {
+  constructor (message: string) {
+    super(ApiRestErrorCode.ApiBooksError, 500, message)
+  }
+}

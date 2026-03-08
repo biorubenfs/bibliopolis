@@ -13,8 +13,8 @@ class OpenLibraryApi {
     const url = new URL(`/isbn/${isbn}.json`, this.domain)
     const response = await fetch(url)
 
-    if (response.status === 404) {
-      throw new BookNotFoundError('not found in open library')
+    if (!response.ok) {
+      throw new Error(`Failed to fetch book by ISBN: ${response.statusText}`)
     }
 
     return await response.json()
