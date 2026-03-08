@@ -1,5 +1,5 @@
-import { GoogleBooksVolume } from './google-books/google-books.types'
-import { OpenLibraryBook } from './open-library/open-library.types'
+import { GoogleBooksVolume } from './google-books/google-books.types.js'
+import { OpenLibraryBook } from './open-library/open-library.types.js'
 
 export enum BooksSource {
   OPEN_LIBRARY = 'open_library',
