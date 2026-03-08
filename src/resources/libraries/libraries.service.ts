@@ -22,6 +22,10 @@ class LibrariesService {
 
   async update (id: string, body: Partial<NewLibrary>, userId: string, role: Role): Promise<SingleResultObject<LibraryEntity>> {
     const library = await this.get(id, userId, role)
+    const existingLibraries = await librariesDao.collection.find({userId}).toArray()
+    if (existingLibraries.some(lib => lib.name === body.name && lib._id.toString() !== id)) {
+      throw new LibraryAlreadyExistsError(`user has already a library with name ${body.name}`)
+    }
 
     if (library == null) {
       throw new LibraryNotFoundError('library not found')
