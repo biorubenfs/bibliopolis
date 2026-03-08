@@ -3,7 +3,7 @@ import { IsbnPair } from './interfaces.utils'
 
 export class ISBNUtils {
   static isbn13ToIsbn10 (isbn13: string): string {
-    const clean = isbn13.replace(/[-\s]/g, '')
+    const clean = this.sanitizeIsbn(isbn13)
 
     if (!/^\d{13}$/.test(clean)) {
       throw new Error('ISBN-13 invalid')
@@ -36,7 +36,7 @@ export class ISBNUtils {
 
   static isbn10ToIsbn13 (isbn10: string): string {
     // Clean hyphens and spaces
-    const clean = isbn10.replace(/[-\s]/g, '')
+    const clean = this.sanitizeIsbn(isbn10)
 
     if (!/^\d{9}[\dX]$/.test(clean)) {
       throw new Error('ISBN-10 invalid')
@@ -64,29 +64,33 @@ export class ISBNUtils {
 
     // Case 1: Only ISBN-13 provided
     if (isbn10 == null && isbn13 != null) {
+      const sanitizedIsbn13 = this.sanitizeIsbn(isbn13)
       try {
-        const calculatedIsbn10 = ISBNUtils.isbn13ToIsbn10(isbn13)
-        return { isbn10: calculatedIsbn10, isbn13 }
+        const calculatedIsbn10 = this.isbn13ToIsbn10(sanitizedIsbn13)
+        return { isbn10: calculatedIsbn10, isbn13: sanitizedIsbn13 }
       } catch (error) {
         // ISBN-13 not convertible (prefix 979), return null for isbn10
-        return { isbn10: null, isbn13 }
+        return { isbn10: null, isbn13: sanitizedIsbn13 }
       }
     }
 
     // Case 2: Only ISBN-10 provided
     if (isbn10 != null && isbn13 == null) {
-      const calculatedIsbn13 = ISBNUtils.isbn10ToIsbn13(isbn10)
-      return { isbn10, isbn13: calculatedIsbn13 }
+      const sanitizedIsbn10 = this.sanitizeIsbn(isbn10)
+      const calculatedIsbn13 = this.isbn10ToIsbn13(sanitizedIsbn10)
+      return { isbn10: sanitizedIsbn10, isbn13: calculatedIsbn13 }
     }
 
     // Case 3: Both provided, validate compatibility
     if (isbn10 != null && isbn13 != null) {
       try {
-        const calculatedIsbn10 = ISBNUtils.isbn13ToIsbn10(isbn13)
-        if (calculatedIsbn10 !== isbn10) {
+        const sanitizedIsbn10 = this.sanitizeIsbn(isbn10)
+        const sanitizedIsbn13 = this.sanitizeIsbn(isbn13)
+        const calculatedIsbn10 = this.isbn13ToIsbn10(sanitizedIsbn13)
+        if (calculatedIsbn10 !== sanitizedIsbn10) {
           throw new Error('isbn10 and isbn13 are not compatible')
         }
-        return { isbn10, isbn13 }
+        return { isbn10: sanitizedIsbn10, isbn13: sanitizedIsbn13 }
       } catch (error) {
         // ISBN-13 with prefix 979 cannot have ISBN-10
         throw new Error('ISBN-13 with prefix 979 cannot have an ISBN-10')
@@ -97,7 +101,7 @@ export class ISBNUtils {
   }
 
   static isValidIsbn10 (isbn: string): boolean {
-    const clean = isbn.replace(/[-\s]/g, '')
+    const clean = this.sanitizeIsbn(isbn)
     if (!/^\d{9}[\dX]$/.test(clean)) return false
     let sum = 0
     for (let i = 0; i < 9; i++) {
@@ -109,7 +113,7 @@ export class ISBNUtils {
   }
 
   static isValidIsbn13 (isbn: string): boolean {
-    const clean = isbn.replace(/[-\s]/g, '')
+    const clean = this.sanitizeIsbn(isbn)
     if (!/^\d{13}$/.test(clean)) return false
     let sum = 0
     for (let i = 0; i < 12; i++) {
@@ -117,5 +121,9 @@ export class ISBNUtils {
     }
     const checkDigit = (10 - (sum % 10)) % 10
     return checkDigit === parseInt(clean[12], 10)
+  }
+
+  static sanitizeIsbn (isbn: string): string {
+    return isbn.trim().replace(/[-\s]/g, '')
   }
 }
