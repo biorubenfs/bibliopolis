@@ -18,7 +18,8 @@ class UserBooksService {
     }
 
     if (role !== Role.Admin) {
-      const libraries = await librariesService.list(userId, role, page)
+      // TODO: optimize this, we should not fetch all libraries just to check if the user has permissions on the requested ones, we can do a single query to check if the requested libraryIds are valid for the user
+      const libraries = await librariesService.list(userId, role, { skip: 0, limit: Number.MAX_SAFE_INTEGER })
       const userLibIds = libraries.entities.map(lib => lib.id)
       if (filter.librariesIds != null) {
         const hasInvalidLibId = filter.librariesIds.some(libId => !userLibIds.includes(libId))
