@@ -1,11 +1,11 @@
 import { Request } from 'express'
-import { BookCover, Page } from './types'
+import { BookCover, Page } from './types.js'
 import config from './config.js'
 import { BooksSource } from './resources/sources/sources.types.js'
 import { GoogleBooksVolume } from './resources/sources/google-books/google-books.types.js'
 import { OpenLibraryBook } from './resources/sources/open-library/open-library.types.js'
 import { apiSources } from './resources/sources/sources.config.js'
-import logger from './logger'
+import logger from './logger.js'
 
 export enum CoverSize {
   S = 'S',
