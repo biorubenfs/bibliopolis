@@ -1,6 +1,6 @@
 import config from '../../../config.js'
 import { BookNotFoundError } from '../../books/books.error.js'
-import { OpenLibraryAuthor, OpenLibraryBook, OpenLibraryWork } from './types.js'
+import { OpenLibraryAuthor, OpenLibraryBook, OpenLibraryWork } from './open-library.types.js'
 
 class OpenLibraryApi {
   private readonly domain: URL

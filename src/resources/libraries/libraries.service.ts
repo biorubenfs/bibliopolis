@@ -1,6 +1,7 @@
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { runInTransaction } from '../../transaction-helper.js'
 import { Page } from '../../types.js'
+import { ensureBookExistsInBooks } from '../sources/open-library/open-library.utils.js'
 import userBooksDao from '../user-books/user-books.dao.js'
 import { UserBookNotFoundError } from '../user-books/user-books.error.js'
 import { Role } from '../users/users.interfaces.js'
@@ -8,7 +9,6 @@ import librariesDao from './libraries.dao.js'
 import { LibraryEntity } from './libraries.entity.js'
 import { BookAlreadyExistingInLibrary, BookNotFoundInLibraryError, LibraryAlreadyExistsError, LibraryNotFoundError, LibraryPermissionsError } from './libraries.error.js'
 import { NewLibrary } from './libraries.interfaces.js'
-import { ensureBookExistsInBooks } from './open-library/utils.js'
 
 class LibrariesService {
   async create (body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {

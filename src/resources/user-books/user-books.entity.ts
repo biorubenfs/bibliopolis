@@ -1,4 +1,5 @@
 import { EntityType, Entity } from '../../entity.js'
+import { BookCover } from '../../types.js'
 import { getCoverUrl } from '../../utils.js'
 import { DBUserBook, UserBookRating } from './user-books.interfaces.js'
 
@@ -7,7 +8,7 @@ export class UserBookEntity extends Entity<EntityType.UserBooks> {
   readonly bookId: string
   readonly bookTitle: string
   readonly bookAuthors: readonly string[]
-  readonly bookCover: null | number
+  readonly bookCover: BookCover
   readonly bookIsbn13: string
   readonly bookIsbn10: string | null
   readonly rating: null | UserBookRating
@@ -38,7 +39,7 @@ export class UserBookEntity extends Entity<EntityType.UserBooks> {
       bookId: this.bookId,
       bookTitle: this.bookTitle,
       bookAuthors: this.bookAuthors,
-      bookCoverUrl: getCoverUrl(this.bookCover),
+      bookCoverUrl: getCoverUrl(this.bookCover.source, this.bookCover.value),
       bookIsbn13: this.bookIsbn13,
       bookIsbn10: this.bookIsbn10,
       rating: this.rating,

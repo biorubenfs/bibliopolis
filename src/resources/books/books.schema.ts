@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { BooksSource } from '../sources/sources.types.js'
 
 export const newBookSchema = z
   .object({
@@ -6,7 +7,10 @@ export const newBookSchema = z
     authors: z.array(z.string()),
     isbn13: z.string().max(13).nullable().optional().default(null),
     isbn10: z.string().max(10).nullable().optional().default(null),
-    cover: z.number().nullable()
+    cover: z.object({
+      source: z.nativeEnum(BooksSource).nullable(),
+      value: z.string().nullable()
+    })
   })
   .refine(
     (data) => data.isbn13 !== null || data.isbn10 !== null,

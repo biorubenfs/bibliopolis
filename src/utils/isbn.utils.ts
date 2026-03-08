@@ -95,4 +95,27 @@ export class ISBNUtils {
 
     throw new Error('Could not resolve ISBNs')
   }
+
+  static isValidIsbn10 (isbn: string): boolean {
+    const clean = isbn.replace(/[-\s]/g, '')
+    if (!/^\d{9}[\dX]$/.test(clean)) return false
+    let sum = 0
+    for (let i = 0; i < 9; i++) {
+      sum += parseInt(clean[i], 10) * (10 - i)
+    }
+    const check = clean[9]
+    sum += check === 'X' ? 10 : parseInt(check, 10)
+    return sum % 11 === 0
+  }
+
+  static isValidIsbn13 (isbn: string): boolean {
+    const clean = isbn.replace(/[-\s]/g, '')
+    if (!/^\d{13}$/.test(clean)) return false
+    let sum = 0
+    for (let i = 0; i < 12; i++) {
+      sum += parseInt(clean[i], 10) * (i % 2 === 0 ? 1 : 3)
+    }
+    const checkDigit = (10 - (sum % 10)) % 10
+    return checkDigit === parseInt(clean[12], 10)
+  }
 }
