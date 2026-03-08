@@ -39,6 +39,11 @@ export default {
     domain: parseUrl(process.env.OPEN_LIBRARY_DOMAIN, 'https://openlibrary.org'),
     coverUrlPattern: parseString(process.env.OPEN_LIBRARY_COVER_URL_PATTERN)
   },
+  googleBooks: {
+    domain: parseUrl(process.env.GOOGLE_BOOKS_DOMAIN, 'https://www.googleapis.com'),
+    coverUrlPattern: parseString(process.env.GOOGLE_BOOKS_COVER_URL_PATTERN),
+    apiKey: parseString(process.env.GOOGLE_BOOKS_API_KEY)
+  },
   cookieOptions: {
     httpOnly: true,
     secure: parseBoolean(process.env.ACCESS_TOKEN_COOKIE_SECURE, false),
@@ -51,3 +56,7 @@ export default {
     stackTrace: parseBoolean(process.env.DEBUG_STACK_TRACE, false)
   }
 }
+
+// console.log(process.env.GOOGLE_BOOKS_API_KEY)
+// console.log(process.env.GOOGLE_BOOKS_DOMAIN)
+// console.log(process.env.GOOGLE_BOOKS_COVER_URL_PATTERN)

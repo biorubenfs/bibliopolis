@@ -1,3 +1,5 @@
+import { BooksSource } from './resources/sources/sources.types'
+
 export interface Page {
   limit: number
   skip: number
@@ -13,4 +15,9 @@ export enum HttpStatusCode {
   NoContent = 204,
   Redirect = 302,
   NotFound = 404
+}
+
+export interface BookCover {
+  source: BooksSource | null
+  value: string | null
 }

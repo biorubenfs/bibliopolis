@@ -5,6 +5,7 @@ import librariesDao from './resources/libraries/libraries.dao.js'
 import usersDao from './resources/users/users.dao.js'
 import { readFileSync } from 'fs'
 import path from 'path'
+import { neverReached } from './utils.js'
 
 export enum MockDataSet {
   Books = 'books',
@@ -16,10 +17,6 @@ export enum MockDataSet {
 export enum DataSetType {
   Test = 'test',
   Seed = 'seed'
-}
-
-function neverReached (param: never): never {
-  throw new Error(`Unhandled case: ${String(param)}`)
 }
 
 export function getMockDataSetParams (data: MockDataSet): { filename: string, collection: Collection<any> } {

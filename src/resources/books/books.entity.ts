@@ -1,4 +1,5 @@
 import { EntityType, Entity } from '../../entity.js'
+import { BookCover } from '../../types.js'
 import { getCoverUrl } from '../../utils.js'
 import { DBBook } from './books.interfaces.js'
 
@@ -7,7 +8,7 @@ export class BookEntity extends Entity<EntityType.Books> {
   readonly authors: readonly string[]
   readonly isbn13: string
   readonly isbn10: string | null
-  readonly cover: number | null
+  readonly cover: BookCover
   readonly createdAt: Date
   readonly updatedAt: Date
 
@@ -28,7 +29,7 @@ export class BookEntity extends Entity<EntityType.Books> {
       authors: this.authors,
       isbn13: this.isbn13,
       isbn10: this.isbn10,
-      coverUrl: getCoverUrl(this.cover),
+      coverUrl: getCoverUrl(this.cover.source, this.cover.value),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     }

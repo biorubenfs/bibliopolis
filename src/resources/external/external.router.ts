@@ -1,21 +1,28 @@
 import { Router } from 'express'
 import tryCatch from '../../try-catch.js'
-
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
-import { CoverSize, getCoverUrl } from '../../utils.js'
+import { CoverSize, getBookFromSources, getCoverUrl } from '../../utils.js'
 import { HttpStatusCode } from '../../types.js'
-import openlibraryApi from '../libraries/open-library/api.js'
-import { buildBook } from '../libraries/open-library/utils.js'
 import { MiscResultObject } from '../../results.js'
 import { InvalidBodyError } from '../../error/errors.js'
 import { z } from 'zod'
 import booksService from '../books/books.service.js'
+import { buildBookToBibliopolis } from '../sources/sources.utils.js'
+import { ISBNUtils } from '../../utils/isbn.utils.js'
 
 const externalRouter = Router()
 
 externalRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
   const schema = z.object({
     isbn: z.string()
+      .transform((value) => value.trim().replace(/[-\s]/g, ''))
+      .refine((value) => {
+      // check if the value is a valid isbn-10 or isbn-13 using isbn-utils
+        if (ISBNUtils.isValidIsbn10(value) || ISBNUtils.isValidIsbn13(value)) {
+          return true
+        }
+        return false
+      }, { message: 'Invalid ISBN-10 or ISBN-13' })
   })
 
   const validationResult = schema.safeParse(req.query)
@@ -39,15 +46,16 @@ externalRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
       isbn13: bookInCollection?.isbn13 ?? null,
       isbn10: bookInCollection?.isbn10 ?? null,
       authors: bookInCollection?.authors ?? null,
-      coverUrl: bookInCollection?.cover != null ? getCoverUrl(bookInCollection.cover, CoverSize.L) : null
+      coverUrl: bookInCollection?.cover != null ? getCoverUrl(bookInCollection.cover.source, bookInCollection.cover.value, CoverSize.L) : null
     })
   } else {
-    const results = await openlibraryApi.fetchBookByIsbn(isbn as string)
-    const { cover, ...book } = await buildBook(results)
+    const { source, fetchedBook } = await getBookFromSources(isbn as string)
+
+    const { cover, ...book } = await buildBookToBibliopolis(source, fetchedBook)
 
     result = new MiscResultObject('book-result', {
       ...book,
-      coverUrl: getCoverUrl(results.covers?.at(0) ?? null, CoverSize.L)
+      coverUrl: getCoverUrl(cover?.source, cover?.value, CoverSize.L)
     })
   }
 
