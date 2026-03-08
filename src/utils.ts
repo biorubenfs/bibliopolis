@@ -6,6 +6,7 @@ import { GoogleBooksVolume } from './resources/sources/google-books/google-books
 import { OpenLibraryBook } from './resources/sources/open-library/open-library.types.js'
 import { apiSources } from './resources/sources/sources.config.js'
 import logger from './logger.js'
+import { BooksApiError } from './error/errors.js'
 
 export enum CoverSize {
   S = 'S',
@@ -153,7 +154,7 @@ export async function getBookFromSources (isbn: string): Promise<{ source: Books
   }
 
   if (source == null || fetchedBook == null) {
-    throw new Error('Book not found in any source')
+    throw new BooksApiError('Book not found in any source')
   }
 
   // Check if the book has a cover

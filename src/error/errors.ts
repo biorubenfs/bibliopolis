@@ -28,6 +28,6 @@ export class ExpiredTokenError extends ApiError {
 
 export class BooksApiError extends ApiError {
   constructor (message: string) {
-    super(ApiRestErrorCode.ApiBooksError, 500, message)
+    super(ApiRestErrorCode.ApiBooksError, 404, message)
   }
 }

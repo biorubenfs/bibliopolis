@@ -1,4 +1,5 @@
 import config from '../../../config.js'
+import { BooksApiError } from '../../../error/errors.js'
 import { BookNotFoundError } from '../../books/books.error.js'
 import { OpenLibraryAuthor, OpenLibraryBook, OpenLibraryWork } from './open-library.types.js'
 
@@ -14,7 +15,7 @@ class OpenLibraryApi {
     const response = await fetch(url)
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch book by ISBN: ${response.statusText}`)
+      throw new BooksApiError(`Failed to fetch book by ISBN: ${response.statusText}`)
     }
 
     return await response.json()
