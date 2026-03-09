@@ -6,13 +6,13 @@ export default defineConfig({
     environment: 'node',
     globalSetup: 'src/tests/setup/global-setup.ts',
     setupFiles: ['src/tests/setup/setup-tests.ts'],
-    include: ['src/tests/unit/**/*.test.ts', 'src/tests/integration/**/*.test.ts'],
+    include: ['src/tests/integration/**/*.test.ts'],
     watch: false,
     isolate: true,
     poolOptions: {
       forks: {
-        singleFork: true,
-      },
+        singleFork: true
+      }
     },
     hookTimeout: 20_000
   }

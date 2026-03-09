@@ -1,8 +1,8 @@
 import { describe, beforeAll, afterAll, it, expect } from 'vitest'
 
-import { Db, Collection } from 'mongodb'
-import mongo from '../mongo.js'
-import { runInTransaction } from '../transaction-helper.js'
+import { Db, Collection, ClientSession } from 'mongodb'
+import mongo from '../../mongo.js'
+import { runInTransaction } from '../../transaction-helper.js'
 
 let db: Db
 let testCollection: Collection
@@ -19,7 +19,7 @@ describe('mongodb transaction tests', () => {
   })
 
   it('should commit successful transaction', async () => {
-    await runInTransaction(async (session) => {
+    await runInTransaction(async (session: ClientSession) => {
       const result = await testCollection.insertOne({ name: 'Alice' }, { session })
       return result
     })
@@ -31,7 +31,7 @@ describe('mongodb transaction tests', () => {
 
   it('should rollback transaction on error', async () => {
     try {
-      await runInTransaction(async (session) => {
+      await runInTransaction(async (session: ClientSession) => {
         await testCollection.insertOne({ name: 'Bob' }, { session })
         throw new Error('Force rollback')
       })

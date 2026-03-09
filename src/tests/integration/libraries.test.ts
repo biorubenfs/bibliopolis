@@ -1,11 +1,11 @@
 import { afterAll, beforeAll, describe, it, expect } from 'vitest'
-import testUtils from './utils/utils.js'
-import { makeJwt } from '../resources/auth/auth.utils.js'
-import { Role } from '../resources/users/users.interfaces.js'
-import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
-import mongo from '../mongo.js'
-import librariesDao from '../resources/libraries/libraries.dao.js'
-import userBooksDao from '../resources/user-books/user-books.dao.js'
+import testUtils from '../utils/utils.js'
+import { makeJwt } from '../../resources/auth/auth.utils.js'
+import { Role } from '../../resources/users/users.interfaces.js'
+import { DataSetType, loadDataInDb, MockDataSet } from '../../load-data.js'
+import mongo from '../../mongo.js'
+import librariesDao from '../../resources/libraries/libraries.dao.js'
+import userBooksDao from '../../resources/user-books/user-books.dao.js'
 
 const librariesUrl = new URL('/libraries', testUtils.TESTS_BASE_URL)
 const userId = '01J9BHWZ8N4B1JBSAFCBKQGERS'

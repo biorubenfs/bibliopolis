@@ -1,9 +1,9 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest'
-import testUtils from './utils/utils.js'
-import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
-import { makeJwt } from '../resources/auth/auth.utils.js'
-import { Role } from '../resources/users/users.interfaces.js'
-import mongo from '../mongo.js'
+import testUtils from '../utils/utils.js'
+import { DataSetType, loadDataInDb, MockDataSet } from '../../load-data.js'
+import { makeJwt } from '../../resources/auth/auth.utils.js'
+import { Role } from '../../resources/users/users.interfaces.js'
+import mongo from '../../mongo.js'
 
 const baseUrl = new URL(testUtils.TESTS_BASE_URL)
 const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)

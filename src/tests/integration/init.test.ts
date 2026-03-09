@@ -1,6 +1,6 @@
 import { describe, it, assert, expect } from 'vitest'
-import mongo from '../mongo.js'
-import testUtils from './utils/utils.js'
+import mongo from '../../mongo.js'
+import testUtils from '../utils/utils.js'
 
 describe('init tests', async () => {
   it('GET / - healthcheck', async () => {
