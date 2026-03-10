@@ -1,6 +1,8 @@
 import { CollectionResultObject, SingleResultObject } from '../../results.js'
 import { runInTransaction } from '../../transaction-helper.js'
 import { Page } from '../../types.js'
+import { BookNotFoundError } from '../books/books.error.js'
+import { NewBook } from '../books/books.interfaces.js'
 import { ensureBookExistsInBooks } from '../sources/open-library/open-library.utils.js'
 import userBooksDao from '../user-books/user-books.dao.js'
 import { UserBookNotFoundError } from '../user-books/user-books.error.js'
@@ -71,18 +73,21 @@ class LibrariesService {
     return new CollectionResultObject(libraries, mockPaginationObject)
   }
 
-  async addBook (libraryId: string, isbn: string, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+  async addBook (libraryId: string, newBookData: NewBook, userId: string): Promise<SingleResultObject<LibraryEntity>> {
     const library = await this.get(libraryId, userId, Role.Regular)
-    const book = await ensureBookExistsInBooks(isbn)
+    if (newBookData.isbn13 == null && newBookData.isbn10 == null) {
+      throw new BookNotFoundError('isbn13 or isbn10 must be provided')
+    }
+    const newBookEntity = await ensureBookExistsInBooks(newBookData)
 
     const updatedLibrary = await runInTransaction<LibraryEntity>(async (session) => {
-      const userBook = await userBooksDao.upsert(libraryId, userId, book, session)
+      const userBook = await userBooksDao.upsert(libraryId, userId, newBookEntity, session)
       if (userBook == null) throw new UserBookNotFoundError('user book not found')
 
       if (library.entity.books.includes(userBook.id)) {
         // do nothing else
         // return library.entity
-        throw new BookAlreadyExistingInLibrary(`book with id ${book.id} already exists in library ${libraryId}`)
+        throw new BookAlreadyExistingInLibrary(`book with id ${newBookEntity.id} already exists in library ${libraryId}`)
       }
 
       const updated = await librariesDao.addBookIdToLibrary(library.entity.id, userBook.id, session)

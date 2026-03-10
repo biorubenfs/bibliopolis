@@ -1,12 +1,11 @@
 import { Request } from 'express'
-import { BookCover, Page } from './types.js'
+import { Page } from './types.js'
 import config from './config.js'
 import { BooksSource } from './resources/sources/sources.types.js'
-import { GoogleBooksVolume } from './resources/sources/google-books/google-books.types.js'
-import { OpenLibraryBook } from './resources/sources/open-library/open-library.types.js'
-import { apiSources } from './resources/sources/sources.config.js'
-import logger from './logger.js'
 import { BooksApiError } from './error/errors.js'
+import googleBooksApi from './resources/sources/google-books/google-books.api.js'
+import openLibraryApi from './resources/sources/open-library/open-library.api.js'
+import { NewBook } from './resources/books/books.interfaces.js'
 
 export enum CoverSize {
   S = 'S',
@@ -76,95 +75,44 @@ export function neverReached (param: never): never {
   throw new Error(`Unhandled case: ${String(param)}`)
 }
 
-function hasCover (source: BooksSource, book: OpenLibraryBook | GoogleBooksVolume): boolean {
-  switch (source) {
-    case BooksSource.OPEN_LIBRARY: {
-      const openLibraryBook = book as OpenLibraryBook
-      return openLibraryBook.covers != null && openLibraryBook.covers.length > 0 && openLibraryBook.covers[0] != null
-    }
-    case BooksSource.GOOGLE_BOOKS: {
-      const googleBooksVolume = book as GoogleBooksVolume
-      return googleBooksVolume.volumeInfo.imageLinks != null
-    }
-  }
-}
+export async function getBookFromSources (isbn: string): Promise<NewBook> {
+  const [googleBooksVolume, openLibraryBook] = await Promise.all([
+    googleBooksApi.fetchBookByIsbn(isbn),
+    openLibraryApi.fetchBookByIsbn(isbn)
+  ])
 
-async function getCoverFromSources (isbn: string, excludeSource?: BooksSource): Promise<{ source: BooksSource, cover: BookCover } | null> {
-  for (const apiSource of apiSources) {
-    // Skip the source where we already got the book
-    if (excludeSource != null && apiSource.name === excludeSource) {
-      continue
-    }
-
-    try {
-      const result = await apiSource.fetch(isbn)
-      if (result != null && hasCover(apiSource.name, result)) {
-        // Extract cover information based on source type
-        let coverValue: string | null = null
-
-        switch (apiSource.name) {
-          case BooksSource.OPEN_LIBRARY: {
-            const openLibraryBook = result as OpenLibraryBook
-            coverValue = openLibraryBook.covers?.at(0)?.toString() ?? null
-            break
-          }
-          case BooksSource.GOOGLE_BOOKS: {
-            const googleBooksVolume = result as GoogleBooksVolume
-            coverValue = googleBooksVolume.id
-            break
-          }
+  const cover = googleBooksVolume.volumeInfo.imageLinks != null
+    ? {
+        source: BooksSource.GOOGLE_BOOKS,
+        value: googleBooksVolume.id
+      }
+    : openLibraryBook.covers != null && openLibraryBook.covers.length > 0 && openLibraryBook.covers[0] != null
+      ? {
+          source: BooksSource.OPEN_LIBRARY,
+          value: openLibraryBook.covers[0].toString()
+        }
+      : {
+          source: null,
+          value: null
         }
 
-        if (coverValue != null) {
-          return {
-            source: apiSource.name,
-            cover: {
-              source: apiSource.name,
-              value: coverValue
-            }
-          }
-        }
-      }
-    } catch (error) {
-      logger.error(`error fetching cover from ${apiSource.name}`, error)
-      // Continue to next source
-    }
+  const openLibraryAuthors = openLibraryBook.authors != null ? await Promise.all(openLibraryBook.authors.map(async author => await openLibraryApi.fetchAuthorById(author.key))) : []
+
+  const authors = googleBooksVolume.volumeInfo.authors != null
+    ? googleBooksVolume.volumeInfo.authors
+    : openLibraryAuthors ?? []
+
+  const bookData: NewBook = {
+    title: googleBooksVolume.volumeInfo.title ?? openLibraryBook.title,
+    isbn13: googleBooksVolume.volumeInfo.industryIdentifiers?.find(id => id.type === 'ISBN_13')?.identifier ?? openLibraryBook.isbn_13?.at(0) ?? null,
+    isbn10: googleBooksVolume.volumeInfo.industryIdentifiers?.find(id => id.type === 'ISBN_10')?.identifier ?? openLibraryBook.isbn_10?.at(0) ?? null,
+    authors,
+    cover
   }
 
-  return null
-}
-
-export async function getBookFromSources (isbn: string): Promise<{ source: BooksSource, fetchedBook: OpenLibraryBook | GoogleBooksVolume, cover?: BookCover }> {
-  let source: BooksSource | null = null
-  let fetchedBook: OpenLibraryBook | GoogleBooksVolume | null = null
-
-  // Try each source in priority order until we find a result
-  for (const apiSource of apiSources) {
-    try {
-      const result = await apiSource.fetch(isbn)
-      if (result != null) {
-        source = apiSource.name
-        fetchedBook = result
-        break // Stop searching once we find a result
-      }
-    } catch (error) {
-      logger.error(`error fetching book from ${apiSource.name}`, error)
-      // Continue to next source
-    }
-  }
-
-  if (source == null || fetchedBook == null) {
+  if (bookData.title == null || bookData.isbn13 == null || bookData.isbn10 == null) {
     throw new BooksApiError('Book not found in any source')
   }
 
-  // Check if the book has a cover
-  if (!hasCover(source, fetchedBook)) {
-    const coverFromOtherSource = await getCoverFromSources(isbn, source)
-
-    if (coverFromOtherSource != null) {
-      return { source, fetchedBook, cover: coverFromOtherSource.cover }
-    }
-  }
-
-  return { source, fetchedBook }
+  return bookData
 }

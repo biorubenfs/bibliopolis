@@ -32,10 +32,12 @@ class OpenLibraryApi {
     return await response.json()
   }
 
-  async fetchAuthorById (identifierKey: string): Promise<OpenLibraryAuthor> {
+  async fetchAuthorById (identifierKey: string): Promise<string> {
     const url = new URL(`${identifierKey}.json`, this.domain)
     const response = await fetch(url)
-    return await response.json()
+    const authorData: OpenLibraryAuthor = await response.json()
+
+    return authorData.personal_name ?? authorData.name
   }
 }
 

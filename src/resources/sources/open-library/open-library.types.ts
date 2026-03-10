@@ -13,6 +13,7 @@ export interface OpenLibraryBook {
   isbn_13?: string[]
   isbn_10?: string[]
   covers?: number[]
+  authors?: Array<{ key: string }>
 }
 
 export interface OpenLibraryWork {

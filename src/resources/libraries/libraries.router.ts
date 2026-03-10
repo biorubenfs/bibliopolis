@@ -2,7 +2,7 @@ import { Router } from 'express'
 import tryCatch from '../../try-catch.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 
-import { bookIsbnSchema, newLibrarySchema } from './libraries.schemas.js'
+import { addBookToLibrarySchema, newLibrarySchema } from './libraries.schemas.js'
 import librariesService from './libraries.service.js'
 import { Role } from '../users/users.interfaces.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
@@ -32,8 +32,8 @@ librariesRouter.delete('/:id', tryCatch(async (req) => {
   return { status: HttpStatusCode.NoContent, data: null }
 }))
 
-librariesRouter.post('/:id/books', bodyValidator(bookIsbnSchema), tryCatch(async (req) => {
-  const result = await librariesService.addBook(req.params.id, req.body.isbn, req.userId ?? '')
+librariesRouter.post('/:id/books', bodyValidator(addBookToLibrarySchema), tryCatch(async (req) => {
+  const result = await librariesService.addBook(req.params.id, req.body, req.userId ?? '')
   return { status: HttpStatusCode.Created, data: result }
 }))
 
