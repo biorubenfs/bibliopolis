@@ -109,7 +109,16 @@ describe('libraries tests', async () => {
 
   it('POST /libraries/:id/books - should add a book to owned library', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
-    const body = { isbn: '9781595581662' }
+    const body = {
+      isbn13: '9781595581662',
+      isbn10: null,
+      title: "A people's history of World War II",
+      authors: ['Marc Favreau'],
+      cover: {
+        source: 'open_library',
+        value: '11492093'
+      }
+    }
     const response = await fetch(url, {
       headers: {
         cookie,
@@ -123,14 +132,23 @@ describe('libraries tests', async () => {
   })
 
   it('POST /libraries/:id/books - adding book to owned library should not increase user books counter', async () => {
-    const isbn = '9780974326450'
     const bookId = '01J9KKFTWAKVR1HGHCER50JJMQ'
 
     /* maybe we should avoid to use direct database queries here */
     const counterBeforeAddingBook = await userBooksDao.collection.countDocuments({ userId, bookId })
 
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WFA/books', librariesUrl)
-    const body = { isbn }
+    const body = {
+      isbn13: '9780974326450',
+      isbn10: '0595491898',
+      title: 'Lightning and Ashes',
+      authors: ['John Guzlowski'],
+      cover: {
+        source: 'open_library',
+        value: '1715106'
+      }
+    }
+
     await fetch(url, {
       headers: {
         cookie,
@@ -145,14 +163,24 @@ describe('libraries tests', async () => {
   })
 
   it('POST /libraries/:id/books - adding book to owned library should increase user books counter', async () => {
-    const isbn = '9780380708956'
     const bookId = '01J9KKG3X20MDEXAMYSSQZJ21Y'
+
+    const body = {
+      title: 'Eyewitness to History',
+      authors: ['John Carey'],
+      cover: {
+        source: 'open_library',
+        value: '12545193'
+      },
+      isbn13: '9780380708956',
+      isbn10: '0380708957'
+    }
 
     /* maybe we should avoid to use direct database queries here */
     const counterBeforeAddingBook = await userBooksDao.collection.countDocuments({ userId, bookId })
 
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WFA/books', librariesUrl)
-    const body = { isbn }
+
     await fetch(url, {
       headers: {
         cookie,
@@ -168,7 +196,16 @@ describe('libraries tests', async () => {
 
   it('POST /libraries/:id/books - should fail to add a existing book in a library', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
-    const body = { isbn: '9781595581662' }
+    const body = {
+      title: "A people's history of World War II",
+      authors: ['Marc Favreau'],
+      cover: {
+        source: 'open_library',
+        value: '11492093'
+      },
+      isbn13: '9781595581662',
+      isbn10: null
+    }
     const response = await fetch(url, {
       headers: {
         cookie,
@@ -215,7 +252,16 @@ describe('libraries tests', async () => {
 
   it('POST /libraries/:id/books - should fail to add a book in a not owned library', async () => {
     const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X/books', librariesUrl)
-    const body = { isbn: '01J9KKFWF45DMVVGRS502SG83D' }
+    const body = {
+      title: "A people's history of World War II",
+      authors: ['Marc Favreau'],
+      cover: {
+        source: 'open_library',
+        value: '11492093'
+      },
+      isbn13: '9781595581662',
+      isbn10: null
+    }
     const response = await fetch(url, {
       headers: {
         cookie,

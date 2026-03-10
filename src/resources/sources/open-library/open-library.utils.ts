@@ -1,34 +1,22 @@
 import { BookEntity } from '../../books/books.entity.js'
 import booksService from '../../books/books.service.js'
-import { buildBookToBibliopolis } from '../sources.utils.js'
-import openLibraryApi from './open-library.api.js'
-import { getBookFromSources } from '../../../utils.js'
+import { NewBook } from '../../books/books.interfaces.js'
+import { BookNotFoundError } from '../../books/books.error.js'
 
 // function notNullish<T> (value: T): value is NonNullable<T> {
 //   return value != null // filter null and undefined
 // }
 
-export async function ensureBookExistsInBooks (isbn: string): Promise<BookEntity> {
-  const book = await booksService.fetchByIsbn(isbn)
+export async function ensureBookExistsInBooks (book: NewBook): Promise<BookEntity> {
+  if (book.isbn13 == null && book.isbn10 == null) {
+    throw new BookNotFoundError('isbn13 or isbn10 must be provided')
+  }
+  const isbn = book.isbn13 ?? book.isbn10 as string
+  const existingBook = await booksService.fetchByIsbn(isbn)
 
-  if (book != null) return book
+  if (existingBook != null) return existingBook
 
-  const { source, fetchedBook, cover: coverFromOtherSource } = await getBookFromSources(isbn)
-
-  const newBook = await buildBookToBibliopolis(source, fetchedBook, coverFromOtherSource)
-
-  const createdBook = await booksService.create(newBook)
+  const createdBook = await booksService.create(book)
 
   return createdBook.entity
-}
-
-export async function getAuthorsFromKey (
-  authorsKeys: readonly string[]
-): Promise<string[]> {
-  const authors = await Promise.all(
-    authorsKeys.map(
-      async (authorKey) => await openLibraryApi.fetchAuthorById(authorKey)
-    )
-  )
-  return authors.map((author) => author.personal_name)
 }

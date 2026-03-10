@@ -7,7 +7,6 @@ import { MiscResultObject } from '../../results.js'
 import { InvalidBodyError } from '../../error/errors.js'
 import { z } from 'zod'
 import booksService from '../books/books.service.js'
-import { buildBookToBibliopolis } from '../sources/sources.utils.js'
 import { ISBNUtils } from '../../utils/isbn.utils.js'
 
 const externalRouter = Router()
@@ -46,13 +45,11 @@ externalRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
       coverUrl: bookInCollection?.cover != null ? getCoverUrl(bookInCollection.cover.source, bookInCollection.cover.value, CoverSize.L) : null
     })
   } else {
-    const { source, fetchedBook, cover: coverFromOtherSource } = await getBookFromSources(isbn)
-
-    const { cover, ...book } = await buildBookToBibliopolis(source, fetchedBook, coverFromOtherSource)
+    const bookData = await getBookFromSources(isbn)
 
     result = new MiscResultObject('book-result', {
-      ...book,
-      coverUrl: getCoverUrl(cover?.source, cover?.value, CoverSize.L)
+      ...bookData,
+      coverUrl: getCoverUrl(bookData.cover?.source, bookData.cover?.value, CoverSize.L)
     })
   }
 
