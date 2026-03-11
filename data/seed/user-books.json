@@ -9,7 +9,7 @@
     "rating": 5,
     "bookCover": {
       "source": "open_library",
-      "value": 1304487
+      "value": "1304487"
     },
     "bookIsbn13": "9780595385294",
     "bookIsbn10": "059538529X",
@@ -28,7 +28,7 @@
     "rating": null,
     "bookCover": {
       "source": "open_library",
-      "value": 1715106
+      "value": "1715106"
     },
     "bookIsbn13": "9780974326450",
     "bookIsbn10": "0974326453",
@@ -46,7 +46,7 @@
     "rating": 10,
     "bookCover": {
       "source": "open_library",
-      "value": 12861662
+      "value": "12861662"
     },
     "bookIsbn13": "9781732539419",
     "bookIsbn10": null,
