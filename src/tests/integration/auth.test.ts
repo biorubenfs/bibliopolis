@@ -1,8 +1,8 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest'
-import { ApiRestErrorCode } from '../error/types.js'
-import testUtils from './utils/utils.js'
-import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
-import mongo from '../mongo.js'
+import { ApiRestErrorCode } from '../../error/types.js'
+import testUtils from '../utils/utils.js'
+import { DataSetType, loadDataInDb, MockDataSet } from '../../load-data.js'
+import mongo from '../../mongo.js'
 
 const loginUrl = new URL('/auth/login', testUtils.TESTS_BASE_URL)
 

@@ -1,11 +1,11 @@
 import { afterAll, beforeAll, describe, it, expect } from 'vitest'
-import usersDao from '../resources/users/users.dao.js'
-import config from '../config.js'
-import { Role } from '../resources/users/users.interfaces.js'
-import { makeJwt } from '../resources/auth/auth.utils.js'
-import testUtils from './utils/utils.js'
-import { DataSetType, loadDataInDb, MockDataSet } from '../load-data.js'
-import mongo from '../mongo.js'
+import usersDao from '../../resources/users/users.dao.js'
+import config from '../../config.js'
+import { Role } from '../../resources/users/users.interfaces.js'
+import { makeJwt } from '../../resources/auth/auth.utils.js'
+import testUtils from '../utils/utils.js'
+import { DataSetType, loadDataInDb, MockDataSet } from '../../load-data.js'
+import mongo from '../../mongo.js'
 
 const usersURL = new URL('/users', testUtils.TESTS_BASE_URL)
 
