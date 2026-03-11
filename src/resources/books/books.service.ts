@@ -63,6 +63,20 @@ class BooksService {
 
     return new CollectionResultObject(books, { ...page, total })
   }
+
+  async ensureBookExistsInBooks (book: NewBook): Promise<BookEntity> {
+    if (book.isbn13 == null && book.isbn10 == null) {
+      throw new BookNotFoundError('isbn13 or isbn10 must be provided')
+    }
+    const isbn = book.isbn13 ?? book.isbn10 as string
+    const existingBook = await this.fetchByIsbn(isbn)
+
+    if (existingBook != null) return existingBook
+
+    const createdBook = await this.create(book)
+
+    return createdBook.entity
+  }
 }
 
 export default new BooksService()

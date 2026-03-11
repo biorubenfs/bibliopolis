@@ -3,31 +3,38 @@ import { runInTransaction } from '../../transaction-helper.js'
 import { Page } from '../../types.js'
 import { BookNotFoundError } from '../books/books.error.js'
 import { NewBook } from '../books/books.interfaces.js'
-import { ensureBookExistsInBooks } from '../sources/open-library/open-library.utils.js'
+import booksService from '../books/books.service.js'
 import userBooksDao from '../user-books/user-books.dao.js'
 import { UserBookNotFoundError } from '../user-books/user-books.error.js'
 import { Role } from '../users/users.interfaces.js'
 import librariesDao from './libraries.dao.js'
 import { LibraryEntity } from './libraries.entity.js'
-import { BookAlreadyExistingInLibrary, BookNotFoundInLibraryError, LibraryAlreadyExistsError, LibraryNotFoundError, LibraryPermissionsError } from './libraries.error.js'
+import { BookAlreadyExistingInLibrary, BookNotFoundInLibraryError, LibraryNameConflictError, LibraryNotFoundError, LibraryPermissionsError } from './libraries.error.js'
 import { NewLibrary } from './libraries.interfaces.js'
 
 class LibrariesService {
-  async create (body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {
-    const existingLibraries = await librariesDao.findByUserAndName(body.name, userId)
-    if (existingLibraries != null) {
-      throw new LibraryAlreadyExistsError(`user has already a library with name ${body.name}`)
+  private async checkLibraryNameAvailable (libraryName: string, userId: string, excludeLibraryId?: string): Promise<void> {
+    const existingLibraries = await librariesDao.collection.find({ userId }).toArray()
+    const comparableName = libraryName.trim().toLowerCase()
+    if (existingLibraries.some(lib => lib.name.trim().toLowerCase() === comparableName && lib._id.toString() !== excludeLibraryId)) {
+      throw new LibraryNameConflictError(`user has already a library with name ${libraryName}`)
     }
-    const newLibrary = await librariesDao.create(body, userId)
+  }
+
+  async create (body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+    await this.checkLibraryNameAvailable(body.name, userId)
+    const newLibraryData = {
+      ...body,
+      name: body.name.trim()
+    }
+    const newLibrary = await librariesDao.create(newLibraryData, userId)
     return new SingleResultObject(newLibrary)
   }
 
   async update (id: string, body: Partial<NewLibrary>, userId: string, role: Role): Promise<SingleResultObject<LibraryEntity>> {
     const library = await this.get(id, userId, role)
-    const existingLibraries = await librariesDao.collection.find({ userId }).toArray()
-
-    if (body.name != null && existingLibraries.some(lib => lib.name === body.name && lib._id.toString() !== id)) {
-      throw new LibraryAlreadyExistsError(`user has already a library with name ${body.name}`)
+    if (body.name != null) {
+      await this.checkLibraryNameAvailable(body.name, userId, id)
     }
 
     if (library == null) {
@@ -78,7 +85,7 @@ class LibrariesService {
     if (newBookData.isbn13 == null && newBookData.isbn10 == null) {
       throw new BookNotFoundError('isbn13 or isbn10 must be provided')
     }
-    const newBookEntity = await ensureBookExistsInBooks(newBookData)
+    const newBookEntity = await booksService.ensureBookExistsInBooks(newBookData)
 
     const updatedLibrary = await runInTransaction<LibraryEntity>(async (session) => {
       const userBook = await userBooksDao.upsert(libraryId, userId, newBookEntity, session)
