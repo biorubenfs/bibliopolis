@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import tryCatch from '../../try-catch.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
-import { CoverSize, getBookFromSources, getCoverUrl } from '../../utils.js'
+import { CoverSize, getBookFromSourcesApis, getCoverUrl } from '../../utils.js'
 import { HttpStatusCode } from '../../types.js'
 import { MiscResultObject } from '../../results.js'
 import { InvalidBodyError } from '../../error/errors.js'
@@ -45,7 +45,7 @@ externalRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
       coverUrl: bookInCollection?.cover != null ? getCoverUrl(bookInCollection.cover.source, bookInCollection.cover.value, CoverSize.L) : null
     })
   } else {
-    const bookData = await getBookFromSources(isbn)
+    const bookData = await getBookFromSourcesApis(isbn)
 
     result = new MiscResultObject('book-result', {
       ...bookData,

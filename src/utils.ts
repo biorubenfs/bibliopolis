@@ -75,18 +75,25 @@ export function neverReached (param: never): never {
   throw new Error(`Unhandled case: ${String(param)}`)
 }
 
-export async function getBookFromSources (isbn: string): Promise<NewBook> {
-  const [googleBooksVolume, openLibraryBook] = await Promise.all([
+// function notNullish<T> (value: T): value is NonNullable<T> {
+//   return value != null // filter null and undefined
+// }
+
+export async function getBookFromSourcesApis (isbn: string): Promise<NewBook> {
+  const [googleBooksResult, openLibraryResult] = await Promise.allSettled([
     googleBooksApi.fetchBookByIsbn(isbn),
     openLibraryApi.fetchBookByIsbn(isbn)
   ])
 
-  const cover = googleBooksVolume.volumeInfo.imageLinks != null
+  const googleBooksVolume = googleBooksResult.status === 'fulfilled' ? googleBooksResult.value : null
+  const openLibraryBook = openLibraryResult.status === 'fulfilled' ? openLibraryResult.value : null
+
+  const cover = googleBooksVolume?.volumeInfo.imageLinks != null
     ? {
         source: BooksSource.GOOGLE_BOOKS,
         value: googleBooksVolume.id
       }
-    : openLibraryBook.covers != null && openLibraryBook.covers.length > 0 && openLibraryBook.covers[0] != null
+    : openLibraryBook?.covers != null && openLibraryBook.covers.length > 0 && openLibraryBook.covers[0] != null
       ? {
           source: BooksSource.OPEN_LIBRARY,
           value: openLibraryBook.covers[0].toString()
@@ -96,21 +103,29 @@ export async function getBookFromSources (isbn: string): Promise<NewBook> {
           value: null
         }
 
-  const openLibraryAuthors = openLibraryBook.authors != null ? await Promise.all(openLibraryBook.authors.map(async author => await openLibraryApi.fetchAuthorById(author.key))) : []
+  const openLibraryAuthors = openLibraryBook?.authors != null
+    ? await Promise.allSettled(openLibraryBook.authors.map(async author =>
+      await openLibraryApi.fetchAuthorById(author.key)
+    )).then(results => results
+      .filter((r): r is PromiseFulfilledResult<string | null> => r.status === 'fulfilled')
+      .map(r => r.value)
+      .filter((name): name is string => name != null && name !== '')
+    )
+    : []
 
-  const authors = googleBooksVolume.volumeInfo.authors != null
+  const authors = googleBooksVolume?.volumeInfo.authors != null
     ? googleBooksVolume.volumeInfo.authors
     : openLibraryAuthors ?? []
 
   const bookData: NewBook = {
-    title: googleBooksVolume.volumeInfo.title ?? openLibraryBook.title,
-    isbn13: googleBooksVolume.volumeInfo.industryIdentifiers?.find(id => id.type === 'ISBN_13')?.identifier ?? openLibraryBook.isbn_13?.at(0) ?? null,
-    isbn10: googleBooksVolume.volumeInfo.industryIdentifiers?.find(id => id.type === 'ISBN_10')?.identifier ?? openLibraryBook.isbn_10?.at(0) ?? null,
+    title: googleBooksVolume?.volumeInfo.title ?? openLibraryBook?.title ?? '',
+    isbn13: googleBooksVolume?.volumeInfo.industryIdentifiers?.find(id => id.type === 'ISBN_13')?.identifier ?? openLibraryBook?.isbn_13?.at(0) ?? null,
+    isbn10: googleBooksVolume?.volumeInfo.industryIdentifiers?.find(id => id.type === 'ISBN_10')?.identifier ?? openLibraryBook?.isbn_10?.at(0) ?? null,
     authors,
     cover
   }
 
-  if (bookData.title == null || bookData.isbn13 == null || bookData.isbn10 == null) {
+  if (bookData.title == null || bookData.title === '' || bookData.isbn13 == null || bookData.isbn10 == null) {
     throw new BooksApiError('Book not found in any source')
   }
 
