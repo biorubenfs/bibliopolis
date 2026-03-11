@@ -51,7 +51,7 @@ describe('isbn tests', () => {
       const result = ISBNUtils.isValidIsbn10(validIsbn10)
       expect(result).toBe(true)
     })
-    it('should return false with invalid  control digitisbn10', () => {
+    it('should return false with invalid control digit isbn10', () => {
       const validIsbn10 = '8483835044'
       const result = ISBNUtils.isValidIsbn10(validIsbn10)
       expect(result).toBe(false)
