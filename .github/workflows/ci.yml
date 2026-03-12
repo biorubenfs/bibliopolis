@@ -14,17 +14,15 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install pnpm
         run: npm install -g pnpm
 
       - name: Use Node.js 22.x
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22.x'
           cache: 'pnpm'
@@ -38,14 +36,12 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     needs: build
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install pnpm
         run: npm install -g pnpm
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22.x'
           cache: 'pnpm'
@@ -55,14 +51,12 @@ jobs:
   test-unit:
     runs-on: ubuntu-latest
     needs: build
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install pnpm
         run: npm install -g pnpm
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22.x'
           cache: 'pnpm'
@@ -72,14 +66,12 @@ jobs:
   test-integration:
     runs-on: ubuntu-latest
     needs: build
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install pnpm
         run: npm install -g pnpm
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22.x'
           cache: 'pnpm'
