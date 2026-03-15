@@ -248,7 +248,20 @@ describe('libraries tests', async () => {
     expect(response.status).equals(204)
   })
 
-  it.todo('DELETE /libraries/:libraryId/books/:userBookId - should fail to remove a non existing book in a owned library', async () => { })
+  it('DELETE /libraries/:libraryId/books/:userBookId - should fail to remove a non existing book in a owned library', async () => { 
+    const libraryId = '01J9W8VR2CFZW8PJ1Q8Y4Y5WEX'
+    const userBookId = '01J9W9PGE06ANTMG3Y24KGCAFAKE'
+    const url = new URL(`/libraries/${libraryId}/books/${userBookId}`, librariesUrl)
+    const response = await fetch(url, {
+      headers: {
+        cookie,
+        'Content-Type': 'application/json'
+      },
+      method: 'DELETE'
+    })
+
+    expect(response.status).equals(404)
+  })
 
   it('POST /libraries/:id/books - should fail to add a book in a not owned library', async () => {
     const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X/books', librariesUrl)
