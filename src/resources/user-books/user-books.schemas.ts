@@ -7,7 +7,7 @@ export const userBookUpdateSchema = z.object({
   //   z.literal(6), z.literal(7), z.literal(8), z.literal(9), z.literal(10),
   // ]).nullable(),
   rating: z.nativeEnum(UserBookRating).nullable(),
-  notes: z.string().nullable()
+  notes: z.string().trim().max(150).nullable()
 })
 
 export const userBooksQuerySchema = z.object({
