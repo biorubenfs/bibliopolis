@@ -21,30 +21,30 @@ export const newBookSchema = z
     }
   )
   .refine((data) => {
-      if (data.isbn13 != null && ISBNUtils.isValidIsbn13(data.isbn13) === false) {
-        return false
-      }
-      return true
-    }, {
-      message: 'isbn13 must be a valid ISBN-13',
-      path: ['isbn13']
-    })
-    .refine((data) => {
-      if (data.isbn10 != null && ISBNUtils.isValidIsbn10(data.isbn10) === false) {
-        return false
-      }
-      return true
-    }, {
-      message: 'isbn10 must be a valid ISBN-10',
-      path: ['isbn10']
-    })
-    .refine((data) => {
-      if (data.isbn13 != null && data.isbn10 != null) {
-        const calculatedIsbns = ISBNUtils.calculateIsbns(data.isbn10, data.isbn13)
-        return calculatedIsbns.isbn13 === data.isbn13 && calculatedIsbns.isbn10 === data.isbn10
-      }
-      return true
-    }, {
-      message: 'isbn13 and isbn10 do not correspond to the same book',
-      path: ['isbn13', 'isbn10']
-    })
+    if (data.isbn13 != null && !ISBNUtils.isValidIsbn13(data.isbn13)) {
+      return false
+    }
+    return true
+  }, {
+    message: 'isbn13 must be a valid ISBN-13',
+    path: ['isbn13']
+  })
+  .refine((data) => {
+    if (data.isbn10 != null && !ISBNUtils.isValidIsbn10(data.isbn10)) {
+      return false
+    }
+    return true
+  }, {
+    message: 'isbn10 must be a valid ISBN-10',
+    path: ['isbn10']
+  })
+  .refine((data) => {
+    if (data.isbn13 != null && data.isbn10 != null) {
+      const calculatedIsbns = ISBNUtils.calculateIsbns(data.isbn10, data.isbn13)
+      return calculatedIsbns.isbn13 === data.isbn13 && calculatedIsbns.isbn10 === data.isbn10
+    }
+    return true
+  }, {
+    message: 'isbn13 and isbn10 do not correspond to the same book',
+    path: ['isbn13', 'isbn10']
+  })

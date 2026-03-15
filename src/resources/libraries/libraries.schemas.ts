@@ -17,14 +17,14 @@ export const addBookToLibrarySchema = z.object({
     value: z.string().nullable()
   }).default({ source: null, value: null })
 }).refine(
-    (data) => data.isbn13 != null || data.isbn10 != null,
-    {
-      message: 'Either isbn13 or isbn10 must be provided',
-      path: ['isbn13']
-    }
-  )
+  (data) => data.isbn13 != null || data.isbn10 != null,
+  {
+    message: 'Either isbn13 or isbn10 must be provided',
+    path: ['isbn13']
+  }
+)
   .refine((data) => {
-    if (data.isbn13 != null && ISBNUtils.isValidIsbn13(data.isbn13) === false) {
+    if (data.isbn13 != null && !ISBNUtils.isValidIsbn13(data.isbn13)) {
       return false
     }
     return true
@@ -33,7 +33,7 @@ export const addBookToLibrarySchema = z.object({
     path: ['isbn13']
   })
   .refine((data) => {
-    if (data.isbn10 != null && ISBNUtils.isValidIsbn10(data.isbn10) === false) {
+    if (data.isbn10 != null && !ISBNUtils.isValidIsbn10(data.isbn10)) {
       return false
     }
     return true

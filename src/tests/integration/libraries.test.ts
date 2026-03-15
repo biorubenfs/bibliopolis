@@ -248,7 +248,7 @@ describe('libraries tests', async () => {
     expect(response.status).equals(204)
   })
 
-  it('DELETE /libraries/:libraryId/books/:userBookId - should fail to remove a non existing book in a owned library', async () => { 
+  it('DELETE /libraries/:libraryId/books/:userBookId - should fail to remove a non existing book in a owned library', async () => {
     const libraryId = '01J9W8VR2CFZW8PJ1Q8Y4Y5WEX'
     const userBookId = '01J9W9PGE06ANTMG3Y24KGCAFAKE'
     const url = new URL(`/libraries/${libraryId}/books/${userBookId}`, librariesUrl)
