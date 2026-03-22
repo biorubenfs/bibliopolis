@@ -14,7 +14,7 @@ function dbUserBookToEntity (dbUserBook: DBUserBook | null): UserBookEntity | nu
 function buildSearchAggregationPipeline (filters: { librariesIds?: readonly string[], userId?: string, search?: string }): Document[] {
   const searchFilters: any = {}
   if (filters.librariesIds != null) {
-    searchFilters.libraries = { $all: filters.librariesIds }
+    searchFilters.libraries = { $in: filters.librariesIds }
   }
   if (filters.userId != null) {
     searchFilters.userId = filters.userId
