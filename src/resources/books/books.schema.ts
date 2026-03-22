@@ -11,7 +11,7 @@ export const newBookSchema = z
     cover: z.object({
       source: z.nativeEnum(BooksSource).nullable(),
       value: z.string().nullable()
-    }).default({ source: null, value: null }),
+    }).default({ source: null, value: null })
   })
   .refine(
     (data) => data.isbn13 !== null || data.isbn10 !== null,
