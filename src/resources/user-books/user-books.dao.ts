@@ -43,6 +43,12 @@ function buildSearchAggregationPipeline (filters: { librariesIds?: readonly stri
               }
             },
             {
+              autocomplete: {
+                query: filters.search,
+                path: 'bookTitle'
+              }
+            },
+            {
               text: {
                 query: filters.search,
                 path: 'bookTitle'
