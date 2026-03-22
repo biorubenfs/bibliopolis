@@ -19,54 +19,57 @@ function buildSearchAggregationPipeline (filters: { librariesIds?: readonly stri
   if (filters.userId != null) {
     searchFilters.userId = filters.userId
   }
-  const aggregate: Document[] = [
-    { $match: searchFilters }
-  ]
 
-  if (filters.search != null) {
-    // search in mongo with regex, this is not performant but we don't have Atlas Search in local environment, so we will use it for testing and local development
-    if (config.environment === 'local' || config.environment === 'test') {
-      aggregate.push({
-        $match: {
-          $or: [
-            { bookIsbn13: { $regex: filters.search, $options: 'i' } },
-            { bookIsbn10: { $regex: filters.search, $options: 'i' } },
-            { bookTitle: { $regex: filters.search, $options: 'i' } },
-            { bookAuthors: { $regex: filters.search, $options: 'i' } }
-          ]
-        }
-      })
-    } else {
-      // use atlas search
-      aggregate.push({
-        $search: {
-          index: 'user_books_search',
-          compound: {
-            should: [
-              {
-                autocomplete: {
-                  query: filters.search,
-                  path: 'bookIsbn13'
-                }
-              },
-              {
-                autocomplete: {
-                  query: filters.search,
-                  path: 'bookIsbn10'
-                }
-              },
-              {
-                text: {
-                  query: filters.search,
-                  path: ['bookTitle', 'bookAuthors']
-                }
+  const aggregate: Document[] = []
+
+  // $search must be the first stage in the pipeline when using Atlas Search
+  if (filters.search != null && config.environment !== 'local' && config.environment !== 'test') {
+    // use atlas search
+    aggregate.push({
+      $search: {
+        index: 'user_books_search',
+        compound: {
+          should: [
+            {
+              autocomplete: {
+                query: filters.search,
+                path: 'bookIsbn13'
               }
-            ],
-            minimumShouldMatch: 1
-          }
+            },
+            {
+              autocomplete: {
+                query: filters.search,
+                path: 'bookIsbn10'
+              }
+            },
+            {
+              text: {
+                query: filters.search,
+                path: ['bookTitle', 'bookAuthors']
+              }
+            }
+          ],
+          minimumShouldMatch: 1
         }
-      })
-    }
+      }
+    })
+  }
+
+  // Add match filters
+  aggregate.push({ $match: searchFilters })
+
+  // search in mongo with regex for local/test environments
+  if (filters.search != null && (config.environment === 'local' || config.environment === 'test')) {
+    aggregate.push({
+      $match: {
+        $or: [
+          { bookIsbn13: { $regex: filters.search, $options: 'i' } },
+          { bookIsbn10: { $regex: filters.search, $options: 'i' } },
+          { bookTitle: { $regex: filters.search, $options: 'i' } },
+          { bookAuthors: { $regex: filters.search, $options: 'i' } }
+        ]
+      }
+    })
   }
 
   return aggregate
