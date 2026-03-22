@@ -13,7 +13,10 @@ class BooksDao extends Dao<DBBook> {
     super('books')
   }
 
-  async init (): Promise<void> { }
+  async init (): Promise<void> {
+    await this.collection.createIndex({ isbn13: 1 }, { unique: true, sparse: true })
+    await this.collection.createIndex({ isbn10: 1 }, { unique: true, sparse: true })
+  }
 
   async create (newBook: NewBookDao): Promise<BookEntity> {
     const now = new Date()
