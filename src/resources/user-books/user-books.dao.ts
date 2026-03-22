@@ -45,7 +45,13 @@ function buildSearchAggregationPipeline (filters: { librariesIds?: readonly stri
             {
               text: {
                 query: filters.search,
-                path: ['bookTitle', 'bookAuthors']
+                path: 'bookTitle'
+              }
+            },
+            {
+              text: {
+                query: filters.search,
+                path: 'bookAuthors'
               }
             }
           ],
