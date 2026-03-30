@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import usersService from './users.service.js'
-import tryCatch from '../../try-catch.js'
+import handler from '../../handler.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 import { createUserSchema, updatePasswordSchema, updateUserSchema } from './users.schemas.js'
 import { checkAdmin } from '../../middlewares/jwt.middleware.js'
@@ -11,33 +11,33 @@ import { RedirectResultObject, SingleResultObject } from '../../results.js'
 
 const usersRouter = Router()
 
-usersRouter.post('/', checkAdmin, bodyValidator(createUserSchema), tryCatch(async (req) => {
+usersRouter.post('/', checkAdmin, bodyValidator(createUserSchema), handler(async (req) => {
   const result = await usersService.signup(req.body)
   return { status: HttpStatusCode.Created, data: new SingleResultObject(result) }
 }))
 
 /* maybe we could remove this service because is redundante with auth/me service */
-usersRouter.get('/me', tryCatch(async (req) => {
+usersRouter.get('/me', handler(async (req) => {
   const result = await usersService.getById(req.userId ?? '')
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-usersRouter.get('/', checkAdmin, queryPaginationValidator, tryCatch(async (req) => {
+usersRouter.get('/', checkAdmin, queryPaginationValidator, handler(async (req) => {
   const result = await usersService.list(parseSkipLimitQP(req))
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-usersRouter.patch('/me/password', bodyValidator(updatePasswordSchema), tryCatch(async (req) => {
+usersRouter.patch('/me/password', bodyValidator(updatePasswordSchema), handler(async (req) => {
   const result = await usersService.updatePassword(req.userId ?? '', req.body.currentPassword, req.body.newPassword)
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-usersRouter.patch('/me', bodyValidator(updateUserSchema), tryCatch(async (req) => {
+usersRouter.patch('/me', bodyValidator(updateUserSchema), handler(async (req) => {
   const result = await usersService.updateUser(req.userId ?? '', req.body)
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-usersRouter.get('/:id', tryCatch(async (req) => {
+usersRouter.get('/:id', handler(async (req) => {
   const code = req.query.code as string
   const userId = req.params.id
 

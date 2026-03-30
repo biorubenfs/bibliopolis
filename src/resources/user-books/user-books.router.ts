@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import userBooksService from './user-books.service.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
-import tryCatch from '../../try-catch.js'
+import handler from '../../handler.js'
 import { HttpStatusCode } from '../../types.js'
 import { userBooksQuerySchema, userBookUpdateSchema } from './user-books.schemas.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
@@ -12,7 +12,7 @@ import { z } from 'zod'
 
 const userBooksRouter = Router()
 
-userBooksRouter.get('/', queryParamsValidator(userBooksQuerySchema), queryPaginationValidator, tryCatch(async (req) => {
+userBooksRouter.get('/', queryParamsValidator(userBooksQuerySchema), queryPaginationValidator, handler(async (req) => {
   // req query is alreday validated and typed by queryParamsValidator middleware
   const { userId, libraryId, search } = req.query as z.infer<typeof userBooksQuerySchema>
   // normalize libraryId to array
@@ -33,19 +33,19 @@ userBooksRouter.get('/', queryParamsValidator(userBooksQuerySchema), queryPagina
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-userBooksRouter.get('/download', tryCatch(async (req) => {
+userBooksRouter.get('/download', handler(async (req) => {
   const libraryId = req.query.libraryId as string
 
   const stream = await userBooksService.download(libraryId, req.userId ?? '', req.role ?? Role.Regular)
   return { status: HttpStatusCode.OK, data: stream }
 }))
 
-userBooksRouter.get('/:id', tryCatch(async (req) => {
+userBooksRouter.get('/:id', handler(async (req) => {
   const result = await userBooksService.get(req.params.id, req.userId ?? '')
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-userBooksRouter.patch('/:id', bodyValidator(userBookUpdateSchema), tryCatch(async (req) => {
+userBooksRouter.patch('/:id', bodyValidator(userBookUpdateSchema), handler(async (req) => {
   const result = await userBooksService.update(req.params.id, req.userId ?? '', req.body)
   return { status: HttpStatusCode.OK, data: result }
 }))

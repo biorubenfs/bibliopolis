@@ -18,7 +18,7 @@ type DataCustomController =
 
 type CustomController<TBody> = (req: Request<any, any, TBody>) => Promise<{ status: StatusCustomController, data: DataCustomController }>
 
-function tryCatch<TBody> (controller: CustomController<TBody>): RequestHandler<any, any, TBody> {
+function handler<TBody> (controller: CustomController<TBody>): RequestHandler<any, any, TBody> {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const { status, data } = await controller(req)
@@ -86,4 +86,4 @@ function tryCatch<TBody> (controller: CustomController<TBody>): RequestHandler<a
   }
 }
 
-export default tryCatch
+export default handler

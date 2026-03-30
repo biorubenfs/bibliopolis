@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import tryCatch from '../../try-catch.js'
+import handler from '../../handler.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 import { newBookSchema } from './books.schema.js'
 import booksService from './books.service.js'
@@ -9,19 +9,19 @@ import { HttpStatusCode } from '../../types.js'
 
 const booksRouter = Router()
 
-booksRouter.post('/', bodyValidator(newBookSchema), tryCatch(async (req) => {
+booksRouter.post('/', bodyValidator(newBookSchema), handler(async (req) => {
   const result = await booksService.create(req.body)
 
   return { status: HttpStatusCode.Created, data: result }
 }))
 
-booksRouter.get('/:id', tryCatch(async (req) => {
+booksRouter.get('/:id', handler(async (req) => {
   const result = await booksService.getById(req.params.id)
 
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-booksRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
+booksRouter.get('/', queryPaginationValidator, handler(async (req) => {
   const results = await booksService.list(parseSkipLimitQP(req))
 
   return { status: HttpStatusCode.OK, data: results }
