@@ -133,7 +133,7 @@ describe('refresh token tests', () => {
 
     const body = await response.json()
 
-    expect(response.status).toBe(403)
+    expect(response.status).toBe(401)
     expect(body.errorCode).toBe(ApiRestErrorCode.InvalidTokenError)
   })
 })
@@ -161,7 +161,7 @@ describe('logout tests', () => {
       }
     })
 
-    expect(refreshResponse.status).toBe(403) // Token revoked
+    expect(refreshResponse.status).toBe(401) // Token revoked
   })
 
   it('POST /auth/logout-all - should revoke all refresh tokens for user', async () => {
@@ -191,8 +191,8 @@ describe('logout tests', () => {
       headers: { Cookie: device2.refreshTokenCookie }
     })
 
-    expect(refresh1.status).toBe(403) // Token revoked
-    expect(refresh2.status).toBe(403) // Token revoked
+    expect(refresh1.status).toBe(401) // Token revoked
+    expect(refresh2.status).toBe(401) // Token revoked
   })
 })
 
@@ -236,7 +236,7 @@ describe('me endpoint tests', () => {
 
     const body = await response.json()
 
-    expect(response.status).toBe(403)
+    expect(response.status).toBe(401)
     expect(body.errorCode).toBe(ApiRestErrorCode.InvalidTokenError)
   })
 })

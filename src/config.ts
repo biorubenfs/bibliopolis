@@ -32,7 +32,7 @@ export default {
   },
   jwt: {
     secret: parseString(process.env.JWT_SECRET, 'foo'),
-    accessTokenExpiration: parseString(process.env.JWT_ACCESS_TOKEN_EXPIRATION, '1m'),
+    accessTokenExpiration: parseString(process.env.JWT_ACCESS_TOKEN_EXPIRATION, '15m'),
     refreshTokenExpiration: parseString(process.env.JWT_REFRESH_TOKEN_EXPIRATION, '7d')
   },
   hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),

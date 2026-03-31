@@ -57,8 +57,8 @@ function extractToken (req: Request): string {
   }
 
   // Fallback to cookie (for backward compatibility)
-  const cookieToken = req.cookies?.access_token
-  if (cookieToken != null) return cookieToken
+  // const cookieToken = req.cookies?.access_token
+  // if (cookieToken != null) return cookieToken
 
   throw new TokenNotProvidedError('token not provided')
 }
