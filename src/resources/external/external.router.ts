@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import tryCatch from '../../try-catch.js'
+import handler from '../../handler.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
 import { CoverSize, getBookFromSourcesApis, getCoverUrl } from '../../utils.js'
 import { HttpStatusCode } from '../../types.js'
@@ -11,7 +11,7 @@ import { ISBNUtils } from '../../utils/isbn.utils.js'
 
 const externalRouter = Router()
 
-externalRouter.get('/', queryPaginationValidator, tryCatch(async (req) => {
+externalRouter.get('/', queryPaginationValidator, handler(async (req) => {
   const schema = z.object({
     isbn: z.string()
       .transform(ISBNUtils.sanitizeIsbn)
