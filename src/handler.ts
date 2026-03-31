@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express'
-import { CollectionResultObject, SingleResultObject, MiscResultObject, SetCookieResultObject, ClearCookieResultObject, RedirectResultObject } from './results.js'
+import { CollectionResultObject, SingleResultObject, MiscResultObject, SetCookieResultObject, ClearCookieResultObject, RedirectResultObject, TokenResultObject } from './results.js'
 import { Entity, EntityType } from './entity.js'
 import { HttpStatusCode } from './types.js'
 import { Readable } from 'stream'
@@ -12,6 +12,7 @@ type DataCustomController =
   SetCookieResultObject<Entity<EntityType>> |
   ClearCookieResultObject |
   RedirectResultObject |
+  TokenResultObject |
   // Buffer |
   Readable |
   null
@@ -46,6 +47,23 @@ function handler<TBody> (controller: CustomController<TBody>): RequestHandler<an
           res.cookie(data.name, data.value, data.options)
             .status(status)
             .json({ results: data.entity.toResult() })
+          return
+
+        case data instanceof TokenResultObject:
+          res.cookie(
+            data.refreshTokenCookie.name,
+            data.refreshTokenCookie.value,
+            data.refreshTokenCookie.options
+          )
+            .status(status)
+            .json({
+              results: {
+                type: 'auth',
+                attributes: {
+                  accessToken: data.accessToken
+                }
+              }
+            })
           return
 
         case data instanceof ClearCookieResultObject:

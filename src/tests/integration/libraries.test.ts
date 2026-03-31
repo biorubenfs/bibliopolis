@@ -1,7 +1,5 @@
 import { afterAll, beforeAll, describe, it, expect } from 'vitest'
 import testUtils from '../utils/utils.js'
-import { makeJwt } from '../../resources/auth/auth.utils.js'
-import { Role } from '../../resources/users/users.interfaces.js'
 import { DataSetType, loadDataInDb, MockDataSet } from '../../load-data.js'
 import mongo from '../../mongo.js'
 import librariesDao from '../../resources/libraries/libraries.dao.js'
@@ -9,12 +7,16 @@ import userBooksDao from '../../resources/user-books/user-books.dao.js'
 
 const librariesUrl = new URL('/libraries', testUtils.TESTS_BASE_URL)
 const userId = '01J9BHWZ8N4B1JBSAFCBKQGERS'
-const token = makeJwt(userId, Role.Regular)
-const cookie = testUtils.buildAccessTokenCookie(token)
+const userEmail = 'user01@email.com'
+const userPassword = 'Password123!'
+
+let authHeader: string
 
 beforeAll(async () => {
   await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
   await librariesDao.init()
+  const { accessToken } = await testUtils.login(userEmail, userPassword)
+  authHeader = testUtils.buildAuthorizationHeader(accessToken)
 })
 
 afterAll(async () => {
@@ -25,7 +27,7 @@ describe('libraries tests', async () => {
   it('GET /libraries - should list user libraries', async () => {
     const response = await fetch(librariesUrl, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'GET'
@@ -41,7 +43,7 @@ describe('libraries tests', async () => {
     const url = new URL('/libraries?search=first', testUtils.TESTS_BASE_URL)
     const response = await fetch(url.href, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'GET'
@@ -57,7 +59,7 @@ describe('libraries tests', async () => {
     const body = { name: 'new library', description: 'description of the new library' }
     const response = await fetch(librariesUrl, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -71,7 +73,7 @@ describe('libraries tests', async () => {
     const body = { name: 'sample first library', description: 'description of the sample first library' }
     const response = await fetch(librariesUrl, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -85,7 +87,7 @@ describe('libraries tests', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEZ', librariesUrl)
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'DELETE'
@@ -98,7 +100,7 @@ describe('libraries tests', async () => {
     const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X', librariesUrl)
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'DELETE'
@@ -121,7 +123,7 @@ describe('libraries tests', async () => {
     }
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -151,7 +153,7 @@ describe('libraries tests', async () => {
 
     await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -183,7 +185,7 @@ describe('libraries tests', async () => {
 
     await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -208,7 +210,7 @@ describe('libraries tests', async () => {
     }
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -223,7 +225,7 @@ describe('libraries tests', async () => {
     const body = { id: '01J9KKFWF45DMVVGRS502SFAKE' }
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -239,7 +241,7 @@ describe('libraries tests', async () => {
     const url = new URL(`/libraries/${libraryId}/books/${userBookId}`, librariesUrl)
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'DELETE'
@@ -254,7 +256,7 @@ describe('libraries tests', async () => {
     const url = new URL(`/libraries/${libraryId}/books/${userBookId}`, librariesUrl)
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'DELETE'
@@ -277,7 +279,7 @@ describe('libraries tests', async () => {
     }
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -293,7 +295,7 @@ describe('libraries tests', async () => {
     const url = new URL(`/libraries/${libraryId}/books/${userBookId}`, librariesUrl)
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'DELETE'
@@ -311,7 +313,7 @@ describe('libraries tests', async () => {
 
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'GET'
@@ -331,7 +333,7 @@ describe('libraries tests', async () => {
 
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'GET'
@@ -350,7 +352,7 @@ describe('libraries tests', async () => {
 
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'PATCH',
@@ -377,7 +379,7 @@ describe('libraries tests', async () => {
 
     const response = await fetch(url, {
       headers: {
-        cookie,
+        Authorization: authHeader,
         'Content-Type': 'application/json'
       },
       method: 'PATCH',

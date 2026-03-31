@@ -32,7 +32,8 @@ export default {
   },
   jwt: {
     secret: parseString(process.env.JWT_SECRET, 'foo'),
-    expirationTime: parseNumber(process.env.JWT_EXPIRATION_TIME, 60000)
+    accessTokenExpiration: parseString(process.env.JWT_ACCESS_TOKEN_EXPIRATION, '1m'),
+    refreshTokenExpiration: parseString(process.env.JWT_REFRESH_TOKEN_EXPIRATION, '7d')
   },
   hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
   openLibrary: {
@@ -45,9 +46,12 @@ export default {
     apiKey: parseString(process.env.GOOGLE_BOOKS_API_KEY)
   },
   cookieOptions: {
-    httpOnly: true,
-    secure: parseBoolean(process.env.ACCESS_TOKEN_COOKIE_SECURE, false),
-    sameSite: parseString(process.env.ACCESS_TOKEN_COOKIE_SAME_SITE, 'none')
+    refreshToken: {
+      httpOnly: true,
+      secure: parseBoolean(process.env.REFRESH_TOKEN_COOKIE_SECURE, false),
+      sameSite: parseString(process.env.REFRESH_TOKEN_COOKIE_SAME_SITE, 'lax') as 'strict' | 'lax' | 'none',
+      path: '/auth'
+    }
   },
   roboHashApi: {
     baseUrl: parseUrl(process.env.ROBO_HASH_API_BASE_URL, 'https://robohash.org/')

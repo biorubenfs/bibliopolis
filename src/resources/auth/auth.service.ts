@@ -1,40 +1,15 @@
-import { SetCookieResultObject } from '../../results.js'
+import { TokenResultObject } from '../../results.js'
 import bcrypt from 'bcryptjs'
 import { Login } from './auth.interfaces.js'
 import { InvalidLoginError } from './auth.error.js'
-import { makeJwt } from './auth.utils.js'
-import { UserEntity } from '../users/users.entity.js'
+import { makeJwt, makeRefreshToken, getRefreshTokenExpiration } from './auth.utils.js'
 import config from '../../config.js'
-import { CookieOptions } from 'express'
-import { CreateUser } from '../users/users.interfaces.js'
 import usersService from '../users/users.service.js'
+import refreshTokensDao from './refresh-tokens.dao.js'
+import { ExpiredTokenError, InvalidTokenError } from '../../error/errors.js'
 
 class AuthService {
-  // constructor() {
-  //   // bind `login` to instance context
-  //   this.login = this.login.bind(this);
-  // }
-  // async login (body: Login): Promise<MiscResultObject> {
-  //   const user = await usersDao.findByEmail(body.email)
-  //   const isPasswordValid = bcrypt.compareSync(body.password, user?.password ?? '')
-
-  //   if (user == null || !isPasswordValid) {
-  //     throw new InvalidLoginError('invalid email or password')
-  //   }
-
-  //   const token = makeJwt(user.id, user.role)
-
-  //   return new MiscResultObject({ token })
-  // }
-
-  async signup (body: Omit<CreateUser, 'avatar'>): Promise<SetCookieResultObject<UserEntity>> {
-    const newUser = await usersService.signup(body)
-    const token = makeJwt(newUser.id, newUser.role)
-
-    return new SetCookieResultObject('access_token', token, {}, newUser)
-  }
-
-  async login (body: Login): Promise<SetCookieResultObject<UserEntity>> {
+  async login (body: Login): Promise<TokenResultObject> {
     let user
     try {
       user = await usersService.getByEmail(body.email)
@@ -52,10 +27,63 @@ class AuthService {
       throw new InvalidLoginError('invalid email or password')
     }
 
-    const token = makeJwt(user.id, user.role)
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const cookieOptions = { ...config.cookieOptions } as CookieOptions
-    return new SetCookieResultObject('access_token', token, cookieOptions, user)
+    // Generate access token
+    const accessToken = makeJwt(user.id, user.role)
+
+    // Generate and store refresh token
+    const refreshToken = makeRefreshToken()
+    const expiresAt = getRefreshTokenExpiration()
+    await refreshTokensDao.create(refreshToken, user.id, expiresAt)
+
+    return new TokenResultObject(
+      accessToken,
+      refreshToken,
+      config.cookieOptions.refreshToken
+    )
+  }
+
+  async refresh (refreshToken: string): Promise<TokenResultObject> {
+    // Find refresh token in database
+    const storedToken = await refreshTokensDao.findByToken(refreshToken)
+
+    if (storedToken == null) {
+      throw new InvalidTokenError('invalid refresh token')
+    }
+
+    // Check if token is valid (active and not expired)
+    if (!storedToken.isValid()) {
+      await refreshTokensDao.revokeByToken(refreshToken)
+      throw new ExpiredTokenError('refresh token expired or revoked')
+    }
+
+    // Get user to generate new access token
+    const userResult = await usersService.getById(storedToken.userId)
+    const user = userResult.entity
+
+    // Generate new access token
+    const accessToken = makeJwt(user.id, user.role)
+
+    // Token rotation: revoke old token and create new one
+    await refreshTokensDao.revokeByToken(refreshToken)
+    const newRefreshToken = makeRefreshToken()
+    const expiresAt = getRefreshTokenExpiration()
+    await refreshTokensDao.create(newRefreshToken, user.id, expiresAt)
+
+    return new TokenResultObject(
+      accessToken,
+      newRefreshToken,
+      config.cookieOptions.refreshToken
+    )
+  }
+
+  async logout (refreshToken: string | undefined): Promise<void> {
+    if (refreshToken != null) {
+      await refreshTokensDao.revokeByToken(refreshToken)
+    }
+  }
+
+  async logoutAll (userId: string): Promise<void> {
+    await refreshTokensDao.revokeByUserId(userId)
   }
 }
 

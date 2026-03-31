@@ -68,3 +68,21 @@ export class RedirectResultObject {
     this.url = new URL(url)
   }
 }
+
+export class TokenResultObject {
+  readonly accessToken: string
+  readonly refreshTokenCookie: {
+    name: string
+    value: string
+    options: CookieOptions
+  }
+
+  constructor (accessToken: string, refreshToken: string, refreshTokenOptions: CookieOptions) {
+    this.accessToken = accessToken
+    this.refreshTokenCookie = {
+      name: 'refresh_token',
+      value: refreshToken,
+      options: refreshTokenOptions
+    }
+  }
+}
