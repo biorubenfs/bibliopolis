@@ -10,10 +10,10 @@ import mongo from '../../mongo.js'
 const usersURL = new URL('/users', testUtils.TESTS_BASE_URL)
 
 const adminToken = makeJwt('01J9BK7YX0D5NHHBN70Q4N7P69', Role.Admin)
-const adminCookie = testUtils.buildAccessTokenCookie(adminToken)
+const adminAuthHeader = testUtils.buildAuthorizationHeader(adminToken)
 
 const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
-const cookie = testUtils.buildAccessTokenCookie(token)
+const authHeader = testUtils.buildAuthorizationHeader(token)
 
 beforeAll(async () => {
   await loadDataInDb(DataSetType.Test, MockDataSet.Books, MockDataSet.Users, MockDataSet.Libraries, MockDataSet.UserBooks)
@@ -46,7 +46,7 @@ describe('users tests', async () => {
     const response = await fetch(usersURL, {
       headers: {
         'Content-Type': 'application/json',
-        cookie: adminCookie
+        Authorization: adminAuthHeader
       },
       method: 'POST',
       body: JSON.stringify(body)
@@ -65,7 +65,7 @@ describe('users tests', async () => {
     const response = await fetch(usersURL, {
       headers: {
         'Content-Type': 'application/json',
-        cookie: adminCookie
+        Authorization: adminAuthHeader
       },
       method: 'POST',
       body: JSON.stringify(body)
@@ -84,7 +84,7 @@ describe('users tests', async () => {
     const response = await fetch(usersURL, {
       headers: {
         'Content-Type': 'application/json',
-        cookie: adminCookie
+        Authorization: adminAuthHeader
       },
       method: 'POST',
       body: JSON.stringify(body)
@@ -97,7 +97,7 @@ describe('users tests', async () => {
     const usersMeUrl = new URL('/users/me', usersURL)
     const response = await fetch(usersMeUrl, {
       headers: {
-        cookie: adminCookie
+        Authorization: adminAuthHeader
       },
       method: 'GET'
     })
@@ -116,7 +116,7 @@ describe('users tests', async () => {
     const response = await fetch(updatePasswordUrl, {
       headers: {
         'Content-Type': 'application/json',
-        cookie
+        Authorization: authHeader
       },
       method: 'PATCH',
       body: JSON.stringify(body)
@@ -136,7 +136,7 @@ describe('users tests', async () => {
     const response = await fetch(updatePasswordUrl, {
       headers: {
         'Content-Type': 'application/json',
-        cookie
+        Authorization: authHeader
       },
       method: 'PATCH',
       body: JSON.stringify(body)
@@ -155,7 +155,7 @@ describe('users tests', async () => {
     const response = await fetch(updateUser, {
       headers: {
         'Content-Type': 'application/json',
-        cookie
+        Authorization: authHeader
       },
       method: 'PATCH',
       body: JSON.stringify(body)

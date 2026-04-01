@@ -68,7 +68,7 @@ class UsersService {
   async updatePassword (userId: string, currentPassword: string, newPassword: string): Promise<SingleResultObject<UserEntity>> {
     const user = await this.getById(userId)
 
-    const isPasswordValid = bcrypt.compareSync(currentPassword, user.entity.password)
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.entity.password)
 
     if (!isPasswordValid) {
       throw new InvalidCurrentPassword('invalid current password')

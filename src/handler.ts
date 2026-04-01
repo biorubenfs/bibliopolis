@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express'
-import { CollectionResultObject, SingleResultObject, MiscResultObject, SetCookieResultObject, ClearCookieResultObject, RedirectResultObject } from './results.js'
+import { CollectionResultObject, SingleResultObject, MiscResultObject, ClearCookieResultObject, RedirectResultObject, TokenResultObject } from './results.js'
 import { Entity, EntityType } from './entity.js'
 import { HttpStatusCode } from './types.js'
 import { Readable } from 'stream'
@@ -9,9 +9,9 @@ type DataCustomController =
   SingleResultObject<Entity<EntityType>> |
   CollectionResultObject<Entity<EntityType>> |
   MiscResultObject |
-  SetCookieResultObject<Entity<EntityType>> |
   ClearCookieResultObject |
   RedirectResultObject |
+  TokenResultObject |
   // Buffer |
   Readable |
   null
@@ -42,10 +42,17 @@ function handler<TBody> (controller: CustomController<TBody>): RequestHandler<an
             .json({ results: data.toResult() })
           return
 
-        case data instanceof SetCookieResultObject:
-          res.cookie(data.name, data.value, data.options)
-            .status(status)
-            .json({ results: data.entity.toResult() })
+        case data instanceof TokenResultObject:
+          if (data.hasRefreshToken()) {
+            res.cookie(
+              // TODO: fix me
+              data.refreshTokenCookie?.name ?? '',
+              data.refreshTokenCookie?.value ?? '',
+              data.refreshTokenCookie?.options ?? {}
+            )
+          }
+          res.status(status)
+            .json({ results: data.toResult() })
           return
 
         case data instanceof ClearCookieResultObject:

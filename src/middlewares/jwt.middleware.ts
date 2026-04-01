@@ -27,7 +27,7 @@ import { ExpiredTokenError, InvalidTokenError, TokenNotProvidedError } from '../
 export function checkJwt (req: Request, res: Response, next: NextFunction): void {
   try {
     const token = extractToken(req)
-    const payload = jwt.verify(token, config.jwt.secret) as JwtPayload
+    const payload = jwt.verify(token, config.accessToken.secret) as JwtPayload
 
     assertPayload(payload)
 
@@ -49,9 +49,18 @@ export function checkJwt (req: Request, res: Response, next: NextFunction): void
 }
 
 function extractToken (req: Request): string {
-  const token = req.cookies?.access_token
-  if (token == null) throw new TokenNotProvidedError('token not provided')
-  return token
+  // Try Authorization header first (Bearer token)
+  const authHeader = req.header('Authorization')
+  if (authHeader != null) {
+    const token = authHeader.split(' ')[1]
+    if (token != null) return token
+  }
+
+  // Fallback to cookie (for backward compatibility)
+  // const cookieToken = req.cookies?.access_token
+  // if (cookieToken != null) return cookieToken
+
+  throw new TokenNotProvidedError('token not provided')
 }
 
 function assertPayload (payload: JwtPayload): void {

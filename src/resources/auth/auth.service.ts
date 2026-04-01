@@ -1,41 +1,17 @@
-import { SetCookieResultObject } from '../../results.js'
+import { TokenResultObject } from '../../results.js'
 import bcrypt from 'bcryptjs'
 import { Login } from './auth.interfaces.js'
 import { InvalidLoginError } from './auth.error.js'
-import { makeJwt } from './auth.utils.js'
-import { UserEntity } from '../users/users.entity.js'
+import { makeJwt, makeRefreshToken, getRefreshTokenExpiration, hashRefreshToken } from './auth.utils.js'
 import config from '../../config.js'
-import { CookieOptions } from 'express'
-import { CreateUser } from '../users/users.interfaces.js'
 import usersService from '../users/users.service.js'
+import refreshTokensDao from './refresh-tokens.dao.js'
+import { ExpiredTokenError, InvalidTokenError } from '../../error/errors.js'
 
 class AuthService {
-  // constructor() {
-  //   // bind `login` to instance context
-  //   this.login = this.login.bind(this);
-  // }
-  // async login (body: Login): Promise<MiscResultObject> {
-  //   const user = await usersDao.findByEmail(body.email)
-  //   const isPasswordValid = bcrypt.compareSync(body.password, user?.password ?? '')
-
-  //   if (user == null || !isPasswordValid) {
-  //     throw new InvalidLoginError('invalid email or password')
-  //   }
-
-  //   const token = makeJwt(user.id, user.role)
-
-  //   return new MiscResultObject({ token })
-  // }
-
-  async signup (body: Omit<CreateUser, 'avatar'>): Promise<SetCookieResultObject<UserEntity>> {
-    const newUser = await usersService.signup(body)
-    const token = makeJwt(newUser.id, newUser.role)
-
-    return new SetCookieResultObject('access_token', token, {}, newUser)
-  }
-
-  async login (body: Login): Promise<SetCookieResultObject<UserEntity>> {
+  async login (body: Login): Promise<TokenResultObject> {
     let user
+
     try {
       user = await usersService.getByEmail(body.email)
     } catch (error) {
@@ -46,16 +22,67 @@ class AuthService {
       }
     }
 
-    const isPasswordValid = (user != null) ? bcrypt.compareSync(body.password, user.password) : false
+    const isPasswordValid = (user != null)
+      ? await bcrypt.compare(body.password, user.password)
+      : false
 
     if (user == null || !isPasswordValid) {
       throw new InvalidLoginError('invalid email or password')
     }
 
-    const token = makeJwt(user.id, user.role)
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const cookieOptions = { ...config.cookieOptions } as CookieOptions
-    return new SetCookieResultObject('access_token', token, cookieOptions, user)
+    // Generate access token
+    const accessToken = makeJwt(user.id, user.role)
+
+    // Generate and store refresh token
+    const refreshToken = makeRefreshToken()
+    const hashedRefreshToken = hashRefreshToken(refreshToken)
+    const expiresAt = getRefreshTokenExpiration()
+
+    await refreshTokensDao.create(hashedRefreshToken, user.id, expiresAt)
+
+    return new TokenResultObject(
+      accessToken,
+      refreshToken,
+      config.refreshToken.cookieOptions
+    )
+  }
+
+  async refresh (refreshToken: string): Promise<TokenResultObject> {
+    const now = new Date()
+    const hashedRefreshToken = hashRefreshToken(refreshToken)
+
+    const storedToken = await refreshTokensDao.findByToken(hashedRefreshToken)
+
+    if (storedToken == null) {
+      throw new InvalidTokenError('invalid refresh token')
+    }
+
+    if (storedToken.revokedAt != null) {
+      throw new InvalidTokenError('refresh token revoked')
+    }
+
+    if (storedToken.expiresAt <= now) {
+      await refreshTokensDao.revokeByTokenHash(hashedRefreshToken)
+      throw new ExpiredTokenError('refresh token expired')
+    }
+
+    const userResult = await usersService.getById(storedToken.userId)
+    const user = userResult.entity
+
+    const accessToken = makeJwt(user.id, user.role)
+
+    return new TokenResultObject(accessToken)
+  }
+
+  async logout (refreshToken: string | undefined): Promise<void> {
+    if (refreshToken != null) {
+      const hashedToken = hashRefreshToken(refreshToken)
+      await refreshTokensDao.revokeByTokenHash(hashedToken)
+    }
+  }
+
+  async logoutAll (userId: string): Promise<void> {
+    await refreshTokensDao.revokeByUserId(userId)
   }
 }
 

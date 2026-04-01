@@ -37,20 +37,6 @@ export class MiscResultObject {
   }
 }
 
-export class SetCookieResultObject<T extends Entity<EntityType>> {
-  readonly name: string
-  readonly value: string
-  readonly options: CookieOptions
-  readonly entity: T
-
-  constructor (name: string, value: string, options: CookieOptions, entity: T) {
-    this.name = name
-    this.value = value
-    this.options = options
-    this.entity = entity
-  }
-}
-
 export class ClearCookieResultObject {
   readonly name: string
   readonly options: CookieOptions
@@ -66,5 +52,38 @@ export class RedirectResultObject {
 
   constructor (url: string) {
     this.url = new URL(url)
+  }
+}
+
+export class TokenResultObject {
+  readonly accessToken: string
+  readonly refreshTokenCookie?: {
+    name: string
+    value: string
+    options: CookieOptions
+  }
+
+  constructor (accessToken: string, refreshToken?: string, refreshTokenOptions?: CookieOptions) {
+    this.accessToken = accessToken
+    if (refreshToken != null && refreshTokenOptions != null) {
+      this.refreshTokenCookie = {
+        name: 'refresh_token',
+        value: refreshToken,
+        options: refreshTokenOptions
+      }
+    }
+  }
+
+  hasRefreshToken (): boolean {
+    return this.refreshTokenCookie != null
+  }
+
+  toResult (): { type: string, attributes: { accessToken: string } } {
+    return {
+      type: 'auth',
+      attributes: {
+        accessToken: this.accessToken
+      }
+    }
   }
 }

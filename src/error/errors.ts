@@ -16,13 +16,13 @@ export class TokenNotProvidedError extends ApiError {
 
 export class InvalidTokenError extends ApiError {
   constructor (message: string) {
-    super(ApiRestErrorCode.InvalidTokenError, 403, message)
+    super(ApiRestErrorCode.InvalidTokenError, 401, message)
   }
 }
 
 export class ExpiredTokenError extends ApiError {
   constructor (message: string) {
-    super(ApiRestErrorCode.InvalidTokenError, 403, message)
+    super(ApiRestErrorCode.InvalidTokenError, 401, message)
   }
 }
 

@@ -2,6 +2,7 @@ import logger from './logger.js'
 import mongo from './mongo.js'
 import librariesDao from './resources/libraries/libraries.dao.js'
 import usersDao from './resources/users/users.dao.js'
+import refreshTokensDao from './resources/auth/refresh-tokens.dao.js'
 import Server from './server.js'
 
 export default class App {
@@ -22,6 +23,7 @@ export default class App {
     await mongo.db().createCollection('requests', { capped: true, size: 100_000 })
     await usersDao.init()
     await librariesDao.init()
+    await refreshTokensDao.init()
 
     logger.info('app started succesfully')
     logger.info('press CTRL+C to stop app')
