@@ -40,7 +40,7 @@ export default {
       httpOnly: true,
       secure: parseBoolean(process.env.REFRESH_TOKEN_COOKIE_SECURE, false),
       sameSite: parseString(process.env.REFRESH_TOKEN_COOKIE_SAME_SITE, 'lax') as 'strict' | 'lax' | 'none',
-      path: '/auth/refresh'
+      path: '/auth'
     }
   },
   hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
