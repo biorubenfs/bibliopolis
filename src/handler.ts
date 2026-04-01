@@ -12,7 +12,6 @@ type DataCustomController =
   ClearCookieResultObject |
   RedirectResultObject |
   TokenResultObject |
-  // Buffer |
   Readable |
   null
 
@@ -63,14 +62,6 @@ function handler<TBody> (controller: CustomController<TBody>): RequestHandler<an
         case data instanceof RedirectResultObject:
           res.redirect(status, data.url.href)
           return
-
-          // case data instanceof Buffer:
-          //   // Send Buffer as a file download
-          //   res.setHeader('Content-Disposition', 'attachment; filename="file.pdf"')
-          //   res.setHeader('Content-Type', 'application/pdf')
-          //   res.status(status)
-          //     .send(data)
-          //   return
 
         case data instanceof Readable:
           res.setHeader('Content-Disposition', 'attachment; filename="file.pdf"')
