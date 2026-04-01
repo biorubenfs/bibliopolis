@@ -71,18 +71,33 @@ export class RedirectResultObject {
 
 export class TokenResultObject {
   readonly accessToken: string
-  readonly refreshTokenCookie: {
+  readonly refreshTokenCookie?: {
     name: string
     value: string
     options: CookieOptions
   }
 
-  constructor (accessToken: string, refreshToken: string, refreshTokenOptions: CookieOptions) {
+  constructor (accessToken: string, refreshToken?: string, refreshTokenOptions?: CookieOptions) {
     this.accessToken = accessToken
-    this.refreshTokenCookie = {
-      name: 'refresh_token',
-      value: refreshToken,
-      options: refreshTokenOptions
+    if (refreshToken != null && refreshTokenOptions != null) {
+      this.refreshTokenCookie = {
+        name: 'refresh_token',
+        value: refreshToken,
+        options: refreshTokenOptions
+      }
+    }
+  }
+
+  hasRefreshToken (): boolean {
+    return this.refreshTokenCookie != null
+  }
+
+  toResult (): { type: string, attributes: { accessToken: string } } {
+    return {
+      type: 'auth',
+      attributes: {
+        accessToken: this.accessToken
+      }
     }
   }
 }

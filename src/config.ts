@@ -30,10 +30,18 @@ export default {
     email: parseString(process.env.DEFAULT_ADMIN_EMAIL),
     password: parseString(process.env.DEFAULT_ADMIN_PASSWORD)
   },
-  jwt: {
-    secret: parseString(process.env.JWT_SECRET, 'foo'),
-    accessTokenExpiration: parseString(process.env.JWT_ACCESS_TOKEN_EXPIRATION, '15m'),
-    refreshTokenExpiration: parseString(process.env.JWT_REFRESH_TOKEN_EXPIRATION, '7d')
+  accessToken: {
+    secret: parseString(process.env.JWT_ACCESS_TOKEN_SECRET),
+    expirationTime: parseString(process.env.JWT_ACCESS_TOKEN_EXPIRATION, '15m')
+  },
+  refreshToken: {
+    expirationTime: parseString(process.env.REFRESH_TOKEN_EXPIRATION_TIME, '7d'),
+    cookieOptions: {
+      httpOnly: true,
+      secure: parseBoolean(process.env.REFRESH_TOKEN_COOKIE_SECURE, false),
+      sameSite: parseString(process.env.REFRESH_TOKEN_COOKIE_SAME_SITE, 'lax') as 'strict' | 'lax' | 'none',
+      path: '/auth/refresh'
+    }
   },
   hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
   openLibrary: {
@@ -44,14 +52,6 @@ export default {
     domain: parseUrl(process.env.GOOGLE_BOOKS_DOMAIN, 'https://www.googleapis.com'),
     coverUrlPattern: parseString(process.env.GOOGLE_BOOKS_COVER_URL_PATTERN),
     apiKey: parseString(process.env.GOOGLE_BOOKS_API_KEY)
-  },
-  cookieOptions: {
-    refreshToken: {
-      httpOnly: true,
-      secure: parseBoolean(process.env.REFRESH_TOKEN_COOKIE_SECURE, false),
-      sameSite: parseString(process.env.REFRESH_TOKEN_COOKIE_SAME_SITE, 'lax') as 'strict' | 'lax' | 'none',
-      path: '/auth'
-    }
   },
   roboHashApi: {
     baseUrl: parseUrl(process.env.ROBO_HASH_API_BASE_URL, 'https://robohash.org/')

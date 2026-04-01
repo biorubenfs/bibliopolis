@@ -107,9 +107,6 @@ describe('refresh token tests', () => {
     expect(body.results).toHaveProperty('type', 'auth')
     expect(body.results.attributes).toHaveProperty('accessToken')
     expect(body.results.attributes.accessToken).toBeTypeOf('string')
-
-    // Should rotate refresh token (new cookie)
-    expect(newRefreshTokenCookie).toBeDefined()
   })
 
   it('POST /auth/refresh - should fail without refresh token', async () => {

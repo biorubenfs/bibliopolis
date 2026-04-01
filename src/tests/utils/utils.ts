@@ -1,16 +1,10 @@
 const TESTS_PORT = 3001
 const TESTS_BASE_URL = `http://localhost:${TESTS_PORT}`
 
-/**
- * Builds Authorization header with Bearer token for authenticated requests
- */
 function buildAuthorizationHeader (accessToken: string): string {
   return `Bearer ${accessToken}`
 }
 
-/**
- * Helper to perform login and get access token
- */
 async function login (email: string, password: string): Promise<{ accessToken: string, refreshTokenCookie: string }> {
   const loginUrl = new URL('/auth/login', TESTS_BASE_URL)
   const response = await fetch(loginUrl, {

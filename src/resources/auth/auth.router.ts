@@ -34,7 +34,7 @@ authRouter.post('/logout', handler(async (req) => {
   const refreshToken = req.cookies?.refresh_token
   await authService.logout(refreshToken)
 
-  const clearRefreshToken = new ClearCookieResultObject('refresh_token', config.cookieOptions.refreshToken)
+  const clearRefreshToken = new ClearCookieResultObject('refresh_token', config.refreshToken.cookieOptions)
 
   return { status: HttpStatusCode.NoContent, data: clearRefreshToken }
 }))
@@ -46,7 +46,7 @@ authRouter.post('/logout-all', checkJwt, handler(async (req) => {
 
   await authService.logoutAll(req.userId)
 
-  const clearRefreshToken = new ClearCookieResultObject('refresh_token', config.cookieOptions.refreshToken)
+  const clearRefreshToken = new ClearCookieResultObject('refresh_token', config.refreshToken.cookieOptions)
 
   return { status: HttpStatusCode.NoContent, data: clearRefreshToken }
 }))

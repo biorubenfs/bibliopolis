@@ -4,7 +4,7 @@ import { Role } from '../users/users.interfaces.js'
 import crypto from 'crypto'
 
 export function makeJwt (userId: string, role: Role): string {
-  const { secret, accessTokenExpiration } = config.jwt
+  const { secret, expirationTime: accessTokenExpiration } = config.accessToken
   const token = jwt.sign({
     id: userId,
     role
@@ -26,9 +26,15 @@ export function makeRefreshToken (): string {
   return crypto.randomBytes(64).toString('hex')
 }
 
+export function hashRefreshToken (token: string): string {
+  return crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex')
+}
+
 export function getRefreshTokenExpiration (): Date {
-  const { refreshTokenExpiration } = config.jwt
-  const ms = parseExpiration(refreshTokenExpiration)
+  const ms = parseExpiration(config.refreshToken.expirationTime)
   return new Date(Date.now() + ms)
 }
 

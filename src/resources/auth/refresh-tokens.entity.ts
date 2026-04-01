@@ -2,30 +2,27 @@ import { Entity, EntityType } from '../../entity.js'
 import { DBRefreshToken } from './auth.interfaces.js'
 
 export class RefreshTokenEntity extends Entity<EntityType.RefreshTokens> {
-  readonly token: string
+  readonly tokenHash: string
   readonly userId: string
   readonly expiresAt: Date
   readonly createdAt: Date
-  readonly isActive: boolean
   readonly revokedAt: Date | null
 
   constructor (data: DBRefreshToken) {
     super(EntityType.RefreshTokens, data._id)
-    this.token = data.token
+    this.tokenHash = data.tokenHash
     this.userId = data.userId
     this.expiresAt = data.expiresAt
     this.createdAt = data.createdAt
-    this.isActive = data.isActive
     this.revokedAt = data.revokedAt
   }
 
   attributes (): object {
     return {
-      token: this.token,
+      tokenHash: this.tokenHash,
       userId: this.userId,
       expiresAt: this.expiresAt,
       createdAt: this.createdAt,
-      isActive: this.isActive,
       revokedAt: this.revokedAt
     }
   }
@@ -34,7 +31,11 @@ export class RefreshTokenEntity extends Entity<EntityType.RefreshTokens> {
     return this.expiresAt < new Date()
   }
 
+  isRevoked (): boolean {
+    return this.revokedAt != null
+  }
+
   isValid (): boolean {
-    return this.isActive && !this.isExpired()
+    return !this.isRevoked() && !this.isExpired()
   }
 }

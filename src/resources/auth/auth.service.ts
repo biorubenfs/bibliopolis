@@ -2,7 +2,7 @@ import { TokenResultObject } from '../../results.js'
 import bcrypt from 'bcryptjs'
 import { Login } from './auth.interfaces.js'
 import { InvalidLoginError } from './auth.error.js'
-import { makeJwt, makeRefreshToken, getRefreshTokenExpiration } from './auth.utils.js'
+import { makeJwt, makeRefreshToken, getRefreshTokenExpiration, hashRefreshToken } from './auth.utils.js'
 import config from '../../config.js'
 import usersService from '../users/users.service.js'
 import refreshTokensDao from './refresh-tokens.dao.js'
@@ -11,6 +11,7 @@ import { ExpiredTokenError, InvalidTokenError } from '../../error/errors.js'
 class AuthService {
   async login (body: Login): Promise<TokenResultObject> {
     let user
+
     try {
       user = await usersService.getByEmail(body.email)
     } catch (error) {
@@ -21,7 +22,9 @@ class AuthService {
       }
     }
 
-    const isPasswordValid = (user != null) ? bcrypt.compareSync(body.password, user.password) : false
+    const isPasswordValid = (user != null)
+      ? await bcrypt.compare(body.password, user.password)
+      : false
 
     if (user == null || !isPasswordValid) {
       throw new InvalidLoginError('invalid email or password')
@@ -32,53 +35,49 @@ class AuthService {
 
     // Generate and store refresh token
     const refreshToken = makeRefreshToken()
+    const hashedRefreshToken = hashRefreshToken(refreshToken)
     const expiresAt = getRefreshTokenExpiration()
-    await refreshTokensDao.create(refreshToken, user.id, expiresAt)
+
+    await refreshTokensDao.create(hashedRefreshToken, user.id, expiresAt)
 
     return new TokenResultObject(
       accessToken,
       refreshToken,
-      config.cookieOptions.refreshToken
+      config.refreshToken.cookieOptions
     )
   }
 
   async refresh (refreshToken: string): Promise<TokenResultObject> {
-    // Find refresh token in database
-    const storedToken = await refreshTokensDao.findByToken(refreshToken)
+    const now = new Date()
+    const hashedRefreshToken = hashRefreshToken(refreshToken)
+
+    const storedToken = await refreshTokensDao.findByToken(hashedRefreshToken)
 
     if (storedToken == null) {
       throw new InvalidTokenError('invalid refresh token')
     }
 
-    // Check if token is valid (active and not expired)
-    if (!storedToken.isValid()) {
-      await refreshTokensDao.revokeByToken(refreshToken)
-      throw new ExpiredTokenError('refresh token expired or revoked')
+    if (storedToken.revokedAt != null) {
+      throw new InvalidTokenError('refresh token revoked')
     }
 
-    // Get user to generate new access token
+    if (storedToken.expiresAt <= now) {
+      await refreshTokensDao.revokeByTokenHash(hashedRefreshToken)
+      throw new ExpiredTokenError('refresh token expired')
+    }
+
     const userResult = await usersService.getById(storedToken.userId)
     const user = userResult.entity
 
-    // Generate new access token
     const accessToken = makeJwt(user.id, user.role)
 
-    // Token rotation: revoke old token and create new one
-    await refreshTokensDao.revokeByToken(refreshToken)
-    const newRefreshToken = makeRefreshToken()
-    const expiresAt = getRefreshTokenExpiration()
-    await refreshTokensDao.create(newRefreshToken, user.id, expiresAt)
-
-    return new TokenResultObject(
-      accessToken,
-      newRefreshToken,
-      config.cookieOptions.refreshToken
-    )
+    return new TokenResultObject(accessToken)
   }
 
   async logout (refreshToken: string | undefined): Promise<void> {
     if (refreshToken != null) {
-      await refreshTokensDao.revokeByToken(refreshToken)
+      const hashedToken = hashRefreshToken(refreshToken)
+      await refreshTokensDao.revokeByTokenHash(hashedToken)
     }
   }
 

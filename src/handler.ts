@@ -50,20 +50,15 @@ function handler<TBody> (controller: CustomController<TBody>): RequestHandler<an
           return
 
         case data instanceof TokenResultObject:
-          res.cookie(
-            data.refreshTokenCookie.name,
-            data.refreshTokenCookie.value,
-            data.refreshTokenCookie.options
-          )
-            .status(status)
-            .json({
-              results: {
-                type: 'auth',
-                attributes: {
-                  accessToken: data.accessToken
-                }
-              }
-            })
+          if (data.hasRefreshToken()) {
+            res.cookie(
+              data.refreshTokenCookie!.name,
+              data.refreshTokenCookie!.value,
+              data.refreshTokenCookie!.options
+            )
+          }
+          res.status(status)
+            .json({ results: data.toResult() })
           return
 
         case data instanceof ClearCookieResultObject:

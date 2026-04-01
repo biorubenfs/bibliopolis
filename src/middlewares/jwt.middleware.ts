@@ -27,7 +27,7 @@ import { ExpiredTokenError, InvalidTokenError, TokenNotProvidedError } from '../
 export function checkJwt (req: Request, res: Response, next: NextFunction): void {
   try {
     const token = extractToken(req)
-    const payload = jwt.verify(token, config.jwt.secret) as JwtPayload
+    const payload = jwt.verify(token, config.accessToken.secret) as JwtPayload
 
     assertPayload(payload)
 
