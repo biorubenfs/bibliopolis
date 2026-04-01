@@ -31,7 +31,7 @@ export default {
     password: parseString(process.env.DEFAULT_ADMIN_PASSWORD)
   },
   accessToken: {
-    secret: parseString(process.env.JWT_ACCESS_TOKEN_SECRET),
+    secret: parseString(process.env.JWT_ACCESS_TOKEN_SECRET, 'foo'),
     expirationTime: parseString(process.env.JWT_ACCESS_TOKEN_EXPIRATION, '15m')
   },
   refreshToken: {
