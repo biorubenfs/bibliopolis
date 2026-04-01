@@ -37,20 +37,6 @@ export class MiscResultObject {
   }
 }
 
-export class SetCookieResultObject<T extends Entity<EntityType>> {
-  readonly name: string
-  readonly value: string
-  readonly options: CookieOptions
-  readonly entity: T
-
-  constructor (name: string, value: string, options: CookieOptions, entity: T) {
-    this.name = name
-    this.value = value
-    this.options = options
-    this.entity = entity
-  }
-}
-
 export class ClearCookieResultObject {
   readonly name: string
   readonly options: CookieOptions
