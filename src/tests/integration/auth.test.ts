@@ -98,8 +98,6 @@ describe('refresh token tests', () => {
     })
 
     const body = await response.json()
-    const cookies = response.headers.getSetCookie()
-    const newRefreshTokenCookie = cookies.find(cookie => cookie.startsWith('refresh_token='))
 
     expect(response.status).toBe(200)
 

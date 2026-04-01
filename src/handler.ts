@@ -45,9 +45,10 @@ function handler<TBody> (controller: CustomController<TBody>): RequestHandler<an
         case data instanceof TokenResultObject:
           if (data.hasRefreshToken()) {
             res.cookie(
-              data.refreshTokenCookie!.name,
-              data.refreshTokenCookie!.value,
-              data.refreshTokenCookie!.options
+              // TODO: fix me
+              data.refreshTokenCookie?.name ?? '',
+              data.refreshTokenCookie?.value ?? '',
+              data.refreshTokenCookie?.options ?? {}
             )
           }
           res.status(status)
