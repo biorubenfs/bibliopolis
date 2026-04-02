@@ -4,8 +4,10 @@ import { DataSetType, loadDataInDb, MockDataSet } from '../../load-data.js'
 import mongo from '../../mongo.js'
 import librariesDao from '../../resources/libraries/libraries.dao.js'
 import userBooksDao from '../../resources/user-books/user-books.dao.js'
+import { ApiRestErrorCode } from '../../error/types.js'
 
 const librariesUrl = new URL('/libraries', testUtils.TESTS_BASE_URL)
+const userBooksUrl = new URL('/user-books', testUtils.TESTS_BASE_URL)
 const userId = '01J9BHWZ8N4B1JBSAFCBKQGERS'
 const userEmail = 'user01@email.com'
 const userPassword = 'Password123!'
@@ -24,6 +26,17 @@ afterAll(async () => {
 })
 
 describe('libraries tests', async () => {
+  it('GET /libraries - should fail without token', async () => {
+      const response = await fetch(librariesUrl, {
+        method: 'GET'
+      })
+  
+      const body = await response.json()
+  
+      expect(response.status).toBe(401)
+      expect(body.errorCode).toBe(ApiRestErrorCode.TokenNotProvidedError)
+  })
+
   it('GET /libraries - should list user libraries', async () => {
     const response = await fetch(librariesUrl, {
       headers: {
@@ -305,9 +318,21 @@ describe('libraries tests', async () => {
   })
 
   // TODO: move to user-books tests
+  it('GET /user-books - should fail without token', async () => {
+      const url = new URL('/user-books', userBooksUrl)
+      const response = await fetch(url, {
+        method: 'GET'
+      })
+  
+      const body = await response.json()
+  
+      expect(response.status).toBe(401)
+      expect(body.errorCode).toBe(ApiRestErrorCode.TokenNotProvidedError)
+  })
+
   it('GET /user-books?libraryId= - should list the books of a owned library', async () => {
     const libraryId = '01J9W8VR2CFZW8PJ1Q8Y4Y5WEX'
-    const url = new URL('/user-books', librariesUrl)
+    const url = new URL('/user-books', userBooksUrl)
     url.searchParams.set('libraryId', libraryId)
     // url.searchParams.set('userId', userId) // not needed
 
@@ -323,11 +348,16 @@ describe('libraries tests', async () => {
     expect(response.status).equals(200)
     expect(responseBody).to.have.property('results')
     expect(responseBody.results).to.be.an('array').of.length(3)
+    expect(responseBody.results[0]).to.have.property('type').equals('user-books')
+    expect(responseBody.results[0])
+      .to.have.nested.property('attributes.libraries')
+      .that.is.an('array')
+      .that.includes(libraryId)
   })
 
   it('GET /user-books?libraryId= - should fail to list books of a not owned library', async () => {
     const libraryId = '01J9XDD1NAFHP0159FYT245D8X'
-    const url = new URL('/user-books', librariesUrl)
+    const url = new URL('/user-books', userBooksUrl)
     url.searchParams.set('libraryId', libraryId)
     // url.searchParams.set('userId', userId) // not needed
 

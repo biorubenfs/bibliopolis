@@ -4,6 +4,7 @@ import { DataSetType, loadDataInDb, MockDataSet } from '../../load-data.js'
 import { makeJwt } from '../../resources/auth/auth.utils.js'
 import { Role } from '../../resources/users/users.interfaces.js'
 import mongo from '../../mongo.js'
+import { ApiRestErrorCode } from '../../error/types.js'
 
 const baseUrl = new URL(testUtils.TESTS_BASE_URL)
 const token = makeJwt('01J9BHWZ8N4B1JBSAFCBKQGERS', Role.Regular)
@@ -18,6 +19,18 @@ afterAll(async () => {
 })
 
 describe('books tests', async () => {
+  it('GET /books - should fail without token', async () => {
+    const url = new URL('/books', baseUrl)
+    const response = await fetch(url, {
+      method: 'GET'
+    })
+
+    const body = await response.json()
+
+    expect(response.status).toBe(401)
+    expect(body.errorCode).toBe(ApiRestErrorCode.TokenNotProvidedError)
+  })
+
   it('GET /books/:id - should get a book', async () => {
     const url = new URL('/books/01J9KKFT64VX47TEDXMBBFRHTV', baseUrl)
     const response = await fetch(url, { method: 'GET', headers: { Authorization: authHeader } })
