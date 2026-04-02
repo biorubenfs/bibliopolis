@@ -31,7 +31,7 @@ export default {
     password: parseString(process.env.DEFAULT_ADMIN_PASSWORD)
   },
   accessToken: {
-    secret: parseString(process.env.JWT_ACCESS_TOKEN_SECRET, 'foo'),
+    secret: parseString(process.env.JWT_ACCESS_TOKEN_SECRET),
     expirationTime: parseString(process.env.JWT_ACCESS_TOKEN_EXPIRATION, '15m')
   },
   refreshToken: {
@@ -40,7 +40,7 @@ export default {
       httpOnly: true,
       secure: parseBoolean(process.env.REFRESH_TOKEN_COOKIE_SECURE, false),
       sameSite: parseString(process.env.REFRESH_TOKEN_COOKIE_SAME_SITE, 'lax') as 'strict' | 'lax' | 'none',
-      path: process.env.ENVIRONMENT === 'dev' ? '/api/auth' : '/auth' // TODO: FIX ME
+      path: `${process.env.BACKEND_URL}/auth`
     }
   },
   hashRounds: parseNumber(process.env.HASH_ROUNDS, 10),
