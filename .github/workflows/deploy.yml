@@ -2,8 +2,14 @@ name: GHCR Build and Push
 
 on:
   workflow_dispatch:
-    branches:
-      - main
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        type: choice
+        options:
+          - production
+          - development
 
 jobs:
   docker:
@@ -39,3 +45,40 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy on ${{ github.event.inputs.environment }}
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            set -e
+
+            echo "· Moving to deploy path..."
+            cd "${{ secrets.VPS_PATH }}"
+
+            echo "· Pulling latest images..."
+            docker compose pull
+
+            echo "· Starting containers..."
+            docker compose up -d
+
+            # Optional: clean up dangling images to free space
+            # docker image prune -af
+
+            echo "✅ Deployment finished successfully"
+          EOF
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/id_rsa
