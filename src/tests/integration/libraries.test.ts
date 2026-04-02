@@ -27,14 +27,14 @@ afterAll(async () => {
 
 describe('libraries tests', async () => {
   it('GET /libraries - should fail without token', async () => {
-      const response = await fetch(librariesUrl, {
-        method: 'GET'
-      })
-  
-      const body = await response.json()
-  
-      expect(response.status).toBe(401)
-      expect(body.errorCode).toBe(ApiRestErrorCode.TokenNotProvidedError)
+    const response = await fetch(librariesUrl, {
+      method: 'GET'
+    })
+
+    const body = await response.json()
+
+    expect(response.status).toBe(401)
+    expect(body.errorCode).toBe(ApiRestErrorCode.TokenNotProvidedError)
   })
 
   it('GET /libraries - should list user libraries', async () => {
@@ -319,15 +319,15 @@ describe('libraries tests', async () => {
 
   // TODO: move to user-books tests
   it('GET /user-books - should fail without token', async () => {
-      const url = new URL('/user-books', userBooksUrl)
-      const response = await fetch(url, {
-        method: 'GET'
-      })
-  
-      const body = await response.json()
-  
-      expect(response.status).toBe(401)
-      expect(body.errorCode).toBe(ApiRestErrorCode.TokenNotProvidedError)
+    const url = new URL('/user-books', userBooksUrl)
+    const response = await fetch(url, {
+      method: 'GET'
+    })
+
+    const body = await response.json()
+
+    expect(response.status).toBe(401)
+    expect(body.errorCode).toBe(ApiRestErrorCode.TokenNotProvidedError)
   })
 
   it('GET /user-books?libraryId= - should list the books of a owned library', async () => {
