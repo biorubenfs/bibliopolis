@@ -125,7 +125,10 @@ export async function getBookFromSourcesApis (isbn: string): Promise<NewBook> {
     cover
   }
 
-  if (bookData.title == null || bookData.title === '' || bookData.isbn13 == null || bookData.isbn10 == null) {
+  const sourceIsbn = bookData.isbn13 ?? bookData.isbn10
+
+  if (bookData.title == null || bookData.title === '' || sourceIsbn == null) {
+    // TODO: Add tests for this case
     throw new BooksApiError('Book not found in any source')
   }
 
