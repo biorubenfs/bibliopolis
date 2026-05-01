@@ -9,8 +9,10 @@ import { Page } from '../../types.js'
 import crypto from 'crypto'
 import robohashApi from './robohash/robohash.api.js'
 import { transformImageToBase64 } from '../../utils.js'
+import logger from '../../logger.js'
 
 const VALIDATION_CODE_LIMIT = 9999
+const DEFAULT_AVATAR_BASE64 = '' // TODO: add a default avatar
 
 export function hashPasswordSync (password: string): string {
   return bcrypt.hashSync(password, config.hashRounds)
@@ -24,12 +26,26 @@ class UsersService {
     }
 
     const validationCode = crypto.randomInt(VALIDATION_CODE_LIMIT).toString()
-    const avatar = await robohashApi.getImage(body.name)
+
+    // TODO: Decouple user creation from avatar creation. Create user with default or null avatar and update it asynchronously after fetching from RoboHash.
+    let avatarBase64: string
+
+    try {
+      const avatar = await robohashApi.getImage(body.name)
+      avatarBase64 = transformImageToBase64(avatar)
+    } catch (error) {
+      // loguea el error para observabilidad
+      logger.error('Error fetching avatar from RoboHash:', error)
+
+      // fallback
+      avatarBase64 = DEFAULT_AVATAR_BASE64
+    }
+
     const userData: CreateUser = {
       ...body,
       password: hashPasswordSync(body.password),
       validationCode,
-      avatar: transformImageToBase64(avatar)
+      avatar: avatarBase64
     }
 
     const newUser = await usersDao.create(userData, Role.Regular)
