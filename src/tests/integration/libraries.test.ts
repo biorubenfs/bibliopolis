@@ -25,7 +25,7 @@ afterAll(async () => {
   await mongo.clean()
 })
 
-describe('libraries tests', async () => {
+describe('libraries tests jwt protected routes', async () => {
   it('GET /libraries - should fail without token', async () => {
     const response = await fetch(librariesUrl, {
       method: 'GET'
@@ -36,7 +36,9 @@ describe('libraries tests', async () => {
     expect(response.status).toBe(401)
     expect(body.errorCode).toBe(ApiRestErrorCode.TokenNotProvidedError)
   })
+})
 
+describe('libraries CRUD basic tests', async () => {
   it('GET /libraries - should list user libraries', async () => {
     const response = await fetch(librariesUrl, {
       headers: {
@@ -96,6 +98,51 @@ describe('libraries tests', async () => {
     expect(response.status).equals(409)
   })
 
+  it('PATCH /libraries/:id - should update a owned library', async () => {
+    const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX', librariesUrl)
+    const body = { name: 'updated library name', description: 'updated description' }
+    const response = await fetch(url, {
+      headers: {
+        Authorization: authHeader,
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify(body)
+    })
+
+    expect(response.status).equals(200)
+  })
+
+  it('PATCH /libraries/:id - should fail to update a non-owned library', async () => {
+    const url = new URL('/libraries/01J9XDD1NAFHP0159FYT245D8X', librariesUrl)
+    const body = { name: 'updated library name', description: 'updated description' }
+    const response = await fetch(url, {
+      headers: {
+        Authorization: authHeader,
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify(body)
+    })
+
+    expect(response.status).equals(403)
+  })
+
+  it('PATCH /libraries/:id - should fail to update a library with existing name', async () => {
+    const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEZ', librariesUrl)
+    const body = { name: 'updated library name', description: 'updated description' }
+    const response = await fetch(url, {
+      headers: {
+        Authorization: authHeader,
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify(body)
+    })
+
+    expect(response.status).equals(409)
+  })
+
   it('DELETE /libraries/:id - should remove a owned library', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEZ', librariesUrl)
     const response = await fetch(url, {
@@ -121,7 +168,9 @@ describe('libraries tests', async () => {
 
     expect(response.status).equals(403)
   })
+})
 
+describe('libraries books management tests', async () => {
   it('POST /libraries/:id/books - should add a book to owned library', async () => {
     const url = new URL('/libraries/01J9W8VR2CFZW8PJ1Q8Y4Y5WEX/books', librariesUrl)
     const body = {
@@ -316,8 +365,10 @@ describe('libraries tests', async () => {
 
     expect(response.status).equals(403)
   })
+})
 
-  // TODO: move to user-books tests
+// TODO: move to user-books tests
+describe('user-books tests', async () => {
   it('GET /user-books - should fail without token', async () => {
     const url = new URL('/user-books', userBooksUrl)
     const response = await fetch(url, {
@@ -372,7 +423,6 @@ describe('libraries tests', async () => {
     expect(response.status).equals(403)
   })
 
-  /* Move to user-books tests */
   it('PATCH /user-books/:bookId - should update a user book with rating and notes', async () => {
     const userBookId = '01J9W9P6M5S0VRKVSRX3Q9T3W7'
 
@@ -399,7 +449,6 @@ describe('libraries tests', async () => {
     expect(userBook.attributes.notes).equals(body.notes)
   })
 
-  /* Move to user-books tests */
   it('PATCH /user-books/:bookId - should fail to update a user book', async () => {
     const userBookId = '01J9XDBGCX8QM0GW67T7QGKS41'
 
