@@ -65,7 +65,7 @@ async function updateBooksData (booksCursor: FindCursor<WithId<DBBook>>): Promis
           }
         )
 
-        logger.info(`book updated, bookId: ${book._id}, isbn: ${isbn}, newAuthors: ${hasNewAuthors}, newCover: ${hasNewCover}`)
+        logger.info(`book updated, bookId: ${book._id}, isbn: ${isbn}, newAuthors: ${String(hasNewAuthors)}, newCover: ${String(hasNewCover)}`)
 
         updatedBooks.push({
           bookId: book._id,
