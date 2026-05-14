@@ -22,7 +22,7 @@ jobs:
         run: corepack enable pnpm
 
       - name: Install pnpm 10
-        run: corepack prepare pnpm@10 --activate
+        run: corepack prepare pnpm@10.30.1 --activate
 
       - name: Use Node.js 22.x
         uses: actions/setup-node@v5
@@ -45,7 +45,7 @@ jobs:
       - name: Enable corepack
         run: corepack enable pnpm
       - name: Install pnpm 10
-        run: corepack prepare pnpm@10 --activate
+        run: corepack prepare pnpm@10.30.1 --activate
       - uses: actions/setup-node@v5
         with:
           node-version: '22.x'
@@ -62,7 +62,7 @@ jobs:
       - name: Enable corepack
         run: corepack enable pnpm
       - name: Install pnpm 10
-        run: corepack prepare pnpm@10 --activate
+        run: corepack prepare pnpm@10.30.1 --activate
       - uses: actions/setup-node@v5
         with:
           node-version: '22.x'
@@ -79,7 +79,7 @@ jobs:
       - name: Enable corepack
         run: corepack enable pnpm
       - name: Install pnpm 10
-        run: corepack prepare pnpm@10 --activate
+        run: corepack prepare pnpm@10.30.1 --activate
       - uses: actions/setup-node@v5
         with:
           node-version: '22.x'
