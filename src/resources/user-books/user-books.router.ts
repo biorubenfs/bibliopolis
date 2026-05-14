@@ -3,7 +3,7 @@ import userBooksService from './user-books.service.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 import handler from '../../handler.js'
 import { HttpStatusCode } from '../../types.js'
-import { userBooksQuerySchema, userBookUpdateSchema } from './user-books.schemas.js'
+import { userBooksQuerySchema, userBookUpdateSchema, userBooksDownloadQuerySchema } from './user-books.schemas.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
 import { parseSkipLimitQP } from '../../utils.js'
 import { Role } from '../users/users.interfaces.js'
@@ -33,10 +33,10 @@ userBooksRouter.get('/', queryParamsValidator(userBooksQuerySchema), queryPagina
   return { status: HttpStatusCode.OK, data: result }
 }))
 
-userBooksRouter.get('/download', handler(async (req) => {
-  const libraryId = req.query.libraryId as string
+userBooksRouter.get('/download', queryParamsValidator(userBooksDownloadQuerySchema), handler(async (req) => {
+  const { libraryId, format } = req.query as z.infer<typeof userBooksDownloadQuerySchema>
 
-  const stream = await userBooksService.download(libraryId, req.userId ?? '', req.role ?? Role.Regular)
+  const stream = await userBooksService.download(libraryId, req.userId ?? '', req.role ?? Role.Regular, format)
   return { status: HttpStatusCode.OK, data: stream }
 }))
 

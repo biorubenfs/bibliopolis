@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express'
-import { CollectionResultObject, SingleResultObject, MiscResultObject, ClearCookieResultObject, RedirectResultObject, TokenResultObject } from './results.js'
+import { CollectionResultObject, SingleResultObject, MiscResultObject, ClearCookieResultObject, RedirectResultObject, TokenResultObject, StreamResultObject } from './results.js'
 import { Entity, EntityType } from './entity.js'
 import { HttpStatusCode } from './types.js'
-import { Readable } from 'stream'
 
 type StatusCustomController = HttpStatusCode
 type DataCustomController =
@@ -12,7 +11,7 @@ type DataCustomController =
   ClearCookieResultObject |
   RedirectResultObject |
   TokenResultObject |
-  Readable |
+  StreamResultObject |
   null
 
 type CustomController<TBody> = (req: Request<any, any, TBody>) => Promise<{ status: StatusCustomController, data: DataCustomController }>
@@ -63,11 +62,11 @@ function handler<TBody> (controller: CustomController<TBody>): RequestHandler<an
           res.redirect(status, data.url.href)
           return
 
-        case data instanceof Readable:
-          res.setHeader('Content-Disposition', 'attachment; filename="file.pdf"')
-          res.setHeader('Content-Type', 'application/pdf')
+        case data instanceof StreamResultObject:
+          res.setHeader('Content-Disposition', `attachment; filename="${data.filename}"`)
+          res.setHeader('Content-Type', data.contentType)
           res.status(status)
-          data.pipe(res)
+          data.stream.pipe(res)
           return
 
         case data == null:

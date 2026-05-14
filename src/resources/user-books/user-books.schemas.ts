@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { UserBookRating } from './user-books.interfaces.js'
+import { UserBookRating, DownloadFormat } from './user-books.interfaces.js'
 
 export const userBookUpdateSchema = z.object({
   // rating: z.union([
@@ -14,4 +14,9 @@ export const userBooksQuerySchema = z.object({
   userId: z.string().optional(),
   libraryId: z.union([z.string(), z.array(z.string())]).optional(),
   search: z.string().optional()
+})
+
+export const userBooksDownloadQuerySchema = z.object({
+  libraryId: z.string(),
+  format: z.nativeEnum(DownloadFormat).default(DownloadFormat.PDF)
 })

@@ -17,6 +17,11 @@ export enum UserBookRating {
   TEN,
 }
 
+export enum DownloadFormat {
+  PDF = 'pdf',
+  CSV = 'csv',
+}
+
 export type DBUserBook = Omit<UserBookEntity, 'id' | 'type' | 'attributes' | 'toResult'> & { _id: string }
 
 export interface NewUserBook {
