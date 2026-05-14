@@ -1,4 +1,5 @@
 import { CookieOptions } from 'express'
+import { Readable } from 'stream'
 import { Entity, EntityType, ResultMiscObject } from './entity.js'
 import { PaginationObject } from './types.js'
 
@@ -85,5 +86,17 @@ export class TokenResultObject {
         accessToken: this.accessToken
       }
     }
+  }
+}
+
+export class StreamResultObject {
+  readonly stream: Readable
+  readonly contentType: string
+  readonly filename: string
+
+  constructor (stream: Readable, contentType: string, filename: string) {
+    this.stream = stream
+    this.contentType = contentType
+    this.filename = filename
   }
 }

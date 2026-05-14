@@ -1,15 +1,15 @@
-import { Readable } from 'stream'
-import { CollectionResultObject, SingleResultObject } from '../../results.js'
+import { CollectionResultObject, SingleResultObject, StreamResultObject } from '../../results.js'
 import { Page } from '../../types.js'
 import { LibraryPermissionsError } from '../libraries/libraries.error.js'
 import librariesService from '../libraries/libraries.service.js'
 import { Role } from '../users/users.interfaces.js'
 
+import { DownloadFormat, UpdateUserBook } from './user-books.interfaces.js'
 import userBooksDao from './user-books.dao.js'
 import { UserBookEntity } from './user-books.entity.js'
 import { UserBookPermissionsError, UserBookNotFoundError } from './user-books.error.js'
-import { UpdateUserBook } from './user-books.interfaces.js'
 import { createLibraryBooksPDFStream } from '../../utils/pdf-creator.utils.js'
+import { createLibraryBooksCSVStream } from '../../utils/csv-creator.utils.js'
 
 class UserBooksService {
   async list (page: Page, userId: string, role: Role, filter: { userId?: string, librariesIds?: readonly string[], search?: string }): Promise<CollectionResultObject<UserBookEntity>> {
@@ -62,13 +62,21 @@ class UserBooksService {
     return new SingleResultObject(updUserBookEntity)
   }
 
-  async download (libraryId: string, userId: string, role: Role, output: string = 'pdf'): Promise<Readable> {
+  async download (libraryId: string, userId: string, role: Role, format: DownloadFormat = DownloadFormat.PDF): Promise<StreamResultObject> {
     const library = await librariesService.get(libraryId, userId, role)
 
     const booksCursor = await userBooksDao.listCursor({ userId, librariesIds: [libraryId] })
-    const total = await userBooksDao.count({ userId, librariesIds: [libraryId] })
 
-    return await createLibraryBooksPDFStream(library.entity, booksCursor, total)
+    const safeName = library.entity.name.replace(/[^a-z0-9_-]/gi, '_')
+
+    if (format === DownloadFormat.CSV) {
+      const stream = await createLibraryBooksCSVStream(booksCursor)
+      return new StreamResultObject(stream, 'text/csv; charset=utf-8', `${safeName}.csv`)
+    }
+
+    const total = await userBooksDao.count({ userId, librariesIds: [libraryId] })
+    const stream = await createLibraryBooksPDFStream(library.entity, booksCursor, total)
+    return new StreamResultObject(stream, 'application/pdf', `${safeName}.pdf`)
   }
 }
 
