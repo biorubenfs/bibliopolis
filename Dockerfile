@@ -3,7 +3,7 @@
 # ============================================
 FROM node:20-alpine AS builder
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.30.1 --activate
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ RUN pnpm run build
 # ============================================
 FROM node:20-alpine
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.30.1 --activate
 
 RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
 
