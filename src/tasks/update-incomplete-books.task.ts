@@ -37,7 +37,7 @@ async function updateBooksData (booksCursor: FindCursor<WithId<DBBook>>): Promis
       const isbn = book.isbn13 ?? book.isbn10
 
       if (isbn == null) {
-        logger.warn(`book skipped: no ISBN available, bookId: ${book._id}`)
+        logger.warn(`[ UPDATE BOOKS TASK ] book skipped: no ISBN available, bookId: ${book._id}`)
         skipped++
         continue
       }
@@ -49,7 +49,7 @@ async function updateBooksData (booksCursor: FindCursor<WithId<DBBook>>): Promis
         const hasNewCover = bookData.cover.value != null
 
         if (!hasNewAuthors && !hasNewCover) {
-          logger.warn(`book skipped: sources returned no useful data, bookId: ${book._id}, isbn: ${isbn}`)
+          logger.warn(`[ UPDATE BOOKS TASK ] book skipped: sources returned no useful data, bookId: ${book._id}, isbn: ${isbn}`)
           skipped++
           continue
         }
@@ -65,7 +65,7 @@ async function updateBooksData (booksCursor: FindCursor<WithId<DBBook>>): Promis
           }
         )
 
-        logger.info(`book updated, bookId: ${book._id}, isbn: ${isbn}, newAuthors: ${String(hasNewAuthors)}, newCover: ${String(hasNewCover)}`)
+        logger.info(`[ UPDATE BOOKS TASK ] book updated, bookId: ${book._id}, isbn: ${isbn}, newAuthors: ${String(hasNewAuthors)}, newCover: ${String(hasNewCover)}`)
 
         updatedBooks.push({
           bookId: book._id,
@@ -74,11 +74,11 @@ async function updateBooksData (booksCursor: FindCursor<WithId<DBBook>>): Promis
         })
       } catch (err) {
         if (err instanceof BooksApiError) {
-          logger.warn(`book skipped: not found in any source, bookId: ${book._id}, isbn: ${isbn}`)
+          logger.warn(`[ UPDATE BOOKS TASK ] book skipped: not found in any source, bookId: ${book._id}, isbn: ${isbn}`)
           skipped++
         } else {
           failed++
-          logger.error(`failed to process book, bookId: ${book._id}, isbn: ${isbn}`, err)
+          logger.error(`[ UPDATE BOOKS TASK ] failed to process book, bookId: ${book._id}, isbn: ${isbn}`, err)
         }
       }
     }
@@ -86,8 +86,7 @@ async function updateBooksData (booksCursor: FindCursor<WithId<DBBook>>): Promis
     await booksCursor.close()
   }
 
-  logger.info(`books data update complete, total: ${total}, updated: ${updatedBooks.length}, skipped: ${skipped}, failed: ${failed}`)
-
+  logger.info(`[ UPDATE BOOKS TASK ] books data update complete, total: ${total}, updated: ${updatedBooks.length}, skipped: ${skipped}, failed: ${failed}`)
   return updatedBooks
 }
 
@@ -108,5 +107,5 @@ async function updateUserBooksData (updatedBooks: UpdatedBookData[]): Promise<vo
 
   const result = await userBooksDao.collection.bulkWrite(bulkOps)
 
-  logger.info(`userBooks sync complete, modifiedCount: ${result.modifiedCount}`)
+  logger.info(`[ UPDATE BOOKS TASK ] userBooks sync complete, modifiedCount: ${result.modifiedCount}`)
 }

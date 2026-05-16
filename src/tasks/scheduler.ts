@@ -1,6 +1,6 @@
 import { schedule, ScheduledTask } from 'node-cron'
 import logger from '../logger.js'
-import { syncBooksFromSources } from './book-data-retrieval.task.js'
+import { syncBooksFromSources } from './update-incomplete-books.task.js'
 
 interface CronTaskDefinition {
   name: string
@@ -12,7 +12,7 @@ interface CronTaskDefinition {
 const cronTasks: CronTaskDefinition[] = [
   {
     name: 'sync-books-from-sources',
-    schedule: '* * * * *', // every minute
+    schedule: '0 3 * * 6', // every Saturday at 3:00 AM
     enabled: true,
     task: syncBooksFromSources
   }
