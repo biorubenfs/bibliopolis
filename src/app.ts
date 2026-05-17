@@ -4,6 +4,7 @@ import librariesDao from './resources/libraries/libraries.dao.js'
 import usersDao from './resources/users/users.dao.js'
 import refreshTokensDao from './resources/auth/refresh-tokens.dao.js'
 import Server from './server.js'
+import { startCronTasks } from './tasks/scheduler.js'
 
 export default class App {
   server?: Server
@@ -24,6 +25,8 @@ export default class App {
     await usersDao.init()
     await librariesDao.init()
     await refreshTokensDao.init()
+
+    startCronTasks()
 
     logger.info('app started succesfully')
     logger.info('press CTRL+C to stop app')
