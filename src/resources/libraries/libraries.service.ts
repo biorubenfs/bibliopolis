@@ -11,6 +11,10 @@ import librariesDao from './libraries.dao.js'
 import { LibraryEntity } from './libraries.entity.js'
 import { BookAlreadyExistingInLibrary, BookNotFoundInLibraryError, LibraryNameConflictError, LibraryNotFoundError, LibraryPermissionsError } from './libraries.error.js'
 import { NewLibrary } from './libraries.interfaces.js'
+import logger from '../../logger.js'
+import { getBookFromSourcesApis } from '../../utils.js'
+import { parseIsbnColumn } from '../../utils/csv-parser.utils.js'
+import { ISBNUtils } from '../../utils/isbn.utils.js'
 
 class LibrariesService {
   private async checkLibraryNameAvailable (libraryName: string, userId: string, excludeLibraryId?: string): Promise<void> {
@@ -124,6 +128,47 @@ class LibrariesService {
       return updatedLibrary
     })
 
+    return new SingleResultObject(updatedLibrary)
+  }
+
+  async createFromCsv (csvBuffer: Buffer, body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {
+    const rawIsbns = parseIsbnColumn(csvBuffer.toString('utf-8'))
+    const uniqueIsbns = [...new Set(
+      rawIsbns
+        .map(isbn => ISBNUtils.sanitizeIsbn(isbn))
+        .filter(isbn => ISBNUtils.isValidIsbn10(isbn) || ISBNUtils.isValidIsbn13(isbn))
+    )]
+
+    await this.checkLibraryNameAvailable(body.name, userId)
+    const library = await librariesDao.create({ ...body, name: body.name.trim() }, userId)
+
+    const addedBookIds = new Set<string>()
+    for (const isbn of uniqueIsbns) {
+      try {
+        let bookEntity = await booksService.fetchByIsbn(isbn)
+        if (bookEntity == null) {
+          const bookData = await getBookFromSourcesApis(isbn)
+          bookEntity = await booksService.ensureBookExistsInBooks(bookData)
+        }
+
+        // Deduplicate at book entity level: an isbn10 and its isbn13 equivalent are
+        // different strings (both pass the Set above), but resolve to the same BookEntity.
+        if (addedBookIds.has(bookEntity.id)) continue
+        addedBookIds.add(bookEntity.id)
+
+        const resolvedBook = bookEntity
+        await runInTransaction(async (session) => {
+          const userBook = await userBooksDao.upsert(library.id, userId, resolvedBook, session)
+          if (userBook == null) throw new Error('failed to create user book')
+          await librariesDao.addBookIdToLibrary(library.id, userBook.id, session)
+        })
+      } catch (err) {
+        logger.warn(`[ CSV IMPORT ] Failed to process ISBN ${isbn}`, { err })
+      }
+    }
+
+    const updatedLibrary = await librariesDao.findById(library.id)
+    if (updatedLibrary == null) throw new Error('should not happen')
     return new SingleResultObject(updatedLibrary)
   }
 }
