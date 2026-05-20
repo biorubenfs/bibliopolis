@@ -28,13 +28,8 @@ librariesRouter.post('/import/csv', upload.single('file'), handler(async (req) =
     throw new InvalidBodyError('invalid body', validationResult.error.issues)
   }
 
-  const result = await librariesService.createFromCsv(req.file.buffer, validationResult.data, req.userId ?? '')
-  return { status: HttpStatusCode.Created, data: result }
-}))
-
-librariesRouter.post('/', bodyValidator(newLibrarySchema), handler(async (req) => {
-  const result = await librariesService.create(req.body, req.userId ?? '')
-  return { status: HttpStatusCode.Created, data: result }
+  const result = await librariesService.importFromCsv(req.file.buffer, validationResult.data, req.userId ?? '')
+  return { status: HttpStatusCode.Accepted, data: result }
 }))
 
 librariesRouter.get('/:id', handler(async (req) => {

@@ -13,6 +13,7 @@ import cookieParser from 'cookie-parser'
 import userBooksRouter from './resources/user-books/user-books.router.js'
 import { requestLogger } from './middlewares/request-logger.js'
 import externalRouter from './resources/external/external.router.js'
+import jobsRouter from './resources/jobs/jobs.router.js'
 
 import rateLimit from 'express-rate-limit'
 
@@ -76,6 +77,7 @@ export default class Server {
     this.express.use('/libraries', librariesRouter)
     this.express.use('/user-books', userBooksRouter)
     this.express.use('/external', externalRouter)
+    this.express.use('/jobs', jobsRouter)
 
     // error handling
     this.express.use(errorHandler)

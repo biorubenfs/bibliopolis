@@ -1,4 +1,4 @@
-import { CollectionResultObject, SingleResultObject } from '../../results.js'
+import { CollectionResultObject, MiscResultObject, SingleResultObject } from '../../results.js'
 import { runInTransaction } from '../../transaction-helper.js'
 import { Page } from '../../types.js'
 import { BookNotFoundError } from '../books/books.error.js'
@@ -15,6 +15,8 @@ import logger from '../../logger.js'
 import { getBookFromSourcesApis } from '../../utils.js'
 import { parseIsbnColumn } from '../../utils/csv-parser.utils.js'
 import { ISBNUtils } from '../../utils/isbn.utils.js'
+import jobDao from '../jobs/job.dao.js'
+import { JobReport, JobStatus, JobType } from '../jobs/job.interfaces.js'
 
 class LibrariesService {
   private async checkLibraryNameAvailable (libraryName: string, userId: string, excludeLibraryId?: string): Promise<void> {
@@ -131,45 +133,86 @@ class LibrariesService {
     return new SingleResultObject(updatedLibrary)
   }
 
-  async createFromCsv (csvBuffer: Buffer, body: NewLibrary, userId: string): Promise<SingleResultObject<LibraryEntity>> {
-    const rawIsbns = parseIsbnColumn(csvBuffer.toString('utf-8'))
-    const uniqueIsbns = [...new Set(
-      rawIsbns
-        .map(isbn => ISBNUtils.sanitizeIsbn(isbn))
-        .filter(isbn => ISBNUtils.isValidIsbn10(isbn) || ISBNUtils.isValidIsbn13(isbn))
-    )]
+  async importFromCsv (csvBuffer: Buffer, body: NewLibrary, userId: string): Promise<MiscResultObject> {
+    const sanitized = parseIsbnColumn(csvBuffer.toString('utf-8')).map(isbn => ISBNUtils.sanitizeIsbn(isbn))
+    const total = sanitized.length
 
-    await this.checkLibraryNameAvailable(body.name, userId)
-    const library = await librariesDao.create({ ...body, name: body.name.trim() }, userId)
-
-    const addedBookIds = new Set<string>()
-    for (const isbn of uniqueIsbns) {
-      try {
-        let bookEntity = await booksService.fetchByIsbn(isbn)
-        if (bookEntity == null) {
-          const bookData = await getBookFromSourcesApis(isbn)
-          bookEntity = await booksService.ensureBookExistsInBooks(bookData)
-        }
-
-        // Deduplicate at book entity level: an isbn10 and its isbn13 equivalent are
-        // different strings (both pass the Set above), but resolve to the same BookEntity.
-        if (addedBookIds.has(bookEntity.id)) continue
-        addedBookIds.add(bookEntity.id)
-
-        const resolvedBook = bookEntity
-        await runInTransaction(async (session) => {
-          const userBook = await userBooksDao.upsert(library.id, userId, resolvedBook, session)
-          if (userBook == null) throw new Error('failed to create user book')
-          await librariesDao.addBookIdToLibrary(library.id, userBook.id, session)
-        })
-      } catch (err) {
-        logger.warn(`[ CSV IMPORT ] Failed to process ISBN ${isbn}`, { err })
+    // Detect exact-string duplicates (e.g. same ISBN appears twice in the CSV)
+    const seen = new Set<string>()
+    const initialSkipped: string[] = []
+    const deduped: string[] = []
+    for (const isbn of sanitized) {
+      if (seen.has(isbn)) {
+        initialSkipped.push(isbn)
+      } else {
+        seen.add(isbn)
+        deduped.push(isbn)
       }
     }
 
-    const updatedLibrary = await librariesDao.findById(library.id)
-    if (updatedLibrary == null) throw new Error('should not happen')
-    return new SingleResultObject(updatedLibrary)
+    // Separate valid ISBNs from malformed ones
+    const validIsbns = deduped.filter(isbn => ISBNUtils.isValidIsbn10(isbn) || ISBNUtils.isValidIsbn13(isbn))
+    const initialFailed = deduped.filter(isbn => !ISBNUtils.isValidIsbn10(isbn) && !ISBNUtils.isValidIsbn13(isbn))
+
+    await this.checkLibraryNameAvailable(body.name, userId)
+    const library = await librariesDao.create({ ...body, name: body.name.trim() }, userId)
+    const job = await jobDao.create(userId, JobType.LibraryCsvImport, total, initialSkipped, initialFailed)
+
+    void this.runImportJob(job.id, library.id, userId, validIsbns)
+
+    return new MiscResultObject('library-import-job', { jobId: job.id, libraryId: library.id })
+  }
+
+  private async runImportJob (jobId: string, libraryId: string, userId: string, validIsbns: string[]): Promise<void> {
+    await jobDao.updateStatus(jobId, JobStatus.InProgress)
+
+    // Load the persisted initial report (already has total, initialSkipped, initialFailed)
+    const jobSnapshot = await jobDao.findById(jobId)
+    const report: JobReport = jobSnapshot != null
+      ? { ...jobSnapshot.report }
+      : { total: validIsbns.length, imported: [], skipped: [], failed: [] }
+
+    const addedBookIds = new Set<string>()
+
+    try {
+      for (const isbn of validIsbns) {
+        try {
+          let bookEntity = await booksService.fetchByIsbn(isbn)
+          if (bookEntity == null) {
+            const bookData = await getBookFromSourcesApis(isbn)
+            bookEntity = await booksService.ensureBookExistsInBooks(bookData)
+          }
+
+          // Deduplicate at book entity level: an isbn10 and its isbn13 equivalent are
+          // different strings (both pass the Set above), but resolve to the same BookEntity.
+          if (addedBookIds.has(bookEntity.id)) {
+            report.skipped.push(isbn)
+            continue
+          }
+          addedBookIds.add(bookEntity.id)
+
+          const resolvedBook = bookEntity
+          await runInTransaction(async (session) => {
+            const userBook = await userBooksDao.upsert(libraryId, userId, resolvedBook, session)
+            if (userBook == null) throw new Error('failed to create user book')
+            const updated = await librariesDao.addBookIdToLibrary(libraryId, userBook.id, session)
+            if (updated == null) throw new Error('library not found during import')
+            return updated
+          })
+
+          report.imported.push(isbn)
+        } catch (err) {
+          logger.warn(`[ CSV IMPORT ] ISBN ${isbn} processing failed`)
+          report.failed.push(isbn)
+        }
+      }
+
+      await jobDao.complete(jobId, report)
+      logger.info(`[ CSV IMPORT ] Job ${jobId} completed`)
+    } catch (err) {
+      await jobDao.fail(jobId)
+      logger.error(`[ CSV IMPORT ] Job ${jobId} failed unexpectedly`, err)
+    }
   }
 }
 
