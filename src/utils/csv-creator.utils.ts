@@ -3,7 +3,7 @@ import { DBUserBook } from '../resources/user-books/user-books.interfaces.js'
 import { PassThrough, Readable } from 'stream'
 import { UserBookEntity } from '../resources/user-books/user-books.entity.js'
 
-const CSV_HEADERS = ['Título', 'Autor/es', 'Isbn-13', 'Isbn-10']
+const CSV_HEADERS = ['Título', 'Autor/es', 'Isbn13', 'Isbn10']
 
 function escapeCsvField (value: string): string {
   if (value.includes(',') || value.includes('"') || value.includes('\n') || value.includes('\r')) {

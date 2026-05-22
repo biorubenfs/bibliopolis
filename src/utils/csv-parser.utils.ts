@@ -2,8 +2,9 @@ export function parseIsbnColumn (csvContent: string): string[] {
   const lines = csvContent.split(/\r?\n/)
   if (lines.length === 0) return []
 
+  const validIsbnHeaders = ['isbn', 'isbn13', 'isbn10']
   const headers = parseCsvLine(lines[0])
-  const isbnIndex = headers.findIndex(h => h.trim().toLowerCase() === 'isbn')
+  const isbnIndex = headers.findIndex(h => validIsbnHeaders.includes(h.trim().toLowerCase()))
   if (isbnIndex === -1) return []
 
   const isbns: string[] = []
