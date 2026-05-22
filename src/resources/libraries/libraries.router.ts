@@ -32,6 +32,11 @@ librariesRouter.post('/import/csv', upload.single('file'), handler(async (req) =
   return { status: HttpStatusCode.Accepted, data: result }
 }))
 
+librariesRouter.post('/', bodyValidator(newLibrarySchema), handler(async (req) => {
+  const result = await librariesService.create(req.body, req.userId ?? '')
+  return { status: HttpStatusCode.Created, data: result }
+}))
+
 librariesRouter.get('/:id', handler(async (req) => {
   const result = await librariesService.get(req.params.id, req.userId ?? '', req.role ?? Role.Regular)
   return { status: HttpStatusCode.OK, data: result }
