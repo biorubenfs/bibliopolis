@@ -1,7 +1,6 @@
 import config from '../../../config.js'
 import { BooksApiError } from '../../../error/errors.js'
 import logger from '../../../logger.js'
-import { BookNotFoundError } from '../../books/books.error.js'
 import { OpenLibraryAuthor, OpenLibraryBook, OpenLibraryWork } from './open-library.types.js'
 
 class OpenLibraryApi {
@@ -11,18 +10,28 @@ class OpenLibraryApi {
     this.domain = domain
   }
 
+  private async fetchJson<T> (url: URL): Promise<T | null> {
+    const response = await fetch(url)
+
+    if (response.status === 404) {
+      return null
+    }
+
+    if (!response.ok) {
+      throw new BooksApiError(`HTTP error ${response.status}: ${response.statusText}`)
+    }
+
+    return await response.json() as T
+  }
+
   async fetchBookByIsbn (isbn: string): Promise<OpenLibraryBook | null> {
     try {
       const url = new URL(`/isbn/${isbn}.json`, this.domain)
-      const response = await fetch(url)
-
-      if (!response.ok) {
-        throw new BooksApiError(`Failed to fetch book by ISBN: ${response.statusText}`)
-      }
-
-      return await response.json()
+      const book = await this.fetchJson<OpenLibraryBook>(url)
+      if (book == null) logger.warn(`Book not found in Open Library API: ${isbn}`)
+      return book
     } catch (error) {
-      logger.error('Error fetching book from Open Library API', { error, isbn })
+      logger.error(`Error fetching book from Open Library API: ${isbn}`, { error })
       return null
     }
   }
@@ -30,15 +39,11 @@ class OpenLibraryApi {
   async fetchWorkById (workKey: string): Promise<OpenLibraryWork | null> {
     try {
       const url = new URL(`${workKey}.json`, this.domain)
-      const response = await fetch(url)
-
-      if (response.status === 404) {
-        throw new BookNotFoundError('work not found in open library')
-      }
-
-      return await response.json()
+      const work = await this.fetchJson<OpenLibraryWork>(url)
+      if (work == null) logger.warn(`Work not found in Open Library API: ${workKey}`)
+      return work
     } catch (error) {
-      logger.error('Error fetching work from Open Library API', { error, workKey })
+      logger.error(`Error fetching work from Open Library API: ${workKey}`, { error })
       return null
     }
   }
@@ -46,16 +51,14 @@ class OpenLibraryApi {
   async fetchAuthorById (identifierKey: string): Promise<string | null> {
     try {
       const url = new URL(`${identifierKey}.json`, this.domain)
-      const response = await fetch(url)
-
-      if (!response.ok) {
-        throw new BooksApiError(`Failed to fetch author: ${response.statusText}`)
+      const author = await this.fetchJson<OpenLibraryAuthor>(url)
+      if (author == null) {
+        logger.warn(`Author not found in Open Library API: ${identifierKey}`)
+        return null
       }
-
-      const authorData: OpenLibraryAuthor = await response.json()
-      return authorData.personal_name ?? authorData.name
+      return author.personal_name ?? author.name
     } catch (error) {
-      logger.error('Error fetching author from Open Library API', { error, identifierKey })
+      logger.error(`Error fetching author from Open Library API: ${identifierKey}`, { error })
       return null
     }
   }
