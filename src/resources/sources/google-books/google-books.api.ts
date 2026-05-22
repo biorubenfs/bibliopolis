@@ -12,7 +12,7 @@ class GoogleBooksApi {
     this.apiKey = apiKey
   }
 
-async fetchBookByIsbn (isbn: string): Promise<GoogleBooksVolume | null> {
+  async fetchBookByIsbn (isbn: string): Promise<GoogleBooksVolume | null> {
     try {
       const url = new URL('/books/v1/volumes', this.domain)
       url.searchParams.set('q', `isbn:${isbn}`)

@@ -65,4 +65,3 @@ class OpenLibraryApi {
 }
 
 export default new OpenLibraryApi(config.openLibrary.domain)
-
