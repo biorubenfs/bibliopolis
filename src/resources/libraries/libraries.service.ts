@@ -152,11 +152,18 @@ class LibrariesService {
 
     // Separate valid ISBNs from malformed ones
     const validIsbns = deduped.filter(isbn => ISBNUtils.isValidIsbn10(isbn) || ISBNUtils.isValidIsbn13(isbn))
-    const initialFailed = deduped.filter(isbn => !ISBNUtils.isValidIsbn10(isbn) && !ISBNUtils.isValidIsbn13(isbn))
+    const invalidFormat = deduped.filter(isbn => !ISBNUtils.isValidIsbn10(isbn) && !ISBNUtils.isValidIsbn13(isbn))
 
     await this.checkLibraryNameAvailable(body.name, userId)
     const library = await librariesDao.create({ ...body, name: body.name.trim() }, userId)
-    const job = await jobDao.create(userId, JobType.LibraryCsvImport, total, initialSkipped, initialFailed)
+    const job = await jobDao.create(userId, JobType.LibraryCsvImport, total, [...initialSkipped, ...invalidFormat], [], library.id)
+
+    for (const isbn of initialSkipped) {
+      logger.warn(`[ CSV IMPORT/JobId ${job.id} ] ISBN ${isbn} skipped (duplicate in CSV)`)
+    }
+    for (const isbn of invalidFormat) {
+      logger.warn(`[ CSV IMPORT/JobId ${job.id} ] ISBN ${isbn} skipped (invalid format)`)
+    }
 
     void this.runImportJob(job.id, library.id, userId, validIsbns)
 
@@ -187,6 +194,7 @@ class LibrariesService {
           // different strings (both pass the Set above), but resolve to the same BookEntity.
           if (addedBookIds.has(bookEntity.id)) {
             report.skipped.push(isbn)
+            logger.warn(`[ CSV IMPORT/JobId ${jobId} ] ISBN ${isbn} skipped (same book as previously imported ISBN)`)
             continue
           }
           addedBookIds.add(bookEntity.id)
@@ -201,17 +209,18 @@ class LibrariesService {
           })
 
           report.imported.push(isbn)
+          logger.info(`[ CSV IMPORT/JobId ${jobId} ] ISBN ${isbn} imported`)
         } catch (err) {
-          logger.warn(`[ CSV IMPORT ] ISBN ${isbn} processing failed`)
+          logger.warn(`[ CSV IMPORT/JobId ${jobId} ] ISBN ${isbn} processing failed`)
           report.failed.push(isbn)
         }
       }
 
       await jobDao.complete(jobId, report)
-      logger.info(`[ CSV IMPORT ] Job ${jobId} completed`)
+      logger.info(`[ CSV IMPORT/JobId ${jobId} ] Job completed`)
     } catch (err) {
       await jobDao.fail(jobId)
-      logger.error(`[ CSV IMPORT ] Job ${jobId} failed unexpectedly`, err)
+      logger.error(`[ CSV IMPORT/JobId ${jobId} ] Job failed unexpectedly`, err)
     }
   }
 }
