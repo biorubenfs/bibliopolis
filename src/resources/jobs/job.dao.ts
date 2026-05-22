@@ -54,7 +54,7 @@ class JobDao extends Dao<DBJob> {
       ...(filters.resourceId != null && { resourceId: filters.resourceId }),
       ...(filters.jobType != null && { jobType: filters.jobType })
     }
-    return this.collection.countDocuments(query)
+    return await this.collection.countDocuments(query)
   }
 
   async updateStatus (id: string, status: JobStatus): Promise<void> {
