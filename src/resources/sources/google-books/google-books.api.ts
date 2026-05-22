@@ -1,7 +1,6 @@
 import config from '../../../config.js'
 import { BooksApiError } from '../../../error/errors.js'
 import logger from '../../../logger.js'
-import { BookNotFoundError } from '../../books/books.error.js'
 import { GoogleBooksVolume } from './google-books.types.js'
 
 class GoogleBooksApi {
@@ -13,7 +12,7 @@ class GoogleBooksApi {
     this.apiKey = apiKey
   }
 
-  async fetchBookByIsbn (isbn: string): Promise<GoogleBooksVolume | null> {
+async fetchBookByIsbn (isbn: string): Promise<GoogleBooksVolume | null> {
     try {
       const url = new URL('/books/v1/volumes', this.domain)
       url.searchParams.set('q', `isbn:${isbn}`)
@@ -21,19 +20,25 @@ class GoogleBooksApi {
 
       const response = await fetch(url)
 
+      if (response.status === 404) {
+        logger.warn(`Book not found in Google Books API: ${isbn}`)
+        return null
+      }
+
       if (!response.ok) {
-        throw new BooksApiError(`failed to fetch book by ISBN: ${response.statusText}`)
+        throw new BooksApiError(`Failed to fetch book by ISBN: ${response.statusText}`)
       }
 
       const responseData = await response.json()
 
       if (responseData.items == null || responseData.items.length === 0) {
-        throw new BookNotFoundError('not found in google books')
+        logger.warn(`Book not found in Google Books API: ${isbn}`)
+        return null
       }
 
-      return responseData.items?.at(0) ?? null
+      return responseData.items.at(0) ?? null
     } catch (error) {
-      logger.error('Error fetching book from Google Books API', { error })
+      logger.error(`Error fetching book from Google Books API: ${isbn}`, { error })
       return null
     }
   }
