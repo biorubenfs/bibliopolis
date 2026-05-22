@@ -13,7 +13,7 @@ const logger = createLogger({
       return info
     })(),
     format.colorize({ colors: { info: 'green', warn: 'yellow', error: 'red' } }),
-    format.printf(({ level, message, timestamp }) => `${timestamp} - [ ${level} ]: ${message}`)
+    format.printf(({ level, message, timestamp }) => `${String(timestamp)} - [ ${level} ]: ${String(message)}`)
   )
 })
 
