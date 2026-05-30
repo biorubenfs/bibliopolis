@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import multer from 'multer'
 import handler from '../../handler.js'
 import bodyValidator from '../../middlewares/body-validator.middleware.js'
 
@@ -8,8 +9,28 @@ import { Role } from '../users/users.interfaces.js'
 import { queryPaginationValidator } from '../../middlewares/pagination-validator.middleware.js'
 import { parseSkipLimitQP } from '../../utils.js'
 import { HttpStatusCode } from '../../types.js'
+import { InvalidBodyError } from '../../error/errors.js'
 
 const librariesRouter = Router()
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 } // 5 MB
+})
+
+librariesRouter.post('/import/csv', upload.single('file'), handler(async (req) => {
+  if (req.file == null) {
+    throw new InvalidBodyError('CSV file is required', [])
+  }
+
+  const validationResult = newLibrarySchema.safeParse(req.body)
+  if (!validationResult.success) {
+    throw new InvalidBodyError('invalid body', validationResult.error.issues)
+  }
+
+  const result = await librariesService.importFromCsv(req.file.buffer, validationResult.data, req.userId ?? '')
+  return { status: HttpStatusCode.Accepted, data: result }
+}))
 
 librariesRouter.post('/', bodyValidator(newLibrarySchema), handler(async (req) => {
   const result = await librariesService.create(req.body, req.userId ?? '')

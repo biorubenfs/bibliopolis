@@ -4,7 +4,8 @@ export enum EntityType {
   Books = 'books',
   Libraries = 'libraries',
   UserBooks = 'user-books',
-  RefreshTokens = 'refresh-tokens'
+  RefreshTokens = 'refresh-tokens',
+  Jobs = 'jobs'
 }
 
 export interface ResultEntityObject {
