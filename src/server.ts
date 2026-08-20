@@ -14,9 +14,8 @@ import userBooksRouter from './resources/user-books/user-books.router.js'
 import { requestLogger } from './middlewares/request-logger.js'
 import externalRouter from './resources/external/external.router.js'
 
-import rateLimit from 'express-rate-limit'
-
 import { readFile } from 'fs/promises'
+import { apiLimiter, authLimiter } from './rate-limiters.js'
 const pkg = JSON.parse(await readFile('./package.json', 'utf-8'))
 const { version } = pkg
 export default class Server {
@@ -29,16 +28,22 @@ export default class Server {
 
     this.express = express()
 
-    this.express.use(rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 100,
-      standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-      legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-      message: {
-        success: false,
-        message: 'Too many requests, please try again later.'
-      }
-    }))
+    // this.express.use(rateLimit({
+    //   windowMs: 15 * 60 * 1000, // 15 minutes
+    //   max: 100,
+    //   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    //   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    //   message: {
+    //     success: false,
+    //     message: 'Too many requests, please try again later.'
+    //   }
+    // }))
+
+    this.express.set('trust proxy', 1) // trust first proxy
+
+    // Rate limiters
+    this.express.use('/auth', authLimiter)
+    this.express.use(apiLimiter)
 
     this.express.use(express.json())
     this.express.use(cors({
