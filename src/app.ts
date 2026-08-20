@@ -5,6 +5,8 @@ import usersDao from './resources/users/users.dao.js'
 import refreshTokensDao from './resources/auth/refresh-tokens.dao.js'
 import Server from './server.js'
 import { startCronTasks } from './tasks/scheduler.js'
+import booksDao from './resources/books/books.dao.js'
+import userBooksDao from './resources/user-books/user-books.dao.js'
 
 export default class App {
   server?: Server
@@ -22,7 +24,11 @@ export default class App {
     this.server.listen()
 
     await mongo.db().createCollection('requests', { capped: true, size: 100_000 })
+
+    // Call init for all DAOs
     await usersDao.init()
+    await booksDao.init()
+    await userBooksDao.init()
     await librariesDao.init()
     await refreshTokensDao.init()
 
